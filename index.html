@@ -44,12 +44,12 @@
       overflow: hidden;
     }
 
-    /* Navigasi Tab Header */
+    /* Navigasi Tab Header & Divider Putih */
     .tabs-header {
       background: rgba(15, 23, 42, 0.7);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 20px;
-      padding: 6px;
+      padding: 8px 6px;
       margin-bottom: 24px;
       box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
     }
@@ -87,10 +87,15 @@
     }
 
     .tab-divider {
-      width: 1px;
+      width: 2px;
       height: 16px;
-      background: rgba(255, 255, 255, 0.15);
-      margin: 0 2px;
+      background: #ffffff;
+      opacity: 0.85;
+      margin: 0 4px;
+      border-radius: 2px;
+      flex-shrink: 0;
+      display: inline-block;
+      box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
     }
 
     .section-divider {
@@ -227,6 +232,7 @@
       display: flex;
       gap: 12px;
       width: 100%;
+      align-items: flex-end;
     }
 
     .form-row .form-group {
@@ -266,6 +272,199 @@
 
     .form-group input:focus, .form-group select:focus {
       border-color: #38bdf8;
+    }
+
+    /* Custom Currency Trigger Selector */
+    .currency-picker-trigger {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 12px 14px;
+      color: white;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.2s;
+      width: 100%;
+      min-height: 46px;
+      user-select: none;
+    }
+
+    .currency-picker-trigger:hover {
+      border-color: #38bdf8;
+    }
+
+    .currency-picker-trigger span:first-child {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-right: 8px;
+    }
+
+    .swap-currency-btn {
+      background: #334155;
+      color: #38bdf8;
+      border: 1px solid #475569;
+      border-radius: 14px;
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      margin-bottom: 14px;
+    }
+
+    .swap-currency-btn:hover {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #0284c7;
+    }
+
+    /* Modal Pencarian Mata Uang Internal */
+    .currency-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 99999;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .currency-modal.active {
+      display: flex;
+    }
+
+    .currency-modal-content {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 24px;
+      width: 100%;
+      max-width: 460px;
+      max-height: 82vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+      overflow: hidden;
+      animation: modalFadeIn 0.2s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from { transform: translateY(15px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .currency-modal-header {
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .currency-modal-header h3 {
+      font-size: 1rem;
+      color: #f8fafc;
+      font-weight: 700;
+    }
+
+    .currency-modal-close {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.3rem;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .currency-modal-close:hover {
+      color: #ffffff;
+    }
+
+    .currency-search-wrap {
+      padding: 12px 16px;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .currency-search-wrap input {
+      width: 100%;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .currency-search-wrap input:focus {
+      border-color: #38bdf8;
+    }
+
+    .currency-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .currency-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.15s;
+      background: transparent;
+      border: none;
+      width: 100%;
+      text-align: left;
+      color: #f8fafc;
+    }
+
+    .currency-item:hover {
+      background: #1e293b;
+    }
+
+    .currency-item.selected {
+      background: rgba(2, 132, 199, 0.25);
+      border: 1px solid #0284c7;
+    }
+
+    .currency-item-flag {
+      font-size: 1.4rem;
+      line-height: 1;
+    }
+
+    .currency-item-info {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .currency-item-code {
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: #38bdf8;
+    }
+
+    .currency-item-name {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .action-btn {
@@ -481,8 +680,11 @@
       }
 
       .tab-divider {
-        height: 12px;
-        margin: 0 1px;
+        width: 1.5px;
+        height: 14px;
+        background: #ffffff;
+        opacity: 0.85;
+        margin: 0 2px;
       }
 
       .section-divider {
@@ -498,6 +700,13 @@
       .form-row {
         flex-direction: column;
         gap: 8px;
+        align-items: stretch;
+      }
+
+      .swap-currency-btn {
+        width: 100%;
+        height: 40px;
+        margin-bottom: 0;
       }
 
       .display-screen {
@@ -563,7 +772,7 @@
 <body>
 
   <div class="calc-container">
-    <!-- Header Tab Navigasi (13 Modul Lengkap dengan Emoji) -->
+    <!-- Header Tab Navigasi (13 Modul Lengkap dengan Divider Putih Terang) -->
     <div class="tabs-header">
       <div class="tabs">
         <button class="tab-btn active" onclick="switchMode('calc')">🔢 Scientific</button>
@@ -702,25 +911,38 @@
       </div>
     </div>
 
-    <!-- 3. Modul Currency Converter -->
+    <!-- 3. Modul Currency Converter (Searchable Picker Modal & Swap Tanpa Auto-Hitung) -->
     <div id="mode-currency" class="module-content">
       <div class="tutorial-box">
-        💡 <b>Panduan Currency Converter:</b> Masukkan nominal dan pilih mata uang asal serta tujuan. Dilengkapi bendera resmi setiap negara dan kurs pasar global secara realtime.
+        💡 <b>Panduan Currency Converter:</b> Klik kolom mata uang untuk membuka jendela pencarian independen. Gunakan tombol tukar (⇄) untuk membalik posisi, lalu klik tombol hijau untuk mengonversi kurs.
       </div>
       <div class="form-group">
         <label>Nominal Uang</label>
         <input type="number" id="currAmount" placeholder="Contoh: 100" value="1">
       </div>
+
       <div class="form-row">
         <div class="form-group">
           <label>Dari Mata Uang</label>
-          <select id="currFrom"></select>
+          <div class="currency-picker-trigger" id="currFromBtn" onclick="openCurrencyModal('from')">
+            <span id="currFromDisplay">🇺🇸 USD - Dolar Amerika Serikat</span>
+            <span style="color:#64748b; font-size:0.75rem;">▼</span>
+          </div>
+          <input type="hidden" id="currFrom" value="USD">
         </div>
+
+        <button class="swap-currency-btn" onclick="swapCurrencies()" title="Tukar Posisi Mata Uang">⇄</button>
+
         <div class="form-group">
           <label>Ke Mata Uang</label>
-          <select id="currTo"></select>
+          <div class="currency-picker-trigger" id="currToBtn" onclick="openCurrencyModal('to')">
+            <span id="currToDisplay">🇮🇩 IDR - Rupiah Indonesia</span>
+            <span style="color:#64748b; font-size:0.75rem;">▼</span>
+          </div>
+          <input type="hidden" id="currTo" value="IDR">
         </div>
       </div>
+
       <button class="action-btn" onclick="prosesKonversiMataUang()">🌍 Konversi Kurs Realtime</button>
       <div class="result-box" id="currResult" style="display: none;"></div>
 
@@ -730,6 +952,22 @@
           <span class="clear-btn" onclick="clearModuleHistory('currency')">[Hapus]</span>
         </div>
         <div class="history-items" id="history-currency">Belum ada riwayat.</div>
+      </div>
+    </div>
+
+    <!-- MODAL PENCARIAN MATA UANG (MUNCUL SAAT MATA UANG DIKLIK) -->
+    <div class="currency-modal" id="currencyModal" onclick="closeCurrencyModal(event)">
+      <div class="currency-modal-content" onclick="event.stopPropagation()">
+        <div class="currency-modal-header">
+          <h3 id="currencyModalTitle">Pilih Mata Uang</h3>
+          <button class="currency-modal-close" onclick="closeCurrencyModal()">✕</button>
+        </div>
+        <div class="currency-search-wrap">
+          <input type="text" id="modalCurrencySearch" placeholder="🔍 Cari negara, kode (USD, JPY), atau nama mata uang..." oninput="filterModalCurrencies()">
+        </div>
+        <div class="currency-list" id="modalCurrencyList">
+          <!-- Item mata uang dimasukkan secara dinamis -->
+        </div>
       </div>
     </div>
 
@@ -1242,7 +1480,7 @@
   </div>
 
   <script>
-    // --- 0. PWA SERVICE WORKER REGISTRATION (AUTO ADJUST & AUTO RELOAD) ---
+    // --- 0. PWA SERVICE WORKER REGISTRATION ---
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js').then((registration) => {
@@ -1258,15 +1496,19 @@
       });
     }
 
-    // --- 1. LOCALSTORAGE LOGIC ---
+    // --- 1. LOCALSTORAGE LOGIC (PERSISTEN) ---
     const modulesWithHistory = ['calc', 'calculus', 'currency', 'loan', 'seller', 'savings', 'split', 'age', 'conv', 'subnet', 'cashier'];
 
     function loadAllHistories() {
       modulesWithHistory.forEach(mod => {
-        const saved = localStorage.getItem(`calc_hist_${mod}`);
-        const el = document.getElementById(`history-${mod}`);
-        if (saved && el) {
-          el.innerHTML = saved;
+        try {
+          const saved = localStorage.getItem(`calc_hist_${mod}`);
+          const el = document.getElementById(`history-${mod}`);
+          if (saved && el && saved.trim() !== "") {
+            el.innerHTML = saved;
+          }
+        } catch (e) {
+          console.warn(`Gagal memuat riwayat ${mod}:`, e);
         }
       });
     }
@@ -1278,8 +1520,13 @@
         el.innerHTML = "";
       }
       const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      el.innerHTML = `<div><span style="color:#64748b;">[${time}]</span> ${content}</div>` + el.innerHTML;
-      localStorage.setItem(`calc_hist_${mod}`, el.innerHTML);
+      const newEntry = `<div><span style="color:#64748b;">[${time}]</span> ${content}</div>`;
+      el.innerHTML = newEntry + el.innerHTML;
+      try {
+        localStorage.setItem(`calc_hist_${mod}`, el.innerHTML);
+      } catch (e) {
+        console.warn(`Gagal menyimpan riwayat ${mod}:`, e);
+      }
     }
 
     function clearModuleHistory(mod) {
@@ -1288,11 +1535,17 @@
       if (el) el.innerHTML = "Belum ada riwayat.";
     }
 
-    window.addEventListener("DOMContentLoaded", () => {
+    function initApp() {
       loadAllHistories();
-      initCurrencyDropdowns();
+      initCurrencyData();
       updateConvOptions();
-    });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+      initApp();
+    }
 
     // --- 2. AUDIO FEEDBACK ---
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1461,33 +1714,13 @@
       }
     }
 
-    // --- 6. MODUL CURRENCY CONVERTER ---
+    // --- 6. MODUL CURRENCY CONVERTER (MODAL PICKER + SEARCH INTERNAL) ---
     const flagOverrides = {
-      "EUR": "🇪🇺",
-      "GBP": "🇬🇧",
-      "CHF": "🇨🇭",
-      "ANG": "🇨🇼",
-      "XCD": "🌴",
-      "XOF": "🌍",
-      "XAF": "🌍",
-      "XPF": "🇵🇫",
-      "BTC": "🪙",
-      "ETH": "💠",
-      "XAU": "🥇",
-      "XAG": "🥈",
-      "XPD": "⚪",
-      "XPT": "💿",
-      "XDR": "🌐",
-      "CNH": "🇨🇳",
-      "FOK": "🇫🇴",
-      "GGP": "🇬🇬",
-      "IMP": "🇮🇲",
-      "JEP": "🇯🇪",
-      "KID": "🇰🇮",
-      "TVD": "🇹🇻",
-      "ZWG": "🇿🇼",
-      "VED": "🇻🇪",
-      "WST": "🇼🇸"
+      "EUR": "🇪🇺", "GBP": "🇬🇧", "CHF": "🇨🇭", "ANG": "🇨🇼", "XCD": "🌴",
+      "XOF": "🌍", "XAF": "🌍", "XPF": "🇵🇫", "BTC": "🪙", "ETH": "💠",
+      "XAU": "🥇", "XAG": "🥈", "XPD": "⚪", "XPT": "💿", "XDR": "🌐",
+      "CNH": "🇨🇳", "FOK": "🇫🇴", "GGP": "🇬🇬", "IMP": "🇮🇲", "JEP": "🇯🇪",
+      "KID": "🇰🇮", "TVD": "🇹🇻", "ZWG": "🇿🇼", "VED": "🇻🇪", "WST": "🇼🇸"
     };
 
     function getCurrencyFlag(code) {
@@ -1504,260 +1737,170 @@
     }
 
     const masterCurrencyNames = {
-      "AED": "Dirham Uni Emirat Arab",
-      "AFN": "Afghani Afganistan",
-      "ALL": "Lek Albania",
-      "AMD": "Dram Armenia",
-      "ANG": "Guilder Antillen Belanda",
-      "AOA": "Kwanza Angola",
-      "ARS": "Peso Argentina",
-      "AUD": "Dolar Australia",
-      "AWG": "Florin Aruba",
-      "AZN": "Manat Azerbaijan",
-      "BAM": "Mark Bosnia-Herzegovina",
-      "BBD": "Dolar Barbados",
-      "BDT": "Taka Bangladesh",
-      "BGN": "Lev Bulgaria",
-      "BHD": "Dinar Bahrain",
-      "BIF": "Franc Burundi",
-      "BMD": "Dolar Bermuda",
-      "BND": "Dolar Brunei",
-      "BOB": "Boliviano Bolivia",
-      "BRL": "Real Brasil",
-      "BSD": "Dolar Bahama",
-      "BTN": "Ngultrum Bhutan",
-      "BWP": "Pula Botswana",
-      "BYN": "Rubel Belarusia",
-      "BZD": "Dolar Belize",
-      "CAD": "Dolar Kanada",
-      "CDF": "Franc Kongo",
-      "CHF": "Franc Swiss",
-      "CLF": "Unidad de Fomento (Cile)",
-      "CLP": "Peso Cile",
-      "CNH": "Yuan Tiongkok Luar Negeri (Offshore)",
-      "CNY": "Yuan Tiongkok",
-      "COP": "Peso Kolombia",
-      "CRC": "Colon Kosta Rika",
-      "CUP": "Peso Kuba",
-      "CVE": "Escudo Tanjung Verde",
-      "CZK": "Koruna Ceko",
-      "DJF": "Franc Jibuti",
-      "DKK": "Krone Denmark",
-      "DOP": "Peso Dominika",
-      "DZD": "Dinar Aljazair",
-      "EGP": "Pound Mesir",
-      "ERN": "Nakfa Eritrea",
-      "ETB": "Birr Etiopia",
-      "EUR": "Euro",
-      "FJD": "Dolar Fiji",
-      "FKP": "Pound Kepulauan Falkland",
-      "FOK": "Krona Kepulauan Faroe",
-      "GBP": "Pound Inggris",
-      "GEL": "Lari Georgia",
-      "GGP": "Pound Guernsey (Kepulauan Channel)",
-      "GHS": "Cedi Ghana",
-      "GIP": "Pound Gibraltar",
-      "GMD": "Dalasi Gambia",
-      "GNF": "Franc Guinea",
-      "GTQ": "Quetzal Guatemala",
-      "GYD": "Dolar Guyana",
-      "HKD": "Dolar Hong Kong",
-      "HNL": "Lempira Honduras",
-      "HRK": "Kuna Kroasia",
-      "HTG": "Gourde Haiti",
-      "HUF": "Forint Hungaria",
-      "IDR": "Rupiah Indonesia",
-      "ILS": "Shekel Baru Israel",
-      "IMP": "Pound Isle of Man",
-      "INR": "Rupee India",
-      "IQD": "Dinar Irak",
-      "IRR": "Rial Iran",
-      "ISK": "Krona Islandia",
-      "JEP": "Pound Jersey",
-      "JMD": "Dolar Jamaika",
-      "JOD": "Dinar Yordania",
-      "JPY": "Yen Jepang",
-      "KES": "Shilling Kenya",
-      "KGS": "Som Kirgizstan",
-      "KHR": "Riel Kamboja",
-      "KID": "Dolar Kiribati",
-      "KMF": "Franc Komoro",
-      "KRW": "Won Korea Selatan",
-      "KWD": "Dinar Kuwait",
-      "KYD": "Dolar Kepulauan Cayman",
-      "KZT": "Tenge Kazakhstan",
-      "LAK": "Kip Laos",
-      "LBP": "Pound Lebanon",
-      "LKR": "Rupee Sri Lanka",
-      "LRD": "Dolar Liberia",
-      "LSL": "Loti Lesotho",
-      "LYD": "Dinar Libya",
-      "MAD": "Dirham Maroko",
-      "MDL": "Leu Moldova",
-      "MGA": "Ariary Madagaskar",
-      "MKD": "Denar Makedonia",
-      "MMK": "Kyat Myanmar",
-      "MNT": "Tugrik Mongolia",
-      "MOP": "Pataca Makau",
-      "MRU": "Ouguiya Mauritania",
-      "MUR": "Rupee Mauritius",
-      "MVR": "Rufiyaa Maladewa",
-      "MWK": "Kwacha Malawi",
-      "MXN": "Peso Meksiko",
-      "MYR": "Ringgit Malaysia",
-      "MZN": "Metical Mozambik",
-      "NAD": "Dolar Namibia",
-      "NGN": "Naira Nigeria",
-      "NIO": "Cordoba Nikaragua",
-      "NOK": "Krone Norwegia",
-      "NPR": "Rupee Nepal",
-      "NZD": "Dolar Selandia Baru",
-      "OMR": "Rial Oman",
-      "PAB": "Balboa Panama",
-      "PEN": "Sol Peru",
-      "PGK": "Kina Papua Nugini",
-      "PHP": "Peso Filipina",
-      "PKR": "Rupee Pakistan",
-      "PLN": "Zloty Polandia",
-      "PYG": "Guarani Paraguay",
-      "QAR": "Rial Qatar",
-      "RON": "Leu Rumania",
-      "RSD": "Dinar Serbia",
-      "RUB": "Rubel Rusia",
-      "RWF": "Franc Rwanda",
-      "SAR": "Riyal Arab Saudi",
-      "SBD": "Dolar Kepulauan Solomon",
-      "SCR": "Rupee Seychelles",
-      "SDG": "Pound Sudan",
-      "SEK": "Krona Swedia",
-      "SGD": "Dolar Singapura",
-      "SHP": "Pound Saint Helena",
-      "SLE": "Leone Sierra Leone (Baru)",
-      "SLL": "Leone Sierra Leone",
-      "SOS": "Shilling Somalia",
-      "SRD": "Dolar Suriname",
-      "SSP": "Pound Sudan Selatan",
-      "STN": "Dobra Sao Tome",
-      "SYP": "Pound Suriah",
-      "SZL": "Lilangeni Eswatini",
-      "THB": "Baht Thailand",
-      "TJS": "Somoni Tajikistan",
-      "TMT": "Manat Turkmenistan",
-      "TND": "Dinar Tunisia",
-      "TOP": "Pa'anga Tonga",
-      "TRY": "Lira Turki",
-      "TTD": "Dolar Trinidad dan Tobago",
-      "TVD": "Dolar Tuvalu",
-      "TWD": "Dolar Baru Taiwan",
-      "TZS": "Shilling Tanzania",
-      "UAH": "Hryvnia Ukraina",
-      "UGX": "Shilling Uganda",
-      "USD": "Dolar Amerika Serikat",
-      "UYU": "Peso Uruguay",
-      "UZS": "Som Uzbekistan",
-      "VED": "Bolivar Soberano (Venezuela)",
-      "VES": "Bolivar Venezuela",
-      "VND": "Dong Vietnam",
-      "VUV": "Vatu Vanuatu",
-      "WST": "Tala Samoa",
-      "XAF": "Franc CFA Afrika Tengah",
-      "XCD": "Dolar Karibia Timur",
-      "XCG": "Guilder Karibia (Curaçao & Sint Maarten)",
-      "XDR": "SDR / Hak Tarik Khusus (IMF)",
-      "XOF": "Franc CFA Afrika Barat",
-      "XPF": "Franc CFP (Pasifik)",
-      "YER": "Rial Yaman",
-      "ZAR": "Rand Afrika Selatan",
-      "ZMW": "Kwacha Zambia",
-      "ZWG": "Zimbabwe Gold (Emas Zimbabwe)",
-      "ZWL": "Dolar Zimbabwe (2009)",
-      "XAU": "Emas (Troy Ounce)",
-      "XAG": "Perak (Troy Ounce)",
-      "XPD": "Paladium",
-      "XPT": "Platinum",
-      "BTC": "Bitcoin (Kripto)",
-      "ETH": "Ethereum (Kripto)"
+      "AED": "Dirham Uni Emirat Arab", "AFN": "Afghani Afganistan", "ALL": "Lek Albania", "AMD": "Dram Armenia",
+      "ANG": "Guilder Antillen Belanda", "AOA": "Kwanza Angola", "ARS": "Peso Argentina", "AUD": "Dolar Australia",
+      "AWG": "Florin Aruba", "AZN": "Manat Azerbaijan", "BAM": "Mark Bosnia-Herzegovina", "BBD": "Dolar Barbados",
+      "BDT": "Taka Bangladesh", "BGN": "Lev Bulgaria", "BHD": "Dinar Bahrain", "BIF": "Franc Burundi",
+      "BMD": "Dolar Bermuda", "BND": "Dolar Brunei", "BOB": "Boliviano Bolivia", "BRL": "Real Brasil",
+      "BSD": "Dolar Bahama", "BTN": "Ngultrum Bhutan", "BWP": "Pula Botswana", "BYN": "Rubel Belarusia",
+      "BZD": "Dolar Belize", "CAD": "Dolar Kanada", "CDF": "Franc Kongo", "CHF": "Franc Swiss",
+      "CLF": "Unidad de Fomento (Cile)", "CLP": "Peso Cile", "CNH": "Yuan Tiongkok Luar Negeri (Offshore)",
+      "CNY": "Yuan Tiongkok", "COP": "Peso Kolombia", "CRC": "Colon Kosta Rika", "CUP": "Peso Kuba",
+      "CVE": "Escudo Tanjung Verde", "CZK": "Koruna Ceko", "DJF": "Franc Jibuti", "DKK": "Krone Denmark",
+      "DOP": "Peso Dominika", "DZD": "Dinar Aljazair", "EGP": "Pound Mesir", "ERN": "Nakfa Eritrea",
+      "ETB": "Birr Etiopia", "EUR": "Euro", "FJD": "Dolar Fiji", "FKP": "Pound Kepulauan Falkland",
+      "FOK": "Krona Kepulauan Faroe", "GBP": "Pound Inggris", "GEL": "Lari Georgia", "GGP": "Pound Guernsey",
+      "GHS": "Cedi Ghana", "GIP": "Pound Gibraltar", "GMD": "Dalasi Gambia", "GNF": "Franc Guinea",
+      "GTQ": "Quetzal Guatemala", "GYD": "Dolar Guyana", "HKD": "Dolar Hong Kong", "HNL": "Lempira Honduras",
+      "HRK": "Kuna Kroasia", "HTG": "Gourde Haiti", "HUF": "Forint Hungaria", "IDR": "Rupiah Indonesia",
+      "ILS": "Shekel Baru Israel", "IMP": "Pound Isle of Man", "INR": "Rupee India", "IQD": "Dinar Irak",
+      "IRR": "Rial Iran", "ISK": "Krona Islandia", "JEP": "Pound Jersey", "JMD": "Dolar Jamaika",
+      "JOD": "Dinar Yordania", "JPY": "Yen Jepang", "KES": "Shilling Kenya", "KGS": "Som Kirgizstan",
+      "KHR": "Riel Kamboja", "KID": "Dolar Kiribati", "KMF": "Franc Komoro", "KRW": "Won Korea Selatan",
+      "KWD": "Dinar Kuwait", "KYD": "Dolar Kepulauan Cayman", "KZT": "Tenge Kazakhstan", "LAK": "Kip Laos",
+      "LBP": "Pound Lebanon", "LKR": "Rupee Sri Lanka", "LRD": "Dolar Liberia", "LSL": "Loti Lesotho",
+      "LYD": "Dinar Libya", "MAD": "Dirham Maroko", "MDL": "Leu Moldova", "MGA": "Ariary Madagaskar",
+      "MKD": "Denar Makedonia", "MMK": "Kyat Myanmar", "MNT": "Tugrik Mongolia", "MOP": "Pataca Makau",
+      "MRU": "Ouguiya Mauritania", "MUR": "Rupee Mauritius", "MVR": "Rufiyaa Maladewa", "MWK": "Kwacha Malawi",
+      "MXN": "Peso Meksiko", "MYR": "Ringgit Malaysia", "MZN": "Metical Mozambik", "NAD": "Dolar Namibia",
+      "NGN": "Naira Nigeria", "NIO": "Cordoba Nikaragua", "NOK": "Krone Norwegia", "NPR": "Rupee Nepal",
+      "NZD": "Dolar Selandia Baru", "OMR": "Rial Oman", "PAB": "Balboa Panama", "PEN": "Sol Peru",
+      "PGK": "Kina Papua Nugini", "PHP": "Peso Filipina", "PKR": "Rupee Pakistan", "PLN": "Zloty Polandia",
+      "PYG": "Guarani Paraguay", "QAR": "Rial Qatar", "RON": "Leu Rumania", "RSD": "Dinar Serbia",
+      "RUB": "Rubel Rusia", "RWF": "Franc Rwanda", "SAR": "Riyal Arab Saudi", "SBD": "Dolar Kepulauan Solomon",
+      "SCR": "Rupee Seychelles", "SDG": "Pound Sudan", "SEK": "Krona Swedia", "SGD": "Dolar Singapura",
+      "SHP": "Pound Saint Helena", "SLE": "Leone Sierra Leone (Baru)", "SLL": "Leone Sierra Leone",
+      "SOS": "Shilling Somalia", "SRD": "Dolar Suriname", "SSP": "Pound Sudan Selatan", "STN": "Dobra Sao Tome",
+      "SYP": "Pound Suriah", "SZL": "Lilangeni Eswatini", "THB": "Baht Thailand", "TJS": "Somoni Tajikistan",
+      "TMT": "Manat Turkmenistan", "TND": "Dinar Tunisia", "TOP": "Pa'anga Tonga", "TRY": "Lira Turki",
+      "TTD": "Dolar Trinidad dan Tobago", "TVD": "Dolar Tuvalu", "TWD": "Dolar Baru Taiwan", "TZS": "Shilling Tanzania",
+      "UAH": "Hryvnia Ukraina", "UGX": "Shilling Uganda", "USD": "Dolar Amerika Serikat", "UYU": "Peso Uruguay",
+      "UZS": "Som Uzbekistan", "VED": "Bolivar Soberano", "VES": "Bolivar Venezuela", "VND": "Dong Vietnam",
+      "VUV": "Vatu Vanuatu", "WST": "Tala Samoa", "XAF": "Franc CFA Afrika Tengah", "XCD": "Dolar Karibia Timur",
+      "XCG": "Guilder Karibia", "XDR": "SDR IMF", "XOF": "Franc CFA Afrika Barat", "XPF": "Franc CFP",
+      "YER": "Rial Yaman", "ZAR": "Rand Afrika Selatan", "ZMW": "Kwacha Zambia", "ZWG": "Zimbabwe Gold",
+      "ZWL": "Dolar Zimbabwe", "XAU": "Emas", "XAG": "Perak", "XPD": "Paladium", "XPT": "Platinum",
+      "BTC": "Bitcoin", "ETH": "Ethereum"
     };
 
     let cachedRates = null;
     let lastRatesFetchTime = 0;
+    let globalCurrenciesList = [];
+    let currentModalTarget = 'from'; // 'from' atau 'to'
 
     function getCurrencyFullName(code) {
       const flag = getCurrencyFlag(code);
       if (masterCurrencyNames[code]) {
         return `${flag} ${code} - ${masterCurrencyNames[code]}`;
       }
-      try {
-        const dnId = new Intl.DisplayNames(['id'], { type: 'currency' });
-        const nameId = dnId.of(code);
-        if (nameId && nameId.toLowerCase() !== code.toLowerCase()) {
-          return `${flag} ${code} - ${nameId}`;
-        }
-      } catch (e) {}
-      try {
-        const dnEn = new Intl.DisplayNames(['en'], { type: 'currency' });
-        const nameEn = dnEn.of(code);
-        if (nameEn && nameEn.toLowerCase() !== code.toLowerCase()) {
-          return `${flag} ${code} - ${nameEn}`;
-        }
-      } catch (e) {}
       return `${flag} ${code}`;
     }
 
-    async function initCurrencyDropdowns() {
-      const fromSel = document.getElementById("currFrom");
-      const toSel = document.getElementById("currTo");
-      fromSel.innerHTML = "";
-      toSel.innerHTML = "";
-
-      const popularCurrencies = [
-        "IDR", "USD", "EUR", "JPY", "SGD", "MYR", "SAR", "GBP", "AUD", "CNY", "KRW", "THB"
-      ];
-
+    async function initCurrencyData() {
       try {
         const rates = await getExchangeRates("USD");
-        const allCodes = Object.keys(rates).sort();
-
-        const optgroupPopFrom = document.createElement("optgroup");
-        optgroupPopFrom.label = "⭐ Populer & Sering Dipakai";
-        const optgroupPopTo = document.createElement("optgroup");
-        optgroupPopTo.label = "⭐ Populer & Sering Dipakai";
-
-        popularCurrencies.forEach(code => {
-          if (rates[code] !== undefined) {
-            const label = getCurrencyFullName(code);
-            optgroupPopFrom.appendChild(new Option(label, code));
-            optgroupPopTo.appendChild(new Option(label, code));
-          }
-        });
-        fromSel.appendChild(optgroupPopFrom);
-        toSel.appendChild(optgroupPopTo);
-
-        const optgroupAllFrom = document.createElement("optgroup");
-        optgroupAllFrom.label = "🌍 Seluruh Mata Uang Dunia";
-        const optgroupAllTo = document.createElement("optgroup");
-        optgroupAllTo.label = "🌍 Seluruh Mata Uang Dunia";
-
-        allCodes.forEach(code => {
-          const label = getCurrencyFullName(code);
-          optgroupAllFrom.appendChild(new Option(label, code));
-          optgroupAllTo.appendChild(new Option(label, code));
-        });
-        fromSel.appendChild(optgroupAllFrom);
-        toSel.appendChild(optgroupAllTo);
-
-        fromSel.value = "USD";
-        toSel.value = "IDR";
-
+        globalCurrenciesList = Object.keys(rates).sort();
       } catch (err) {
-        popularCurrencies.forEach(code => {
-          const label = getCurrencyFullName(code);
-          fromSel.appendChild(new Option(label, code));
-          toSel.appendChild(new Option(label, code));
-        });
-        fromSel.value = "USD";
-        fromSel.value = "IDR";
+        globalCurrenciesList = Object.keys(masterCurrencyNames).sort();
       }
+      updateCurrencyTriggerDisplay('from');
+      updateCurrencyTriggerDisplay('to');
+    }
+
+    function updateCurrencyTriggerDisplay(target) {
+      const code = document.getElementById(target === 'from' ? 'currFrom' : 'currTo').value;
+      const displayEl = document.getElementById(target === 'from' ? 'currFromDisplay' : 'currToDisplay');
+      if (displayEl) {
+        displayEl.innerText = getCurrencyFullName(code);
+      }
+    }
+
+    // Buka Modal Pemilihan Mata Uang Internal
+    function openCurrencyModal(target) {
+      currentModalTarget = target;
+      const modal = document.getElementById("currencyModal");
+      const title = document.getElementById("currencyModalTitle");
+      const searchInput = document.getElementById("modalCurrencySearch");
+
+      title.innerText = target === 'from' ? 'Pilih Mata Uang Asal' : 'Pilih Mata Uang Tujuan';
+      searchInput.value = '';
+      renderModalCurrencyList('');
+
+      modal.classList.add("active");
+      setTimeout(() => searchInput.focus(), 150);
+    }
+
+    function closeCurrencyModal(e) {
+      if (e && e.target !== e.currentTarget && !e.target.classList.contains('currency-modal-close')) {
+        return;
+      }
+      document.getElementById("currencyModal").classList.remove("active");
+    }
+
+    function renderModalCurrencyList(keyword) {
+      const listEl = document.getElementById("modalCurrencyList");
+      listEl.innerHTML = "";
+      const currentSelectedCode = document.getElementById(currentModalTarget === 'from' ? 'currFrom' : 'currTo').value;
+
+      const filtered = globalCurrenciesList.filter(code => {
+        const name = (masterCurrencyNames[code] || "").toLowerCase();
+        return code.toLowerCase().includes(keyword) || name.includes(keyword);
+      });
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = `<div style="text-align:center; padding:20px; color:#64748b; font-size:0.85rem;">Mata uang tidak ditemukan</div>`;
+        return;
+      }
+
+      filtered.forEach(code => {
+        const flag = getCurrencyFlag(code);
+        const name = masterCurrencyNames[code] || code;
+        const isSelected = code === currentSelectedCode;
+
+        const itemBtn = document.createElement("button");
+        itemBtn.className = `currency-item ${isSelected ? 'selected' : ''}`;
+        itemBtn.onclick = () => selectCurrency(code);
+        itemBtn.innerHTML = `
+          <div class="currency-item-flag">${flag}</div>
+          <div class="currency-item-info">
+            <span class="currency-item-code">${code}</span>
+            <span class="currency-item-name">${name}</span>
+          </div>
+        `;
+        listEl.appendChild(itemBtn);
+      });
+    }
+
+    function filterModalCurrencies() {
+      const keyword = document.getElementById("modalCurrencySearch").value.trim().toLowerCase();
+      renderModalCurrencyList(keyword);
+    }
+
+    function selectCurrency(code) {
+      const inputEl = document.getElementById(currentModalTarget === 'from' ? 'currFrom' : 'currTo');
+      inputEl.value = code;
+      updateCurrencyTriggerDisplay(currentModalTarget);
+      document.getElementById("currencyModal").classList.remove("active");
+
+      // Sembunyikan hasil perhitungan agar menunggu tombol hijau ditekan
+      const box = document.getElementById("currResult");
+      if (box) box.style.display = "none";
+    }
+
+    // Tombol Swap Murni Menukar Tanpa Auto-Hitung
+    function swapCurrencies() {
+      const fromEl = document.getElementById("currFrom");
+      const toEl = document.getElementById("currTo");
+      const temp = fromEl.value;
+      fromEl.value = toEl.value;
+      toEl.value = temp;
+
+      updateCurrencyTriggerDisplay('from');
+      updateCurrencyTriggerDisplay('to');
+
+      // Sembunyikan hasil perhitungan agar menunggu tombol hijau ditekan
+      const box = document.getElementById("currResult");
+      if (box) box.style.display = "none";
     }
 
     async function getExchangeRates(baseCurr) {
@@ -2182,7 +2325,6 @@
       const type = document.getElementById("convType").value;
       const box = document.getElementById("convResult");
 
-      // 1. Waktu & Era
       if (type === "time_era") {
         const val = parseFloat(document.getElementById("timeEraVal").value);
         const from = document.getElementById("timeEraFrom").value;
@@ -2205,16 +2347,9 @@
           box.style.display = "block";
           let html = `<b>📜 Rincian Lengkap untuk ${val.toLocaleString('id-ID')} ${from.toUpperCase()}:</b><div class="breakdown-grid">`;
           const order = [
-            { key: 'abad', icon: '🏛️' },
-            { key: 'dekade', icon: '🏛️' },
-            { key: 'windu', icon: '🎋' },
-            { key: 'tahun', icon: '📅' },
-            { key: 'bulan', icon: '🗓️' },
-            { key: 'minggu', icon: '📆' },
-            { key: 'hari', icon: '☀️' },
-            { key: 'jam', icon: '⏰' },
-            { key: 'menit', icon: '⏱️' },
-            { key: 'detik', icon: '⏲️' }
+            { key: 'abad', icon: '🏛️' }, { key: 'dekade', icon: '🏛️' }, { key: 'windu', icon: '🎋' },
+            { key: 'tahun', icon: '📅' }, { key: 'bulan', icon: '🗓️' }, { key: 'minggu', icon: '📆' },
+            { key: 'hari', icon: '☀️' }, { key: 'jam', icon: '⏰' }, { key: 'menit', icon: '⏱️' }, { key: 'detik', icon: '⏲️' }
           ];
           order.forEach(item => {
             const converted = inSeconds / timeEraRatios[item.key];
@@ -2232,7 +2367,6 @@
         return;
       }
 
-      // 2. Panjang & Tangga Metrik
       if (type === "length_metric") {
         const val = parseFloat(document.getElementById("lenMetricVal").value);
         const from = document.getElementById("lenMetricFrom").value;
@@ -2255,13 +2389,8 @@
           box.style.display = "block";
           let html = `<b>🪜 Tangga Satuan Metrik untuk ${val.toLocaleString('id-ID')} ${from}:</b><div class="breakdown-grid">`;
           const metrics = [
-            { key: 'km', icon: '🛤️' },
-            { key: 'hm', icon: '🛣️' },
-            { key: 'dam', icon: '🚩' },
-            { key: 'm', icon: '📏' },
-            { key: 'dm', icon: '📐' },
-            { key: 'cm', icon: '📍' },
-            { key: 'mm', icon: '🔍' }
+            { key: 'km', icon: '🛤️' }, { key: 'hm', icon: '🛣️' }, { key: 'dam', icon: '🚩' },
+            { key: 'm', icon: '📏' }, { key: 'dm', icon: '📐' }, { key: 'cm', icon: '📍' }, { key: 'mm', icon: '🔍' }
           ];
           metrics.forEach(item => {
             const converted = inMeters / lengthMetricRatios[item.key];
@@ -2279,7 +2408,6 @@
         return;
       }
 
-      // 3. Estimasi Perjalanan & Kecepatan
       if (type === "travel") {
         const bDist = parseFloat(document.getElementById("trvBaseDist").value);
         const bDistUnit = document.getElementById("trvBaseDistUnit").value;
@@ -2348,7 +2476,6 @@
         return;
       }
 
-      // 4. Download File
       if (type === "download") {
         const sizeGB = parseFloat(document.getElementById("dlFileSize").value);
         const speedMbps = parseFloat(document.getElementById("dlNetSpeed").value);
@@ -2374,7 +2501,6 @@
         return;
       }
 
-      // 5. Standar Satuan (Speed, Temp, Data, Weight)
       const val = parseFloat(document.getElementById("convVal").value);
       const from = document.getElementById("convFrom").value;
       const to = document.getElementById("convTo").value;
