@@ -1,0 +1,2738 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ultimate Super Calculator Workstation</title>
+  
+  <!-- PWA Metadata -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0284c7">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2344/2344132.png">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #1e293b, #090d16);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 20px;
+      color: #f8fafc;
+      overflow-x: hidden;
+    }
+
+    .calc-container {
+      background: rgba(30, 41, 59, 0.8);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 32px;
+      padding: 28px;
+      width: 100%;
+      max-width: 680px;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+    }
+
+    /* Navigasi Tab Header & Divider Putih */
+    .tabs-header {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 8px 6px;
+      margin-bottom: 24px;
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      padding: 8px 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #94a3b8;
+      background: transparent;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: #f8fafc;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .tab-btn.active {
+      background: #0284c7;
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.45);
+    }
+
+    .tab-divider {
+      width: 2px;
+      height: 16px;
+      background: #ffffff;
+      opacity: 0.85;
+      margin: 0 4px;
+      border-radius: 2px;
+      flex-shrink: 0;
+      display: inline-block;
+      box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+    }
+
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.25), transparent);
+      margin-bottom: 20px;
+    }
+
+    /* Panduan / Tutorial Box */
+    .tutorial-box {
+      background: rgba(15, 23, 42, 0.6);
+      border-left: 3px solid #38bdf8;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+
+    .tutorial-box b {
+      color: #38bdf8;
+    }
+
+    /* Layar Display Scientific */
+    .display-screen {
+      background: rgba(15, 23, 42, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 22px;
+      padding: 18px 22px;
+      margin-bottom: 20px;
+      text-align: right;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      word-break: break-all;
+      position: relative;
+    }
+
+    .top-controls {
+      display: flex;
+      gap: 6px;
+      position: absolute;
+      top: 12px;
+      left: 14px;
+    }
+
+    .pill-btn {
+      background: #334155;
+      color: #cbd5e1;
+      border: none;
+      font-size: 0.72rem;
+      padding: 5px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .pill-btn:hover {
+      background: #475569;
+    }
+
+    .history {
+      color: #64748b;
+      font-size: 0.95rem;
+      min-height: 1.3rem;
+    }
+
+    .current-val {
+      color: #38bdf8;
+      font-size: 2.3rem;
+      font-weight: bold;
+    }
+
+    .module-content {
+      display: none;
+    }
+
+    .module-content.active {
+      display: block;
+    }
+
+    /* Grid Scientific */
+    .buttons-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    button.calc-key {
+      border: none;
+      outline: none;
+      padding: 15px 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      border-radius: 14px;
+      cursor: pointer;
+      background: #334155;
+      color: #f8fafc;
+      transition: all 0.15s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    button.calc-key:hover {
+      background: #475569;
+      transform: translateY(-2px);
+    }
+
+    button.calc-key:active {
+      transform: translateY(1px);
+    }
+
+    button.op { background: #0284c7; color: white; }
+    button.op:hover { background: #0369a1; }
+    button.sci { background: #1e293b; color: #a5f3fc; font-size: 0.9rem; }
+    button.sci:hover { background: #28364d; }
+    button.danger { background: #ef4444; color: white; }
+    button.danger:hover { background: #dc2626; }
+    button.equal { background: #10b981; color: white; grid-column: span 2; }
+    button.equal:hover { background: #059669; }
+
+    /* Form Styles & Anti-Overflow */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+      width: 100%;
+      min-width: 0;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+      align-items: flex-end;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .form-group label {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .form-group input, .form-group select {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 12px 14px;
+      color: white;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+      max-width: 100%;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .form-group select option, .form-group select optgroup {
+      background: #0f172a;
+      color: white;
+    }
+
+    .form-group input:focus, .form-group select:focus {
+      border-color: #38bdf8;
+    }
+
+    /* Custom Currency Trigger Selector */
+    .currency-picker-trigger {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 12px 14px;
+      color: white;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.2s;
+      width: 100%;
+      min-height: 46px;
+      user-select: none;
+    }
+
+    .currency-picker-trigger:hover {
+      border-color: #38bdf8;
+    }
+
+    .currency-picker-trigger span:first-child {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-right: 8px;
+    }
+
+    .swap-currency-btn {
+      background: #334155;
+      color: #38bdf8;
+      border: 1px solid #475569;
+      border-radius: 14px;
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      margin-bottom: 14px;
+    }
+
+    .swap-currency-btn:hover {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #0284c7;
+    }
+
+    /* Modal Pencarian Mata Uang Internal */
+    .currency-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 99999;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .currency-modal.active {
+      display: flex;
+    }
+
+    .currency-modal-content {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 24px;
+      width: 100%;
+      max-width: 460px;
+      max-height: 82vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+      overflow: hidden;
+      animation: modalFadeIn 0.2s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from { transform: translateY(15px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .currency-modal-header {
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .currency-modal-header h3 {
+      font-size: 1rem;
+      color: #f8fafc;
+      font-weight: 700;
+    }
+
+    .currency-modal-close {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.3rem;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .currency-modal-close:hover {
+      color: #ffffff;
+    }
+
+    .currency-search-wrap {
+      padding: 12px 16px;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .currency-search-wrap input {
+      width: 100%;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .currency-search-wrap input:focus {
+      border-color: #38bdf8;
+    }
+
+    .currency-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .currency-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.15s;
+      background: transparent;
+      border: none;
+      width: 100%;
+      text-align: left;
+      color: #f8fafc;
+    }
+
+    .currency-item:hover {
+      background: #1e293b;
+    }
+
+    .currency-item.selected {
+      background: rgba(2, 132, 199, 0.25);
+      border: 1px solid #0284c7;
+    }
+
+    .currency-item-flag {
+      font-size: 1.4rem;
+      line-height: 1;
+    }
+
+    .currency-item-info {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .currency-item-code {
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: #38bdf8;
+    }
+
+    .currency-item-name {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: #10b981;
+      color: white;
+      font-weight: bold;
+      border: none;
+      padding: 13px;
+      font-size: 0.95rem;
+      border-radius: 14px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    }
+
+    .action-btn:hover {
+      background: #059669;
+      transform: translateY(-1px);
+    }
+
+    .share-wa-btn {
+      background: #25d366;
+      color: white;
+      font-weight: 600;
+      border: none;
+      padding: 10px;
+      font-size: 0.85rem;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      transition: background 0.15s;
+    }
+
+    .share-wa-btn:hover {
+      background: #1eb956;
+    }
+
+    .result-box {
+      margin-top: 16px;
+      padding: 16px;
+      background: #0f172a;
+      border-radius: 16px;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      border-left: 4px solid #38bdf8;
+      word-break: break-all;
+    }
+
+    /* Mode Pill & Sub-Control Konverter */
+    .mode-pill {
+      display: flex;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 14px;
+      gap: 6px;
+    }
+
+    .mode-pill button {
+      flex: 1;
+      padding: 8px 10px;
+      background: transparent;
+      border: none;
+      border-radius: 9px;
+      color: #94a3b8;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .mode-pill button.active {
+      background: #0284c7;
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);
+    }
+
+    .swap-btn-icon {
+      background: #334155;
+      color: #38bdf8;
+      border: 1px solid #475569;
+      border-radius: 10px;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px auto;
+      transition: all 0.15s;
+    }
+
+    .swap-btn-icon:hover {
+      background: #475569;
+      color: #ffffff;
+    }
+
+    .breakdown-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .breakdown-item {
+      background: #0b1120;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    .breakdown-item .unit-name {
+      font-size: 0.72rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .breakdown-item .unit-val {
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: #38bdf8;
+      word-break: break-all;
+    }
+
+    /* History Box */
+    .history-card {
+      margin-top: 20px;
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 14px 16px;
+    }
+
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 0.82rem;
+      color: #94a3b8;
+    }
+
+    .clear-btn {
+      cursor: pointer;
+      color: #f87171;
+      font-size: 0.72rem;
+      text-decoration: underline;
+    }
+
+    .clear-btn:hover {
+      color: #ef4444;
+    }
+
+    .history-items {
+      max-height: 95px;
+      overflow-y: auto;
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    canvas {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      margin-top: 12px;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 2 / 1;
+      display: block;
+    }
+
+    /* Responsive Mobile UI */
+    @media (max-width: 600px) {
+      body {
+        padding: 12px 8px;
+        align-items: flex-start;
+      }
+
+      .calc-container {
+        padding: 16px 12px;
+        border-radius: 20px;
+      }
+
+      .tabs-header {
+        padding: 4px;
+        margin-bottom: 14px;
+        border-radius: 14px;
+      }
+
+      .tabs {
+        gap: 2px;
+      }
+
+      .tab-btn {
+        padding: 6px 8px;
+        font-size: 0.72rem;
+        border-radius: 8px;
+      }
+
+      .tab-divider {
+        width: 1.5px;
+        height: 14px;
+        background: #ffffff;
+        opacity: 0.85;
+        margin: 0 2px;
+      }
+
+      .section-divider {
+        margin-bottom: 14px;
+      }
+
+      .tutorial-box {
+        padding: 8px 10px;
+        font-size: 0.75rem;
+        margin-bottom: 12px;
+      }
+
+      .form-row {
+        flex-direction: column;
+        gap: 8px;
+        align-items: stretch;
+      }
+
+      .swap-currency-btn {
+        width: 100%;
+        height: 40px;
+        margin-bottom: 0;
+      }
+
+      .display-screen {
+        padding: 12px 14px;
+        min-height: 80px;
+        margin-bottom: 14px;
+        border-radius: 16px;
+      }
+
+      .top-controls {
+        top: 8px;
+        left: 10px;
+      }
+
+      .pill-btn {
+        padding: 3px 8px;
+        font-size: 0.68rem;
+      }
+
+      .history {
+        font-size: 0.8rem;
+        min-height: 1.1rem;
+      }
+
+      .current-val {
+        font-size: 1.7rem;
+      }
+
+      .buttons-grid {
+        gap: 6px;
+      }
+
+      button.calc-key {
+        padding: 12px 0;
+        font-size: 0.95rem;
+        border-radius: 10px;
+      }
+
+      button.sci {
+        font-size: 0.78rem;
+      }
+
+      .form-group input, .form-group select {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+        border-radius: 10px;
+      }
+
+      .action-btn {
+        padding: 11px;
+        font-size: 0.9rem;
+        border-radius: 10px;
+      }
+
+      .result-box, .history-card {
+        padding: 12px;
+        border-radius: 12px;
+        margin-top: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="calc-container">
+    <!-- Header Tab Navigasi (13 Modul Lengkap dengan Divider Putih Terang) -->
+    <div class="tabs-header">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchMode('calc')">🔢 Scientific</button>
+        <div class="tab-divider"></div>
+        <button class="tab-btn" onclick="switchMode('calculus')">📐 Kalkulus</button>
+        <div class="tab-divider"></div>
+        <button class="tab-btn" onclick="switchMode('currency')">💱 Currency</button>
+        <div class="tab-divider"></div>
+        <button class="tab-btn" onclick="switchMode('loan')">💳 Cicilan</button>
+        <div class="tab-divider"></div>
+        <button class="tab-btn" onclick="switchMode('seller')">🛍️ Seller Fee</button>
+        <div class="tab-divider"></div>
+        <button class="tab-btn" onclick="switchMode('savings')">🎯 Menabung</button>
+        <div class="tab-divider"></div>
+        <button class="tab-btn" onclick="switchMode('split')">🍕 Patungan</button>
+        <div class="tab-divider"></div>
+        <button class="tab-btn" onclick="switchMode('age')">⏳ Usia Realtime</button>
+        <div class="tab-divider"></div>
+        <button class="tab-btn" onclick="switchMode('conv')">🔄 Konverter</button>
+        <div class="tab-divider"></div>
+        <button class="tab-btn" onclick="switchMode('dev')">💻 Programmer/IP</button>
+        <div class="tab-divider"></div>
+        <button class="tab-btn" onclick="switchMode('graph')">📈 Grafik</button>
+        <div class="tab-divider"></div>
+        <button class="tab-btn" onclick="switchMode('cashier')">🧾 Kasir</button>
+        <div class="tab-divider"></div>
+        <button class="tab-btn" onclick="switchMode('timer')">⏱️ Timer</button>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 1. Modul Scientific Pro -->
+    <div id="mode-calc" class="module-content active">
+      <div class="tutorial-box">
+        💡 <b>Panduan Scientific:</b> Tekan tombol angka & operator. Gunakan <b>sin/cos/tan</b> untuk trigonometri, <b>xʸ</b> untuk pangkat, <b>√</b> untuk akar kuadrat, dan <b>Copy</b> untuk menyalin hasil.
+      </div>
+      <div class="display-screen">
+        <div class="top-controls">
+          <button class="pill-btn" onclick="copyResult()">📋 Copy</button>
+        </div>
+        <div class="history" id="historyText"></div>
+        <div class="current-val" id="display">0</div>
+      </div>
+
+      <div class="buttons-grid">
+        <button class="calc-key sci" onclick="appendFunc('Math.sin')">sin</button>
+        <button class="calc-key sci" onclick="appendFunc('Math.cos')">cos</button>
+        <button class="calc-key sci" onclick="appendFunc('Math.tan')">tan</button>
+        <button class="calc-key sci" onclick="appendFunc('Math.log10')">log</button>
+        <button class="calc-key danger" onclick="clearAll()">AC</button>
+
+        <button class="calc-key sci" onclick="appendValue('Math.PI')">π</button>
+        <button class="calc-key sci" onclick="appendValue('Math.E')">e</button>
+        <button class="calc-key sci" onclick="calcFactorial()">n!</button>
+        <button class="calc-key sci" onclick="appendValue('**')">xʸ</button>
+        <button class="calc-key op" onclick="deleteLast()">⌫</button>
+
+        <button class="calc-key sci" onclick="calcSquareRoot()">√</button>
+        <button class="calc-key sci" onclick="appendValue('(')">(</button>
+        <button class="calc-key sci" onclick="appendValue(')')">)</button>
+        <button class="calc-key sci" onclick="calcPercent()">%</button>
+        <button class="calc-key op" onclick="appendValue('/')">÷</button>
+
+        <button class="calc-key" onclick="appendValue('7')">7</button>
+        <button class="calc-key" onclick="appendValue('8')">8</button>
+        <button class="calc-key" onclick="appendValue('9')">9</button>
+        <button class="calc-key op" onclick="appendValue('*')">×</button>
+        <button class="calc-key op" onclick="appendValue('-')">-</button>
+
+        <button class="calc-key" onclick="appendValue('4')">4</button>
+        <button class="calc-key" onclick="appendValue('5')">5</button>
+        <button class="calc-key" onclick="appendValue('6')">6</button>
+        <button class="calc-key op" onclick="appendValue('+')">+</button>
+        <button class="calc-key" onclick="appendValue('.')">.</button>
+
+        <button class="calc-key" onclick="appendValue('1')">1</button>
+        <button class="calc-key" onclick="appendValue('2')">2</button>
+        <button class="calc-key" onclick="appendValue('3')">3</button>
+        <button class="calc-key equal" onclick="calculate()">=</button>
+      </div>
+
+      <div class="history-card">
+        <div class="history-header">
+          <span><b>📜 Riwayat Perhitungan:</b></span>
+          <span class="clear-btn" onclick="clearModuleHistory('calc')">[Hapus]</span>
+        </div>
+        <div class="history-items" id="history-calc">Belum ada riwayat.</div>
+      </div>
+    </div>
+
+    <!-- 2. Modul Kalkulus Numerik -->
+    <div id="mode-calculus" class="module-content">
+      <div class="tutorial-box">
+        💡 <b>Panduan Kalkulus:</b> Ketik fungsi variabel <b>x</b> (contoh: <code>x^2 - 4</code> atau <code>3*x + 2</code>). Pilih mode <b>Turunan</b> untuk kemiringan garis singgung pada titik x, atau <b>Integral</b> untuk luas daerah kurva dari batas a ke b.
+      </div>
+      <div class="form-group">
+        <label>Fungsi f(x) (contoh: x*x, 3*x + 2, Math.sin(x))</label>
+        <input type="text" id="calcFunc" placeholder="Contoh: x*x - 4" value="x*x">
+      </div>
+
+      <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+        <button class="tab-btn active" id="btnModeDiff" style="background:#0284c7; color:#fff;" onclick="setCalculusSubMode('diff')">📉 Turunan f'(x)</button>
+        <button class="tab-btn" id="btnModeInt" style="background:#334155; color:#94a3b8;" onclick="setCalculusSubMode('int')">📐 Integral ∫ f(x) dx</button>
+      </div>
+
+      <div id="diffInputs">
+        <div class="form-group">
+          <label>Hitung Turunan pada Titik x</label>
+          <input type="number" id="diffPointX" placeholder="Contoh: 2" value="2">
+        </div>
+      </div>
+
+      <div id="intInputs" style="display: none;">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Batas Bawah (a)</label>
+            <input type="number" id="intBoundA" placeholder="0" value="0">
+          </div>
+          <div class="form-group">
+            <label>Batas Atas (b)</label>
+            <input type="number" id="intBoundB" placeholder="2" value="2">
+          </div>
+        </div>
+      </div>
+
+      <button class="action-btn" onclick="prosesKalkulus()">⚡ Hitung Solusi Kalkulus</button>
+      <div class="result-box" id="calcResult" style="display: none;"></div>
+
+      <div class="history-card">
+        <div class="history-header">
+          <span><b>📜 Riwayat Kalkulus:</b></span>
+          <span class="clear-btn" onclick="clearModuleHistory('calculus')">[Hapus]</span>
+        </div>
+        <div class="history-items" id="history-calculus">Belum ada riwayat.</div>
+      </div>
+    </div>
+
+    <!-- 3. Modul Currency Converter (Searchable Picker Modal & Swap Tanpa Auto-Hitung) -->
+    <div id="mode-currency" class="module-content">
+      <div class="tutorial-box">
+        💡 <b>Panduan Currency Converter:</b> Klik kolom mata uang untuk membuka jendela pencarian independen. Gunakan tombol tukar (⇄) untuk membalik posisi, lalu klik tombol hijau untuk mengonversi kurs.
+      </div>
+      <div class="form-group">
+        <label>Nominal Uang</label>
+        <input type="number" id="currAmount" placeholder="Contoh: 100" value="1">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Dari Mata Uang</label>
+          <div class="currency-picker-trigger" id="currFromBtn" onclick="openCurrencyModal('from')">
+            <span id="currFromDisplay">🇺🇸 USD - Dolar Amerika Serikat</span>
+            <span style="color:#64748b; font-size:0.75rem;">▼</span>
+          </div>
+          <input type="hidden" id="currFrom" value="USD">
+        </div>
+
+        <button class="swap-currency-btn" onclick="swapCurrencies()" title="Tukar Posisi Mata Uang">⇄</button>
+
+        <div class="form-group">
+          <label>Ke Mata Uang</label>
+          <div class="currency-picker-trigger" id="currToBtn" onclick="openCurrencyModal('to')">
+            <span id="currToDisplay">🇮🇩 IDR - Rupiah Indonesia</span>
+            <span style="color:#64748b; font-size:0.75rem;">▼</span>
+          </div>
+          <input type="hidden" id="currTo" value="IDR">
+        </div>
+      </div>
+
+      <button class="action-btn" onclick="prosesKonversiMataUang()">🌍 Konversi Kurs Realtime</button>
+      <div class="result-box" id="currResult" style="display: none;"></div>
+
+      <div class="history-card">
+        <div class="history-header">
+          <span><b>📜 Riwayat Konversi Kurs:</b></span>
+          <span class="clear-btn" onclick="clearModuleHistory('currency')">[Hapus]</span>
+        </div>
+        <div class="history-items" id="history-currency">Belum ada riwayat.</div>
+      </div>
+    </div>
+
+    <!-- MODAL PENCARIAN MATA UANG (MUNCUL SAAT MATA UANG DIKLIK) -->
+    <div class="currency-modal" id="currencyModal" onclick="closeCurrencyModal(event)">
+      <div class="currency-modal-content" onclick="event.stopPropagation()">
+        <div class="currency-modal-header">
+          <h3 id="currencyModalTitle">Pilih Mata Uang</h3>
+          <button class="currency-modal-close" onclick="closeCurrencyModal()">✕</button>
+        </div>
+        <div class="currency-search-wrap">
+          <input type="text" id="modalCurrencySearch" placeholder="🔍 Cari negara, kode (USD, JPY), atau nama mata uang..." oninput="filterModalCurrencies()">
+        </div>
+        <div class="currency-list" id="modalCurrencyList">
+          <!-- Item mata uang dimasukkan secara dinamis -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Modul Simulasi Kredit / Cicilan -->
+    <div id="mode-loan" class="module-content">
+      <div class="tutorial-box">
+        💡 <b>Panduan Simulasi Kredit:</b> Hitung cicilan gadget, motor, mobil, atau pinjaman bank. Pilih metode <b>Bunga Flat</b> (leasing biasa) atau <b>Bunga Efektif/Anuitas</b> (bank/KPR) untuk mengetahui total bunga riil yang dibayar.
+      </div>
+      <div class="form-group">
+        <label>Nama Barang / Pinjaman</label>
+        <input type="text" id="loanItemName" placeholder="Contoh: Laptop / iPhone / Motor" value="Laptop">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Harga Barang / Total Pinjaman (Rp)</label>
+          <input type="number" id="loanPrice" placeholder="Contoh: 10000000" value="10000000">
+        </div>
+        <div class="form-group">
+          <label>Uang Muka / DP (Rp)</label>
+          <input type="number" id="loanDP" placeholder="0" value="0">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tenor Pinjaman (Bulan)</label>
+          <input type="number" id="loanTenor" placeholder="Contoh: 12" value="12" min="1">
+        </div>
+        <div class="form-group">
+          <label>Bunga per Tahun (%)</label>
+          <input type="number" id="loanRate" placeholder="Contoh: 12" value="12" step="0.1">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Skema Suku Bunga</label>
+        <select id="loanType">
+          <option value="flat">📉 Bunga Flat (Standar Leasing & Kredit Barang)</option>
+          <option value="annuity">🏦 Bunga Efektif / Anuitas (Standar Bank & KPR)</option>
+        </select>
+      </div>
+      <button class="action-btn" onclick="prosesSimulasiKredit()">🧮 Hitung Simulasi Cicilan</button>
+      <div class="result-box" id="loanResult" style="display: none;"></div>
+
+      <div class="history-card">
+        <div class="history-header">
+          <span><b>📜 Riwayat Simulasi Kredit:</b></span>
+          <span class="clear-btn" onclick="clearModuleHistory('loan')">[Hapus]</span>
+        </div>
+        <div class="history-items" id="history-loan">Belum ada riwayat.</div>
+      </div>
+    </div>
+
+    <!-- 5. Modul Seller Fee & Jualan Online -->
+    <div id="mode-seller" class="module-content">
+      <div class="tutorial-box">
+        💡 <b>Panduan Seller Fee:</b> Masukkan modal dasar per produk, target profit bersih yang diinginkan, dan persentase potongan marketplace. Kalkulator menghitung harga jual tepat agar keuntunganmu tidak terpotong fee admin.
+      </div>
+      <div class="form-group">
+        <label>Modal Barang (Rp)</label>
+        <input type="number" id="sellerModal" placeholder="Contoh: 100000">
+      </div>
+      <div class="form-group">
+        <label>Target Keuntungan Bersih (Rp)</label>
+        <input type="number" id="sellerProfit" placeholder="Contoh: 30000">
+      </div>
+      <div class="form-group">
+        <label>Biaya Admin Marketplace (%)</label>
+        <input type="number" id="sellerAdminFee" placeholder="Contoh: 6" value="6">
+      </div>
+      <button class="action-btn" onclick="prosesSellerFee()">🏷️ Hitung Harga Jual Optimal</button>
+      <div class="result-box" id="sellerResult" style="display: none;"></div>
+
+      <div class="history-card">
+        <div class="history-header">
+          <span><b>📜 Riwayat Perhitungan Seller:</b></span>
+          <span class="clear-btn" onclick="clearModuleHistory('seller')">[Hapus]</span>
+        </div>
+        <div class="history-items" id="history-seller">Belum ada riwayat.</div>
+      </div>
+    </div>
+
+    <!-- 6. Modul Target Menabung -->
+    <div id="mode-savings" class="module-content">
+      <div class="tutorial-box">
+        💡 <b>Panduan Menabung:</b> Tuliskan nama barang impian, target harga barang, dan berapa bulan target tercapai. Sistem akan memecah target menjadi nominal tabungan bulanan dan harian.
+      </div>
+      <div class="form-group">
+        <label>Nama Barang / Target Impian</label>
+        <input type="text" id="savingsGoalName" placeholder="Contoh: Laptop / PS5">
+      </div>
+      <div class="form-group">
+        <label>Harga Target (Rp)</label>
+        <input type="number" id="savingsTarget" placeholder="Contoh: 8000000">
+      </div>
+      <div class="form-group">
+        <label>Batas Waktu Target (Bulan)</label>
+        <input type="number" id="savingsMonths" placeholder="Contoh: 6" min="1" value="6">
+      </div>
+      <button class="action-btn" onclick="prosesSavings()">💰 Hitung Rencana Tabungan</button>
+      <div class="result-box" id="savingsResult" style="display: none;"></div>
+
+      <div class="history-card">
+        <div class="history-header">
+          <span><b>📜 Riwayat Rencana Tabungan:</b></span>
+          <span class="clear-btn" onclick="clearModuleHistory('savings')">[Hapus]</span>
+        </div>
+        <div class="history-items" id="history-savings">Belum ada riwayat.</div>
+      </div>
+    </div>
+
+    <!-- 7. Modul Patungan + Share WA -->
+    <div id="mode-split" class="module-content">
+      <div class="tutorial-box">
+        💡 <b>Panduan Patungan:</b> Masukkan total bon/struk, jumlah orang yang ikut patungan, serta pajak resto/tip bila ada. Kalkulator akan membagi rata tagihan dan menyediakan tombol kirim rincian ke WhatsApp!
+      </div>
+      <div class="form-group">
+        <label>Total Tagihan Belanja / Makan (Rp)</label>
+        <input type="number" id="splitBill" placeholder="Contoh: 300000">
+      </div>
+      <div class="form-group">
+        <label>Jumlah Orang</label>
+        <input type="number" id="splitPeople" placeholder="Contoh: 4" min="1" value="2">
+      </div>
+      <div class="form-group">
+        <label>Pajak / Service Charge (%)</label>
+        <input type="number" id="splitTax" placeholder="0" value="0">
+      </div>
+      <div class="form-group">
+        <label>Tip Tambahan Sukarela (Rp)</label>
+        <input type="number" id="splitTip" placeholder="0" value="0">
+      </div>
+      <button class="action-btn" onclick="prosesSplitBill()">👥 Hitung Patungan per Orang</button>
+      <div class="result-box" id="splitResult" style="display: none;"></div>
+
+      <div class="history-card">
+        <div class="history-header">
+          <span><b>📜 Riwayat Patungan:</b></span>
+          <span class="clear-btn" onclick="clearModuleHistory('split')">[Hapus]</span>
+        </div>
+        <div class="history-items" id="history-split">Belum ada riwayat.</div>
+      </div>
+    </div>
+
+    <!-- 8. Modul Usia Realtime -->
+    <div id="mode-age" class="module-content">
+      <div class="tutorial-box">
+        💡 <b>Panduan Usia Realtime:</b> Pilih tanggal & jam kelahiranmu, lalu klik tombol pelacakan. Angka detik, menit, jam, hingga hari hidupmu akan terus bertambah secara dinamis setiap detik!
+      </div>
+      <div class="form-group">
+        <label>Pilih Tanggal & Waktu Kelahiran</label>
+        <input type="datetime-local" id="birthDateTime">
+      </div>
+      <button class="action-btn" onclick="startAgeRealtimeTracking()">⏳ Mulai Pelacakan Usia Realtime</button>
+      <div class="result-box" id="ageResult" style="display: none;"></div>
+
+      <div class="history-card">
+        <div class="history-header">
+          <span><b>📜 Riwayat Pengecekan Usia:</b></span>
+          <span class="clear-btn" onclick="clearModuleHistory('age')">[Hapus]</span>
+        </div>
+        <div class="history-items" id="history-age">Belum ada riwayat.</div>
+      </div>
+    </div>
+
+    <!-- 9. Modul Konverter Satuan -->
+    <div id="mode-conv" class="module-content">
+      <div class="tutorial-box">
+        💡 <b>Panduan Konverter Lengkap:</b> Pilih kategori, masukkan angka, lalu klik tombol <b>Hitung Sekarang</b> untuk melihat hasil konversi serta menyimpan riwayat perhitungannya.
+      </div>
+      <div class="form-group">
+        <label>Kategori Konversi</label>
+        <select id="convType" onchange="updateConvOptions()">
+          <option value="time_era">⏳ Waktu & Era (Abad, Tahun, Hari, Detik...)</option>
+          <option value="length_metric">📏 Panjang & Tangga Metrik (km, m, cm, mm...)</option>
+          <option value="travel">🚗 Estimasi Perjalanan (Kecepatan & Jarak Tempuh)</option>
+          <option value="speed">⚡ Kecepatan Internet (Mbps vs MB/s)</option>
+          <option value="download">📥 Estimasi Waktu Download File</option>
+          <option value="temp">🌡️ Suhu (Celsius, Fahrenheit, Kelvin)</option>
+          <option value="data">💾 Kapasitas Data (Byte, KB, MB, GB)</option>
+          <option value="weight">⚖️ Berat & Massa (g, kg, ton, lbs)</option>
+        </select>
+      </div>
+
+      <!-- A. INPUT KHUSUS WAKTU & ERA -->
+      <div id="timeEraInputs">
+        <div class="mode-pill">
+          <button id="btnTimeModeSingle" class="active" onclick="setTimeEraMode('single')">🎯 1 ke 1 (Fleksibel)</button>
+          <button id="btnTimeModeAll" onclick="setTimeEraMode('all')">📜 Rincian Lengkap (Abad s/d Detik)</button>
+        </div>
+        <div class="form-group">
+          <label>Nilai Waktu</label>
+          <input type="number" id="timeEraVal" placeholder="Contoh: 1" value="1">
+        </div>
+        <div class="form-group">
+          <label>Satuan Asal</label>
+          <select id="timeEraFrom">
+            <option value="abad" selected>🏛️ Abad (100 Tahun)</option>
+            <option value="dekade">🏛️ Dekade / Dasawarsa (10 Tahun)</option>
+            <option value="windu">🎋 Windu (8 Tahun)</option>
+            <option value="tahun">📅 Tahun (365 Hari)</option>
+            <option value="bulan">🗓️ Bulan (30 Hari)</option>
+            <option value="minggu">📆 Minggu (7 Hari)</option>
+            <option value="hari">☀️ Hari</option>
+            <option value="jam">⏰ Jam</option>
+            <option value="menit">⏱️ Menit</option>
+            <option value="detik">⏲️ Detik</option>
+          </select>
+        </div>
+        <div id="timeEraTargetWrap">
+          <div style="text-align: center;">
+            <button class="swap-btn-icon" onclick="swapTimeEraUnits()">⇅ Tukar Satuan</button>
+          </div>
+          <div class="form-group">
+            <label>Target Konversi</label>
+            <select id="timeEraTo">
+              <option value="abad">🏛️ Abad</option>
+              <option value="dekade">🏛️ Dekade / Dasawarsa</option>
+              <option value="windu">🎋 Windu</option>
+              <option value="tahun">📅 Tahun</option>
+              <option value="bulan">🗓️ Bulan</option>
+              <option value="minggu">📆 Minggu</option>
+              <option value="hari" selected>☀️ Hari</option>
+              <option value="jam">⏰ Jam</option>
+              <option value="menit">⏱️ Menit</option>
+              <option value="detik">⏲️ Detik</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- B. INPUT KHUSUS PANJANG & TANGGA METRIK -->
+      <div id="lengthMetricInputs" style="display: none;">
+        <div class="mode-pill">
+          <button id="btnLenModeSingle" class="active" onclick="setLengthMetricMode('single')">🎯 1 ke 1 (Bebas)</button>
+          <button id="btnLenModeAll" onclick="setLengthMetricMode('all')">🪜 Tangga Satuan (km s/d mm)</button>
+        </div>
+        <div class="form-group">
+          <label>Nilai Panjang / Jarak</label>
+          <input type="number" id="lenMetricVal" placeholder="Contoh: 1" value="1">
+        </div>
+        <div class="form-group">
+          <label>Satuan Asal</label>
+          <select id="lenMetricFrom">
+            <option value="km" selected>🛤️ km (Kilometer)</option>
+            <option value="hm">🛣️ hm (Hektometer)</option>
+            <option value="dam">🚩 dam (Dekameter)</option>
+            <option value="m">📏 m (Meter)</option>
+            <option value="dm">📐 dm (Desimeter)</option>
+            <option value="cm">📍 cm (Sentimeter)</option>
+            <option value="mm">🔍 mm (Milimeter)</option>
+            <option value="inch">🪵 inch (Inci)</option>
+            <option value="feet">🦶 feet (Kaki)</option>
+            <option value="mile">🗺️ mile (Mil)</option>
+          </select>
+        </div>
+        <div id="lenMetricTargetWrap">
+          <div style="text-align: center;">
+            <button class="swap-btn-icon" onclick="swapLengthMetricUnits()">⇅ Tukar Satuan</button>
+          </div>
+          <div class="form-group">
+            <label>Target Satuan</label>
+            <select id="lenMetricTo">
+              <option value="km">🛤️ km (Kilometer)</option>
+              <option value="hm">🛣️ hm (Hektometer)</option>
+              <option value="dam">🚩 dam (Dekameter)</option>
+              <option value="m">📏 m (Meter)</option>
+              <option value="dm">📐 dm (Desimeter)</option>
+              <option value="cm" selected>📍 cm (Sentimeter)</option>
+              <option value="mm">🔍 mm (Milimeter)</option>
+              <option value="inch">🪵 inch (Inci)</option>
+              <option value="feet">🦶 feet (Kaki)</option>
+              <option value="mile">🗺️ mile (Mil)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- C. INPUT KHUSUS ESTIMASI PERJALANAN -->
+      <div id="travelInputs" style="display: none;">
+        <div class="form-group">
+          <label>Kondisi Awal: Jarak Tempuh Dasar</label>
+          <div class="form-row">
+            <div class="form-group" style="flex:2;">
+              <input type="number" id="trvBaseDist" placeholder="Contoh: 60" value="60">
+            </div>
+            <div class="form-group" style="flex:1;">
+              <select id="trvBaseDistUnit">
+                <option value="km" selected>🛤️ km</option>
+                <option value="m">📏 m</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Kondisi Awal: Waktu yang Dibutuhkan</label>
+          <div class="form-row">
+            <div class="form-group" style="flex:2;">
+              <input type="number" id="trvBaseTime" placeholder="Contoh: 2" value="2">
+            </div>
+            <div class="form-group" style="flex:1;">
+              <select id="trvBaseTimeUnit">
+                <option value="jam" selected>⏰ Jam</option>
+                <option value="menit">⏱️ Menit</option>
+                <option value="detik">⏲️ Detik</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="mode-pill">
+          <button id="btnTrvTargetDist" class="active" onclick="setTravelTargetMode('distance')">🏁 Cari Jarak Baru</button>
+          <button id="btnTrvTargetTime" onclick="setTravelTargetMode('time')">⏱️ Cari Waktu Baru</button>
+        </div>
+
+        <div id="trvTargetDistBox">
+          <div class="form-group">
+            <label>Jika Berjalan Selama (Durasi Baru):</label>
+            <div class="form-row">
+              <div class="form-group" style="flex:2;">
+                <input type="number" id="trvNewTimeVal" placeholder="Contoh: 67" value="67">
+              </div>
+              <div class="form-group" style="flex:1;">
+                <select id="trvNewTimeUnit">
+                  <option value="jam" selected>⏰ Jam</option>
+                  <option value="menit">⏱️ Menit</option>
+                  <option value="detik">⏲️ Detik</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="trvTargetTimeBox" style="display: none;">
+          <div class="form-group">
+            <label>Jika Ingin Menempuh Jarak:</label>
+            <div class="form-row">
+              <div class="form-group" style="flex:2;">
+                <input type="number" id="trvNewDistVal" placeholder="Contoh: 300" value="300">
+              </div>
+              <div class="form-group" style="flex:1;">
+                <select id="trvNewDistUnit">
+                  <option value="km" selected>🛤️ km</option>
+                  <option value="m">📏 m</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- D. INPUT STANDAR SATUAN LAIN -->
+      <div id="standardConvInputs" style="display: none;">
+        <div class="form-group">
+          <label>Nilai Angka</label>
+          <input type="number" id="convVal" placeholder="Masukkan angka..." value="1">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Dari Satuan</label>
+            <select id="convFrom"></select>
+          </div>
+          <div class="form-group">
+            <label>Ke Satuan</label>
+            <select id="convTo"></select>
+          </div>
+        </div>
+      </div>
+
+      <!-- E. INPUT ESTIMASI DOWNLOAD FILE -->
+      <div id="downloadInputs" style="display: none;">
+        <div class="form-group">
+          <label>Ukuran File Game / Berkas (GB)</label>
+          <input type="number" id="dlFileSize" placeholder="Contoh: 50" value="50">
+        </div>
+        <div class="form-group">
+          <label>Kecepatan Internet (Mbps)</label>
+          <input type="number" id="dlNetSpeed" placeholder="Contoh: 20" value="20">
+        </div>
+      </div>
+
+      <button class="action-btn" onclick="prosesKonversi()">🔄 Hitung Sekarang</button>
+      <div class="result-box" id="convResult" style="display: none;"></div>
+
+      <div class="history-card">
+        <div class="history-header">
+          <span><b>📜 Riwayat Konversi:</b></span>
+          <span class="clear-btn" onclick="clearModuleHistory('conv')">[Hapus]</span>
+        </div>
+        <div class="history-items" id="history-conv">Belum ada riwayat.</div>
+      </div>
+    </div>
+
+    <!-- 10. Modul Programmer & Subnetting IP -->
+    <div id="mode-dev" class="module-content">
+      <div class="tutorial-box">
+        💡 <b>Panduan Programmer & IP:</b> Ketik angka desimal untuk konversi instan ke HEX, BIN, dan OCT. Masukkan alamat IP dan CIDR (contoh: /24) untuk menghitung Netmask, Network ID, Broadcast, dan jumlah Host valid.
+      </div>
+      <div class="form-group">
+        <label>Konversi Angka Desimal</label>
+        <input type="number" id="baseInput" placeholder="Ketik desimal..." oninput="convertBase()">
+      </div>
+      <div class="result-box" id="baseOutput">
+        <b>HEX:</b> -<br>
+        <b>BIN:</b> -<br>
+        <b>OCT:</b> -
+      </div>
+
+      <div class="form-group" style="margin-top: 14px;">
+        <label>IP Subnetting Calculator</label>
+        <input type="text" id="ipInput" placeholder="Contoh: 192.168.1.10">
+      </div>
+      <div class="form-group">
+        <label>Prefix / CIDR</label>
+        <input type="number" id="cidrInput" placeholder="24" min="1" max="30" value="24">
+      </div>
+      <button class="action-btn" onclick="calcSubnet()">🌐 Hitung Subnet Network</button>
+      <div class="result-box" id="subnetOutput" style="display: none;"></div>
+
+      <div class="history-card">
+        <div class="history-header">
+          <span><b>📜 Riwayat Subnet IP:</b></span>
+          <span class="clear-btn" onclick="clearModuleHistory('subnet')">[Hapus]</span>
+        </div>
+        <div class="history-items" id="history-subnet">Belum ada riwayat.</div>
+      </div>
+    </div>
+
+    <!-- 11. Modul Visualizer Grafik Interaktif -->
+    <div id="mode-graph" class="module-content">
+      <div class="tutorial-box">
+        💡 <b>Panduan Grafik:</b> Ketik rumus fungsi kurva matematika apa saja atau klik tombol preset cepat (sin, cos, x²). Gunakan slider <b>Zoom / Skala</b> untuk memperbesar kurva secara realtime.
+      </div>
+      <div class="form-group">
+        <label>Ketik Rumus Fungsi y = f(x)</label>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="graphCustomInput" placeholder="Contoh: x^2 - 4 atau Math.sin(x)" value="Math.sin(x)" style="flex: 1;" oninput="drawGraph()">
+          <button class="action-btn" style="width: auto; margin-top: 0; padding: 0 16px;" onclick="drawGraph()">🎨 Plot</button>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px;">
+        <button class="pill-btn" onclick="setGraphPreset('Math.sin(x)')">sin(x)</button>
+        <button class="pill-btn" onclick="setGraphPreset('Math.cos(x)')">cos(x)</button>
+        <button class="pill-btn" onclick="setGraphPreset('x*x')">x²</button>
+        <button class="pill-btn" onclick="setGraphPreset('x*x*x - 3*x')">x³ - 3x</button>
+        <button class="pill-btn" onclick="setGraphPreset('1/x')">1/x</button>
+        <button class="pill-btn" onclick="setGraphPreset('Math.abs(x)')">|x|</button>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 8px;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #94a3b8;">
+          <span>🔍 Zoom / Skala Grid</span>
+          <span id="zoomValLabel">30px</span>
+        </div>
+        <input type="range" id="graphScale" min="10" max="80" value="30" oninput="updateScaleLabel(); drawGraph();" style="accent-color: #38bdf8; cursor: pointer;">
+      </div>
+
+      <canvas id="graphCanvas" width="600" height="300"></canvas>
+    </div>
+
+    <!-- 12. Modul Kasir & Diskon + Share WA -->
+    <div id="mode-cashier" class="module-content">
+      <div class="tutorial-box">
+        💡 <b>Panduan Kasir:</b> Masukkan total belanja awal, persentase diskon promo, dan nominal uang yang dibayarkan pelanggan untuk mengetahui potongan harga serta uang kembalian.
+      </div>
+      <div class="form-group">
+        <label>Total Belanja Awal (Rp)</label>
+        <input type="number" id="belanjaAwal" placeholder="100000">
+      </div>
+      <div class="form-group">
+        <label>Diskon (%)</label>
+        <input type="number" id="diskonPersen" placeholder="10" value="0">
+      </div>
+      <div class="form-group">
+        <label>Uang Pembayaran (Rp)</label>
+        <input type="number" id="uangBayar" placeholder="100000">
+      </div>
+      <button class="action-btn" onclick="prosesKasir()">🧾 Hitung Rincian Kasir</button>
+      <div class="result-box" id="kasirResult" style="display: none;"></div>
+
+      <div class="history-card">
+        <div class="history-header">
+          <span><b>📜 Riwayat Transaksi Kasir:</b></span>
+          <span class="clear-btn" onclick="clearModuleHistory('cashier')">[Hapus]</span>
+        </div>
+        <div class="history-items" id="history-cashier">Belum ada riwayat.</div>
+      </div>
+    </div>
+
+    <!-- 13. Modul Billing Timer -->
+    <div id="mode-timer" class="module-content">
+      <div class="tutorial-box">
+        💡 <b>Panduan Billing Timer:</b> Masukkan tarif sewa per jam (misal: sewa PS, warnet, atau konsultasi). Klik <b>Start</b> untuk memulai argo waktu dan biaya berjalan secara otomatis.
+      </div>
+      <div style="text-align: center; margin: 12px 0;">
+        <h2 id="timerDisplay" style="font-size: 2.8rem; color: #38bdf8;">00:00:00</h2>
+      </div>
+      <div class="form-group">
+        <label>Tarif Sewa per Jam (Rp)</label>
+        <input type="number" id="hourlyRate" value="5000">
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <button class="action-btn" onclick="startTimer()">▶️ Start</button>
+        <button class="action-btn" style="background:#ef4444;" onclick="stopTimer()">⏹️ Stop</button>
+        <button class="action-btn" style="background:#64748b;" onclick="resetTimer()">🔄 Reset</button>
+      </div>
+      <div class="result-box" id="timerCostResult">Biaya Berjalan: <b>Rp 0</b></div>
+    </div>
+
+  </div>
+
+  <script>
+    // --- 0. PWA SERVICE WORKER REGISTRATION ---
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').then((registration) => {
+          registration.update();
+          let refreshing = false;
+          navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (!refreshing) {
+              refreshing = true;
+              window.location.reload();
+            }
+          });
+        }).catch(err => console.log('SW registration failed: ', err));
+      });
+    }
+
+    // --- 1. LOCALSTORAGE LOGIC (PERSISTEN) ---
+    const modulesWithHistory = ['calc', 'calculus', 'currency', 'loan', 'seller', 'savings', 'split', 'age', 'conv', 'subnet', 'cashier'];
+
+    function loadAllHistories() {
+      modulesWithHistory.forEach(mod => {
+        try {
+          const saved = localStorage.getItem(`calc_hist_${mod}`);
+          const el = document.getElementById(`history-${mod}`);
+          if (saved && el && saved.trim() !== "") {
+            el.innerHTML = saved;
+          }
+        } catch (e) {
+          console.warn(`Gagal memuat riwayat ${mod}:`, e);
+        }
+      });
+    }
+
+    function addHistoryItem(mod, content) {
+      const el = document.getElementById(`history-${mod}`);
+      if (!el) return;
+      if (el.innerHTML.includes("Belum ada riwayat")) {
+        el.innerHTML = "";
+      }
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const newEntry = `<div><span style="color:#64748b;">[${time}]</span> ${content}</div>`;
+      el.innerHTML = newEntry + el.innerHTML;
+      try {
+        localStorage.setItem(`calc_hist_${mod}`, el.innerHTML);
+      } catch (e) {
+        console.warn(`Gagal menyimpan riwayat ${mod}:`, e);
+      }
+    }
+
+    function clearModuleHistory(mod) {
+      localStorage.removeItem(`calc_hist_${mod}`);
+      const el = document.getElementById(`history-${mod}`);
+      if (el) el.innerHTML = "Belum ada riwayat.";
+    }
+
+    function initApp() {
+      loadAllHistories();
+      initCurrencyData();
+      updateConvOptions();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+      initApp();
+    }
+
+    // --- 2. AUDIO FEEDBACK ---
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playBeep() {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(450, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.05);
+    }
+    document.querySelectorAll("button").forEach(btn => btn.addEventListener("click", () => playBeep()));
+
+    // --- 3. TAB NAVIGATION ---
+    function switchMode(mode) {
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".module-content").forEach(m => m.classList.remove("active"));
+      event.target.classList.add("active");
+      document.getElementById(`mode-${mode}`).classList.add("active");
+      if (mode === 'graph') drawGraph();
+    }
+
+    // --- 4. SCIENTIFIC MODE ---
+    const display = document.getElementById("display");
+    const historyText = document.getElementById("historyText");
+    let currentInput = "0";
+
+    function updateScreen() { display.innerText = currentInput; }
+    function appendValue(val) { currentInput = (currentInput === "0" && !isNaN(val)) ? val : currentInput + val; updateScreen(); }
+    function appendFunc(f) { currentInput = (currentInput === "0") ? `${f}(` : `${currentInput}*${f}(`; updateScreen(); }
+    function clearAll() { currentInput = "0"; historyText.innerText = ""; updateScreen(); }
+    function deleteLast() { currentInput = currentInput.length > 1 ? currentInput.slice(0, -1) : "0"; updateScreen(); }
+
+    function calcSquareRoot() {
+      try {
+        currentInput = Math.sqrt(eval(currentInput)).toString();
+        updateScreen();
+      } catch (e) { showError(); }
+    }
+
+    function calcPercent() {
+      try {
+        currentInput = (eval(currentInput) / 100).toString();
+        updateScreen();
+      } catch (e) { showError(); }
+    }
+
+    function calcFactorial() {
+      try {
+        const n = parseInt(eval(currentInput));
+        let res = 1;
+        for (let i = 2; i <= n; i++) res *= i;
+        currentInput = res.toString();
+        updateScreen();
+      } catch (e) { showError(); }
+    }
+
+    function calculate() {
+      try {
+        const expr = currentInput;
+        const result = eval(expr);
+        const finalVal = Number.isInteger(result) ? result.toString() : result.toFixed(6).replace(/\.?0+$/, "");
+        historyText.innerText = expr + " =";
+        currentInput = finalVal;
+        updateScreen();
+
+        addHistoryItem('calc', `${expr} = <b>${finalVal}</b>`);
+      } catch (err) {
+        showError();
+      }
+    }
+
+    function showError() { display.innerText = "Error"; currentInput = "0"; }
+    function copyResult() { navigator.clipboard.writeText(display.innerText); alert("Tersalin!"); }
+
+    // --- 5. MODUL KALKULUS NUMERIK ---
+    let calculusSubMode = 'diff';
+
+    function setCalculusSubMode(mode) {
+      calculusSubMode = mode;
+      const btnDiff = document.getElementById("btnModeDiff");
+      const btnInt = document.getElementById("btnModeInt");
+      const diffDiv = document.getElementById("diffInputs");
+      const intDiv = document.getElementById("intInputs");
+
+      if (mode === 'diff') {
+        btnDiff.style.background = "#0284c7";
+        btnDiff.style.color = "#fff";
+        btnInt.style.background = "#334155";
+        btnInt.style.color = "#94a3b8";
+        diffDiv.style.display = "block";
+        intDiv.style.display = "none";
+      } else {
+        btnInt.style.background = "#0284c7";
+        btnInt.style.color = "#fff";
+        btnDiff.style.background = "#334155";
+        btnDiff.style.color = "#94a3b8";
+        diffDiv.style.display = "none";
+        intDiv.style.display = "block";
+      }
+    }
+
+    function evaluateFunction(funcStr, xVal) {
+      const sanitized = funcStr.replace(/\^/g, '**');
+      const fn = new Function('x', `return ${sanitized};`);
+      return fn(xVal);
+    }
+
+    function prosesKalkulus() {
+      const funcStr = document.getElementById("calcFunc").value.trim();
+      const box = document.getElementById("calcResult");
+
+      if (!funcStr) return alert("Masukkan fungsi f(x) terlebih dahulu!");
+
+      try {
+        if (calculusSubMode === 'diff') {
+          const x = parseFloat(document.getElementById("diffPointX").value);
+          if (isNaN(x)) return alert("Masukkan nilai x yang valid!");
+
+          const h = 1e-6;
+          const fPlus = evaluateFunction(funcStr, x + h);
+          const fMinus = evaluateFunction(funcStr, x - h);
+          const derivative = (fPlus - fMinus) / (2 * h);
+          const formatted = derivative.toFixed(4).replace(/\.?0+$/, "");
+
+          box.style.display = "block";
+          box.innerHTML = `
+            Fungsi: <b>f(x) = ${funcStr}</b><br>
+            Titik evaluasi: <b>x = ${x}</b><br>
+            <hr style="border:0; border-top:1px solid #334155; margin:8px 0;">
+            Turunan Pertama f'(${x}): <b style="font-size:1.15rem; color:#38bdf8;">${formatted}</b>
+          `;
+          addHistoryItem('calculus', `d/dx [${funcStr}] di x=${x} ➔ <b>${formatted}</b>`);
+
+        } else {
+          const a = parseFloat(document.getElementById("intBoundA").value);
+          const b = parseFloat(document.getElementById("intBoundB").value);
+          if (isNaN(a) || isNaN(b)) return alert("Masukkan batas integrasi yang valid!");
+
+          const n = 2000;
+          const step = (b - a) / n;
+          let area = (evaluateFunction(funcStr, a) + evaluateFunction(funcStr, b)) / 2;
+
+          for (let i = 1; i < n; i++) {
+            area += evaluateFunction(funcStr, a + i * step);
+          }
+          area *= step;
+          const formatted = area.toFixed(4).replace(/\.?0+$/, "");
+
+          box.style.display = "block";
+          box.innerHTML = `
+            Fungsi: <b>f(x) = ${funcStr}</b><br>
+            Interval integrasi: <b>[${a}, ${b}]</b><br>
+            <hr style="border:0; border-top:1px solid #334155; margin:8px 0;">
+            Hasil Integral Tentu: <b style="font-size:1.15rem; color:#34d399;">${formatted}</b>
+          `;
+          addHistoryItem('calculus', `∫[${a} ke ${b}] (${funcStr}) dx ➔ <b>${formatted}</b>`);
+        }
+      } catch (err) {
+        alert("Format fungsi matematika tidak valid. Periksa kembali tanda perkalian (*) atau kurung.");
+      }
+    }
+
+    // --- 6. MODUL CURRENCY CONVERTER (MODAL PICKER + SEARCH INTERNAL) ---
+    const flagOverrides = {
+      "EUR": "🇪🇺", "GBP": "🇬🇧", "CHF": "🇨🇭", "ANG": "🇨🇼", "XCD": "🌴",
+      "XOF": "🌍", "XAF": "🌍", "XPF": "🇵🇫", "BTC": "🪙", "ETH": "💠",
+      "XAU": "🥇", "XAG": "🥈", "XPD": "⚪", "XPT": "💿", "XDR": "🌐",
+      "CNH": "🇨🇳", "FOK": "🇫🇴", "GGP": "🇬🇬", "IMP": "🇮🇲", "JEP": "🇯🇪",
+      "KID": "🇰🇮", "TVD": "🇹🇻", "ZWG": "🇿🇼", "VED": "🇻🇪", "WST": "🇼🇸"
+    };
+
+    function getCurrencyFlag(code) {
+      if (flagOverrides[code]) return flagOverrides[code];
+      if (code && code.length >= 2) {
+        const countryCode = code.slice(0, 2).toUpperCase();
+        if (/^[A-Z]{2}$/.test(countryCode)) {
+          const first = 0x1F1E6 + (countryCode.charCodeAt(0) - 65);
+          const second = 0x1F1E6 + (countryCode.charCodeAt(1) - 65);
+          return String.fromCodePoint(first, second);
+        }
+      }
+      return "🌐";
+    }
+
+    const masterCurrencyNames = {
+      "AED": "Dirham Uni Emirat Arab", "AFN": "Afghani Afganistan", "ALL": "Lek Albania", "AMD": "Dram Armenia",
+      "ANG": "Guilder Antillen Belanda", "AOA": "Kwanza Angola", "ARS": "Peso Argentina", "AUD": "Dolar Australia",
+      "AWG": "Florin Aruba", "AZN": "Manat Azerbaijan", "BAM": "Mark Bosnia-Herzegovina", "BBD": "Dolar Barbados",
+      "BDT": "Taka Bangladesh", "BGN": "Lev Bulgaria", "BHD": "Dinar Bahrain", "BIF": "Franc Burundi",
+      "BMD": "Dolar Bermuda", "BND": "Dolar Brunei", "BOB": "Boliviano Bolivia", "BRL": "Real Brasil",
+      "BSD": "Dolar Bahama", "BTN": "Ngultrum Bhutan", "BWP": "Pula Botswana", "BYN": "Rubel Belarusia",
+      "BZD": "Dolar Belize", "CAD": "Dolar Kanada", "CDF": "Franc Kongo", "CHF": "Franc Swiss",
+      "CLF": "Unidad de Fomento (Cile)", "CLP": "Peso Cile", "CNH": "Yuan Tiongkok Luar Negeri (Offshore)",
+      "CNY": "Yuan Tiongkok", "COP": "Peso Kolombia", "CRC": "Colon Kosta Rika", "CUP": "Peso Kuba",
+      "CVE": "Escudo Tanjung Verde", "CZK": "Koruna Ceko", "DJF": "Franc Jibuti", "DKK": "Krone Denmark",
+      "DOP": "Peso Dominika", "DZD": "Dinar Aljazair", "EGP": "Pound Mesir", "ERN": "Nakfa Eritrea",
+      "ETB": "Birr Etiopia", "EUR": "Euro", "FJD": "Dolar Fiji", "FKP": "Pound Kepulauan Falkland",
+      "FOK": "Krona Kepulauan Faroe", "GBP": "Pound Inggris", "GEL": "Lari Georgia", "GGP": "Pound Guernsey",
+      "GHS": "Cedi Ghana", "GIP": "Pound Gibraltar", "GMD": "Dalasi Gambia", "GNF": "Franc Guinea",
+      "GTQ": "Quetzal Guatemala", "GYD": "Dolar Guyana", "HKD": "Dolar Hong Kong", "HNL": "Lempira Honduras",
+      "HRK": "Kuna Kroasia", "HTG": "Gourde Haiti", "HUF": "Forint Hungaria", "IDR": "Rupiah Indonesia",
+      "ILS": "Shekel Baru Israel", "IMP": "Pound Isle of Man", "INR": "Rupee India", "IQD": "Dinar Irak",
+      "IRR": "Rial Iran", "ISK": "Krona Islandia", "JEP": "Pound Jersey", "JMD": "Dolar Jamaika",
+      "JOD": "Dinar Yordania", "JPY": "Yen Jepang", "KES": "Shilling Kenya", "KGS": "Som Kirgizstan",
+      "KHR": "Riel Kamboja", "KID": "Dolar Kiribati", "KMF": "Franc Komoro", "KRW": "Won Korea Selatan",
+      "KWD": "Dinar Kuwait", "KYD": "Dolar Kepulauan Cayman", "KZT": "Tenge Kazakhstan", "LAK": "Kip Laos",
+      "LBP": "Pound Lebanon", "LKR": "Rupee Sri Lanka", "LRD": "Dolar Liberia", "LSL": "Loti Lesotho",
+      "LYD": "Dinar Libya", "MAD": "Dirham Maroko", "MDL": "Leu Moldova", "MGA": "Ariary Madagaskar",
+      "MKD": "Denar Makedonia", "MMK": "Kyat Myanmar", "MNT": "Tugrik Mongolia", "MOP": "Pataca Makau",
+      "MRU": "Ouguiya Mauritania", "MUR": "Rupee Mauritius", "MVR": "Rufiyaa Maladewa", "MWK": "Kwacha Malawi",
+      "MXN": "Peso Meksiko", "MYR": "Ringgit Malaysia", "MZN": "Metical Mozambik", "NAD": "Dolar Namibia",
+      "NGN": "Naira Nigeria", "NIO": "Cordoba Nikaragua", "NOK": "Krone Norwegia", "NPR": "Rupee Nepal",
+      "NZD": "Dolar Selandia Baru", "OMR": "Rial Oman", "PAB": "Balboa Panama", "PEN": "Sol Peru",
+      "PGK": "Kina Papua Nugini", "PHP": "Peso Filipina", "PKR": "Rupee Pakistan", "PLN": "Zloty Polandia",
+      "PYG": "Guarani Paraguay", "QAR": "Rial Qatar", "RON": "Leu Rumania", "RSD": "Dinar Serbia",
+      "RUB": "Rubel Rusia", "RWF": "Franc Rwanda", "SAR": "Riyal Arab Saudi", "SBD": "Dolar Kepulauan Solomon",
+      "SCR": "Rupee Seychelles", "SDG": "Pound Sudan", "SEK": "Krona Swedia", "SGD": "Dolar Singapura",
+      "SHP": "Pound Saint Helena", "SLE": "Leone Sierra Leone (Baru)", "SLL": "Leone Sierra Leone",
+      "SOS": "Shilling Somalia", "SRD": "Dolar Suriname", "SSP": "Pound Sudan Selatan", "STN": "Dobra Sao Tome",
+      "SYP": "Pound Suriah", "SZL": "Lilangeni Eswatini", "THB": "Baht Thailand", "TJS": "Somoni Tajikistan",
+      "TMT": "Manat Turkmenistan", "TND": "Dinar Tunisia", "TOP": "Pa'anga Tonga", "TRY": "Lira Turki",
+      "TTD": "Dolar Trinidad dan Tobago", "TVD": "Dolar Tuvalu", "TWD": "Dolar Baru Taiwan", "TZS": "Shilling Tanzania",
+      "UAH": "Hryvnia Ukraina", "UGX": "Shilling Uganda", "USD": "Dolar Amerika Serikat", "UYU": "Peso Uruguay",
+      "UZS": "Som Uzbekistan", "VED": "Bolivar Soberano", "VES": "Bolivar Venezuela", "VND": "Dong Vietnam",
+      "VUV": "Vatu Vanuatu", "WST": "Tala Samoa", "XAF": "Franc CFA Afrika Tengah", "XCD": "Dolar Karibia Timur",
+      "XCG": "Guilder Karibia", "XDR": "SDR IMF", "XOF": "Franc CFA Afrika Barat", "XPF": "Franc CFP",
+      "YER": "Rial Yaman", "ZAR": "Rand Afrika Selatan", "ZMW": "Kwacha Zambia", "ZWG": "Zimbabwe Gold",
+      "ZWL": "Dolar Zimbabwe", "XAU": "Emas", "XAG": "Perak", "XPD": "Paladium", "XPT": "Platinum",
+      "BTC": "Bitcoin", "ETH": "Ethereum"
+    };
+
+    let cachedRates = null;
+    let lastRatesFetchTime = 0;
+    let globalCurrenciesList = [];
+    let currentModalTarget = 'from'; // 'from' atau 'to'
+
+    function getCurrencyFullName(code) {
+      const flag = getCurrencyFlag(code);
+      if (masterCurrencyNames[code]) {
+        return `${flag} ${code} - ${masterCurrencyNames[code]}`;
+      }
+      return `${flag} ${code}`;
+    }
+
+    async function initCurrencyData() {
+      try {
+        const rates = await getExchangeRates("USD");
+        globalCurrenciesList = Object.keys(rates).sort();
+      } catch (err) {
+        globalCurrenciesList = Object.keys(masterCurrencyNames).sort();
+      }
+      updateCurrencyTriggerDisplay('from');
+      updateCurrencyTriggerDisplay('to');
+    }
+
+    function updateCurrencyTriggerDisplay(target) {
+      const code = document.getElementById(target === 'from' ? 'currFrom' : 'currTo').value;
+      const displayEl = document.getElementById(target === 'from' ? 'currFromDisplay' : 'currToDisplay');
+      if (displayEl) {
+        displayEl.innerText = getCurrencyFullName(code);
+      }
+    }
+
+    // Buka Modal Pemilihan Mata Uang Internal
+    function openCurrencyModal(target) {
+      currentModalTarget = target;
+      const modal = document.getElementById("currencyModal");
+      const title = document.getElementById("currencyModalTitle");
+      const searchInput = document.getElementById("modalCurrencySearch");
+
+      title.innerText = target === 'from' ? 'Pilih Mata Uang Asal' : 'Pilih Mata Uang Tujuan';
+      searchInput.value = '';
+      renderModalCurrencyList('');
+
+      modal.classList.add("active");
+      setTimeout(() => searchInput.focus(), 150);
+    }
+
+    function closeCurrencyModal(e) {
+      if (e && e.target !== e.currentTarget && !e.target.classList.contains('currency-modal-close')) {
+        return;
+      }
+      document.getElementById("currencyModal").classList.remove("active");
+    }
+
+    function renderModalCurrencyList(keyword) {
+      const listEl = document.getElementById("modalCurrencyList");
+      listEl.innerHTML = "";
+      const currentSelectedCode = document.getElementById(currentModalTarget === 'from' ? 'currFrom' : 'currTo').value;
+
+      const filtered = globalCurrenciesList.filter(code => {
+        const name = (masterCurrencyNames[code] || "").toLowerCase();
+        return code.toLowerCase().includes(keyword) || name.includes(keyword);
+      });
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = `<div style="text-align:center; padding:20px; color:#64748b; font-size:0.85rem;">Mata uang tidak ditemukan</div>`;
+        return;
+      }
+
+      filtered.forEach(code => {
+        const flag = getCurrencyFlag(code);
+        const name = masterCurrencyNames[code] || code;
+        const isSelected = code === currentSelectedCode;
+
+        const itemBtn = document.createElement("button");
+        itemBtn.className = `currency-item ${isSelected ? 'selected' : ''}`;
+        itemBtn.onclick = () => selectCurrency(code);
+        itemBtn.innerHTML = `
+          <div class="currency-item-flag">${flag}</div>
+          <div class="currency-item-info">
+            <span class="currency-item-code">${code}</span>
+            <span class="currency-item-name">${name}</span>
+          </div>
+        `;
+        listEl.appendChild(itemBtn);
+      });
+    }
+
+    function filterModalCurrencies() {
+      const keyword = document.getElementById("modalCurrencySearch").value.trim().toLowerCase();
+      renderModalCurrencyList(keyword);
+    }
+
+    function selectCurrency(code) {
+      const inputEl = document.getElementById(currentModalTarget === 'from' ? 'currFrom' : 'currTo');
+      inputEl.value = code;
+      updateCurrencyTriggerDisplay(currentModalTarget);
+      document.getElementById("currencyModal").classList.remove("active");
+
+      // Sembunyikan hasil perhitungan agar menunggu tombol hijau ditekan
+      const box = document.getElementById("currResult");
+      if (box) box.style.display = "none";
+    }
+
+    // Tombol Swap Murni Menukar Tanpa Auto-Hitung
+    function swapCurrencies() {
+      const fromEl = document.getElementById("currFrom");
+      const toEl = document.getElementById("currTo");
+      const temp = fromEl.value;
+      fromEl.value = toEl.value;
+      toEl.value = temp;
+
+      updateCurrencyTriggerDisplay('from');
+      updateCurrencyTriggerDisplay('to');
+
+      // Sembunyikan hasil perhitungan agar menunggu tombol hijau ditekan
+      const box = document.getElementById("currResult");
+      if (box) box.style.display = "none";
+    }
+
+    async function getExchangeRates(baseCurr) {
+      const now = Date.now();
+      if (cachedRates && cachedRates.base === baseCurr && (now - lastRatesFetchTime < 3600000)) {
+        return cachedRates.rates;
+      }
+
+      const localCached = localStorage.getItem(`rates_${baseCurr}`);
+      if (localCached) {
+        const parsed = JSON.parse(localCached);
+        if (now - parsed.timestamp < 3600000) {
+          cachedRates = { base: baseCurr, rates: parsed.rates };
+          return parsed.rates;
+        }
+      }
+
+      try {
+        const res = await fetch(`https://open.er-api.com/v6/latest/${baseCurr}`);
+        const data = await res.json();
+        if (data && data.rates) {
+          cachedRates = { base: baseCurr, rates: data.rates };
+          lastRatesFetchTime = now;
+          localStorage.setItem(`rates_${baseCurr}`, JSON.stringify({ timestamp: now, rates: data.rates }));
+          return data.rates;
+        }
+      } catch (e) {
+        if (localCached) return JSON.parse(localCached).rates;
+        throw e;
+      }
+    }
+
+    async function prosesKonversiMataUang() {
+      const amount = parseFloat(document.getElementById("currAmount").value);
+      const from = document.getElementById("currFrom").value;
+      const to = document.getElementById("currTo").value;
+      const box = document.getElementById("currResult");
+
+      if (isNaN(amount) || amount <= 0) return alert("Masukkan nominal angka yang valid!");
+
+      box.style.display = "block";
+      box.innerHTML = "Memuat data kurs realtime seluruh dunia...";
+
+      try {
+        const rates = await getExchangeRates(from);
+        const rate = rates[to];
+        if (!rate) throw new Error("Mata uang tidak didukung");
+
+        const converted = amount * rate;
+        const formattedResult = converted.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+        const rateFormatted = rate.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+
+        const fromName = getCurrencyFullName(from);
+        const toName = getCurrencyFullName(to);
+
+        box.innerHTML = `
+          <b>${amount.toLocaleString()} ${fromName}</b> =<br>
+          <span style="font-size: 1.35rem; font-weight: bold; color: #38bdf8;">${formattedResult} ${toName}</span><br>
+          <span style="font-size: 0.78rem; color: #94a3b8;">Kurs Live: 1 ${from} = ${rateFormatted} ${to} (Realtime Global API)</span>
+        `;
+
+        addHistoryItem('currency', `${amount.toLocaleString()} ${from} ➔ <b>${formattedResult} ${to}</b>`);
+      } catch (err) {
+        box.innerHTML = `<span style="color:#ef4444;">Gagal memperbarui kurs. Periksa koneksi internet Anda.</span>`;
+      }
+    }
+
+    // --- 7. MODUL SIMULASI KREDIT / CICILAN ---
+    let lastLoanShareText = "";
+
+    function prosesSimulasiKredit() {
+      const itemName = document.getElementById("loanItemName").value.trim() || "Barang/Pinjaman";
+      const price = parseFloat(document.getElementById("loanPrice").value) || 0;
+      const dp = parseFloat(document.getElementById("loanDP").value) || 0;
+      const tenorMonths = parseInt(document.getElementById("loanTenor").value) || 1;
+      const annualRate = parseFloat(document.getElementById("loanRate").value) || 0;
+      const scheme = document.getElementById("loanType").value;
+      const box = document.getElementById("loanResult");
+
+      if (price <= 0 || tenorMonths <= 0) return alert("Masukkan harga barang dan tenor yang valid!");
+      if (dp >= price) return alert("Uang muka (DP) tidak boleh lebih besar atau sama dengan harga barang!");
+
+      const principal = price - dp;
+      let monthlyInstallment = 0;
+      let totalPayment = 0;
+      let totalInterest = 0;
+
+      if (scheme === 'flat') {
+        const totalInterestFlat = principal * (annualRate / 100) * (tenorMonths / 12);
+        totalPayment = principal + totalInterestFlat;
+        monthlyInstallment = Math.ceil(totalPayment / tenorMonths);
+        totalInterest = totalInterestFlat;
+      } else {
+        const monthlyRate = (annualRate / 100) / 12;
+        if (monthlyRate === 0) {
+          monthlyInstallment = Math.ceil(principal / tenorMonths);
+          totalPayment = principal;
+          totalInterest = 0;
+        } else {
+          monthlyInstallment = Math.ceil((principal * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -tenorMonths)));
+          totalPayment = monthlyInstallment * tenorMonths;
+          totalInterest = totalPayment - principal;
+        }
+      }
+
+      const totalSpentWithDP = totalPayment + dp;
+      const schemeName = scheme === 'flat' ? 'Bunga Flat' : 'Bunga Efektif / Anuitas';
+
+      lastLoanShareText = `*SIMULASI CICILAN / KREDIT*\n- Barang: ${itemName}\n- Harga Total: Rp ${price.toLocaleString()}\n- Uang Muka (DP): Rp ${dp.toLocaleString()}\n- Pokok Pinjaman: Rp ${principal.toLocaleString()}\n- Tenor: ${tenorMonths} Bulan (${annualRate}%/thn - ${schemeName})\n👉 *Cicilan per Bulan: Rp ${monthlyInstallment.toLocaleString()}*\n- Total Bunga: Rp ${Math.round(totalInterest).toLocaleString()}\n- Total Bayar Lunas: Rp ${totalSpentWithDP.toLocaleString()}\n\n(Dihitung via Super Calculator)`;
+
+      box.style.display = "block";
+      box.innerHTML = `
+        Barang: <b>${itemName}</b> (${schemeName})<br>
+        Pokok Hutang: Rp ${principal.toLocaleString()} (DP: Rp ${dp.toLocaleString()})<br>
+        <hr style="border:0; border-top:1px solid #334155; margin:8px 0;">
+        <span style="font-size:0.85rem; color:#94a3b8;">Estimasi Cicilan per Bulan (${tenorMonths}x):</span><br>
+        <b style="font-size: 1.3rem; color: #38bdf8;">Rp ${monthlyInstallment.toLocaleString()}/bulan</b><br>
+        <span style="font-size:0.82rem; color:#f87171;">Bunga Pinjaman: +Rp ${Math.round(totalInterest).toLocaleString()}</span><br>
+        <b>Total Uang Dikeluarkan: Rp ${totalSpentWithDP.toLocaleString()}</b>
+        <button class="share-wa-btn" onclick="shareToWhatsApp(lastLoanShareText)">
+          📲 Kirim Rincian Kredit ke WhatsApp
+        </button>
+      `;
+
+      addHistoryItem('loan', `${itemName}: Rp ${price.toLocaleString()} (${tenorMonths} bln) ➔ <b>Rp ${monthlyInstallment.toLocaleString()}/bln</b>`);
+    }
+
+    // --- 8. MODUL SELLER FEE ---
+    function prosesSellerFee() {
+      const modal = parseFloat(document.getElementById("sellerModal").value) || 0;
+      const profit = parseFloat(document.getElementById("sellerProfit").value) || 0;
+      const feePercent = parseFloat(document.getElementById("sellerAdminFee").value) || 0;
+
+      if (modal <= 0 || feePercent >= 100) return alert("Masukkan nilai modal yang valid dan fee di bawah 100%!");
+
+      const targetNet = modal + profit;
+      const sellingPrice = Math.ceil(targetNet / (1 - (feePercent / 100)));
+      const adminFeeAmount = Math.round(sellingPrice * (feePercent / 100));
+      const actualProfit = sellingPrice - modal - adminFeeAmount;
+
+      const box = document.getElementById("sellerResult");
+      box.style.display = "block";
+      box.innerHTML = `
+        Rekomendasi Harga Jual: <b style="font-size:1.1rem; color:#38bdf8;">Rp ${sellingPrice.toLocaleString()}</b><br>
+        Potongan Admin (${feePercent}%): -Rp ${adminFeeAmount.toLocaleString()}<br>
+        Uang Diterima Bersih: Rp ${(sellingPrice - adminFeeAmount).toLocaleString()}<br>
+        <b>Keuntungan Bersih: Rp ${actualProfit.toLocaleString()}</b>
+      `;
+
+      addHistoryItem('seller', `Modal Rp ${modal.toLocaleString()} ➔ Jual: <b>Rp ${sellingPrice.toLocaleString()}</b> (Fee: ${feePercent}%)`);
+    }
+
+    // --- 9. MODUL TARGET MENABUNG ---
+    function prosesSavings() {
+      const goalName = document.getElementById("savingsGoalName").value.trim() || "Target Tabungan";
+      const target = parseFloat(document.getElementById("savingsTarget").value) || 0;
+      const months = parseInt(document.getElementById("savingsMonths").value) || 1;
+
+      if (target <= 0 || months <= 0) return alert("Masukkan target nominal dan jumlah bulan yang valid!");
+
+      const perMonth = Math.ceil(target / months);
+      const perDay = Math.ceil(target / (months * 30));
+
+      const box = document.getElementById("savingsResult");
+      box.style.display = "block";
+      box.innerHTML = `
+        Target: <b>${goalName}</b> (Rp ${target.toLocaleString()})<br>
+        Wajib Nabung Bulanan: <b style="color:#38bdf8;">Rp ${perMonth.toLocaleString()}/bulan</b><br>
+        Atau Sisihkan Harian: <b style="color:#34d399;">Rp ${perDay.toLocaleString()}/hari</b> (${months * 30} hari)
+      `;
+
+      addHistoryItem('savings', `${goalName}: Rp ${target.toLocaleString()} (${months} bln) ➔ <b>Rp ${perDay.toLocaleString()}/hari</b>`);
+    }
+
+    // --- 10. MODUL PATUNGAN + SHARE WA ---
+    let lastSplitShareText = "";
+
+    function prosesSplitBill() {
+      const bill = parseFloat(document.getElementById("splitBill").value) || 0;
+      const people = parseInt(document.getElementById("splitPeople").value) || 1;
+      const taxPercent = parseFloat(document.getElementById("splitTax").value) || 0;
+      const tip = parseFloat(document.getElementById("splitTip").value) || 0;
+
+      if (bill <= 0 || people <= 0) return alert("Masukkan nominal tagihan dan jumlah orang yang valid!");
+
+      const taxAmount = bill * (taxPercent / 100);
+      const totalAmount = bill + taxAmount + tip;
+      const perPerson = Math.ceil(totalAmount / people);
+
+      lastSplitShareText = `Halo kawan-kawan! Rincian patungan kita:\n- Total Tagihan: Rp ${bill.toLocaleString()}\n- Pajak/Service (${taxPercent}%): Rp ${taxAmount.toLocaleString()}\n- Tip: Rp ${tip.toLocaleString()}\n- Total Bayar: Rp ${totalAmount.toLocaleString()}\n👉 *Iuran per orang (${people} orang): Rp ${perPerson.toLocaleString()}*\n\n(Dihitung via Super Calculator)`;
+
+      const box = document.getElementById("splitResult");
+      box.style.display = "block";
+      box.innerHTML = `
+        Total Tagihan Bersih: Rp ${bill.toLocaleString()}<br>
+        Pajak/Service (${taxPercent}%): +Rp ${taxAmount.toLocaleString()}<br>
+        Tip: +Rp ${tip.toLocaleString()}<br>
+        <b>Total Semua: Rp ${totalAmount.toLocaleString()}</b><br>
+        <hr style="border:0; border-top:1px solid #334155; margin:8px 0;">
+        <b style="font-size: 1.05rem; color: #38bdf8;">Bayar per orang (${people} org): Rp ${perPerson.toLocaleString()}</b>
+        <button class="share-wa-btn" onclick="shareToWhatsApp(lastSplitShareText)">
+          📲 Kirim Rincian Tagihan ke WhatsApp
+        </button>
+      `;
+
+      addHistoryItem('split', `Rp ${totalAmount.toLocaleString()} ÷ ${people} org = <b>Rp ${perPerson.toLocaleString()}/org</b>`);
+    }
+
+    // --- 11. MODUL USIA REALTIME TRACKER ---
+    let ageTimerInterval = null;
+
+    function startAgeRealtimeTracking() {
+      const birthInput = document.getElementById("birthDateTime").value;
+      if (!birthInput) return alert("Pilih tanggal dan waktu kelahiran terlebih dahulu!");
+
+      const birthDate = new Date(birthInput);
+      const now = new Date();
+      if (birthDate > now) return alert("Tanggal lahir tidak boleh di masa depan!");
+
+      if (ageTimerInterval) clearInterval(ageTimerInterval);
+
+      updateAgeDisplay(birthDate, true);
+
+      ageTimerInterval = setInterval(() => {
+        updateAgeDisplay(birthDate, false);
+      }, 1000);
+    }
+
+    function updateAgeDisplay(birthDate, saveToLog = false) {
+      const now = new Date();
+      let years = now.getFullYear() - birthDate.getFullYear();
+      let months = now.getMonth() - birthDate.getMonth();
+      let days = now.getDate() - birthDate.getDate();
+      let hours = now.getHours() - birthDate.getHours();
+      let minutes = now.getMinutes() - birthDate.getMinutes();
+      let seconds = now.getSeconds() - birthDate.getSeconds();
+
+      if (seconds < 0) { seconds += 60; minutes--; }
+      if (minutes < 0) { minutes += 60; hours--; }
+      if (hours < 0) { hours += 24; days--; }
+      if (days < 0) {
+        const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+        days += prevMonth.getDate();
+        months--;
+      }
+      if (months < 0) {
+        months += 12;
+        years--;
+      }
+
+      const totalDiffMs = now - birthDate;
+      const totalDays = Math.floor(totalDiffMs / (1000 * 60 * 60 * 24));
+      const totalSeconds = Math.floor(totalDiffMs / 1000);
+
+      let nextBday = new Date(now.getFullYear(), birthDate.getMonth(), birthDate.getDate(), birthDate.getHours(), birthDate.getMinutes());
+      if (now > nextBday) nextBday.setFullYear(now.getFullYear() + 1);
+      const daysToNext = Math.ceil((nextBday - now) / (1000 * 60 * 60 * 24));
+
+      const box = document.getElementById("ageResult");
+      box.style.display = "block";
+      box.innerHTML = `
+        <div style="font-size:0.8rem; color:#94a3b8; margin-bottom:4px;">Usia Realtime yang Sedang Berjalan:</div>
+        <b style="font-size: 1.2rem; color: #38bdf8;">${years} Tahun, ${months} Bulan, ${days} Hari</b><br>
+        <div style="font-size: 1rem; color: #34d399; font-weight:600; margin: 4px 0;">
+          ${String(hours).padStart(2, '0')} Jam ${String(minutes).padStart(2, '0')} Menit ${String(seconds).padStart(2, '0')} Detik
+        </div>
+        <hr style="border:0; border-top:1px solid #334155; margin:8px 0;">
+        Total Waktu Hidup: <b>${totalDays.toLocaleString()} hari</b> (${totalSeconds.toLocaleString()} detik)<br>
+        Ulang Tahun Berikutnya: <b>${daysToNext} hari lagi 🎂</b>
+      `;
+
+      if (saveToLog) {
+        addHistoryItem('age', `Lahir: ${birthDate.toLocaleDateString()} ➔ <b>${years} Thn ${months} Bln</b> (${totalDays.toLocaleString()} hr)`);
+      }
+    }
+
+    // --- 12. MODUL KONVERTER SATUAN ---
+    const unitOptions = {
+      speed: [
+        { val: "Kbps", label: "📶 Kbps" },
+        { val: "Mbps", label: "⚡ Mbps" },
+        { val: "Gbps", label: "🚀 Gbps" },
+        { val: "KB/s", label: "📄 KB/s" },
+        { val: "MB/s", label: "📦 MB/s" }
+      ],
+      temp: [
+        { val: "Celsius", label: "🌡️ Celsius (°C)" },
+        { val: "Fahrenheit", label: "🔥 Fahrenheit (°F)" },
+        { val: "Kelvin", label: "❄️ Kelvin (K)" }
+      ],
+      data: [
+        { val: "Byte", label: "💾 Byte (B)" },
+        { val: "KB", label: "📁 Kilobyte (KB)" },
+        { val: "MB", label: "📦 Megabyte (MB)" },
+        { val: "GB", label: "💽 Gigabyte (GB)" }
+      ],
+      weight: [
+        { val: "g", label: "🪶 Gram (g)" },
+        { val: "kg", label: "🏋️ Kilogram (kg)" },
+        { val: "ton", label: "🚛 Ton (t)" },
+        { val: "lbs", label: "⚖️ Pound (lbs)" }
+      ]
+    };
+
+    let timeEraSubMode = 'single';
+    let lengthMetricSubMode = 'single';
+    let travelTargetSubMode = 'distance';
+
+    const timeEraRatios = {
+      detik: 1,
+      menit: 60,
+      jam: 3600,
+      hari: 86400,
+      minggu: 604800,
+      bulan: 2592000,
+      tahun: 31536000,
+      windu: 252288000,
+      dekade: 315360000,
+      abad: 3153600000
+    };
+
+    const lengthMetricRatios = {
+      mm: 0.001,
+      cm: 0.01,
+      dm: 0.1,
+      m: 1,
+      dam: 10,
+      hm: 100,
+      km: 1000,
+      inch: 0.0254,
+      feet: 0.3048,
+      mile: 1609.344
+    };
+
+    function setTimeEraMode(mode) {
+      timeEraSubMode = mode;
+      document.getElementById("btnTimeModeSingle").classList.toggle("active", mode === 'single');
+      document.getElementById("btnTimeModeAll").classList.toggle("active", mode === 'all');
+      document.getElementById("timeEraTargetWrap").style.display = mode === 'single' ? 'block' : 'none';
+      document.getElementById("convResult").style.display = 'none';
+    }
+
+    function swapTimeEraUnits() {
+      const from = document.getElementById("timeEraFrom");
+      const to = document.getElementById("timeEraTo");
+      const tmp = from.value;
+      from.value = to.value;
+      to.value = tmp;
+    }
+
+    function setLengthMetricMode(mode) {
+      lengthMetricSubMode = mode;
+      document.getElementById("btnLenModeSingle").classList.toggle("active", mode === 'single');
+      document.getElementById("btnLenModeAll").classList.toggle("active", mode === 'all');
+      document.getElementById("lenMetricTargetWrap").style.display = mode === 'single' ? 'block' : 'none';
+      document.getElementById("convResult").style.display = 'none';
+    }
+
+    function swapLengthMetricUnits() {
+      const from = document.getElementById("lenMetricFrom");
+      const to = document.getElementById("lenMetricTo");
+      const tmp = from.value;
+      from.value = to.value;
+      to.value = tmp;
+    }
+
+    function setTravelTargetMode(target) {
+      travelTargetSubMode = target;
+      document.getElementById("btnTrvTargetDist").classList.toggle("active", target === 'distance');
+      document.getElementById("btnTrvTargetTime").classList.toggle("active", target === 'time');
+      document.getElementById("trvTargetDistBox").style.display = target === 'distance' ? 'block' : 'none';
+      document.getElementById("trvTargetTimeBox").style.display = target === 'time' ? 'block' : 'none';
+      document.getElementById("convResult").style.display = 'none';
+    }
+
+    function formatNumberDisplay(num) {
+      if (isNaN(num)) return '0';
+      if (Math.abs(num) >= 1e9 || (Math.abs(num) > 0 && Math.abs(num) < 1e-4)) {
+        return num.toExponential(4);
+      }
+      return Number(num.toFixed(4)).toLocaleString('id-ID', { maximumFractionDigits: 4 });
+    }
+
+    function updateConvOptions() {
+      const type = document.getElementById("convType").value;
+      const stdDiv = document.getElementById("standardConvInputs");
+      const dlDiv = document.getElementById("downloadInputs");
+      const timeDiv = document.getElementById("timeEraInputs");
+      const lenDiv = document.getElementById("lengthMetricInputs");
+      const trvDiv = document.getElementById("travelInputs");
+
+      stdDiv.style.display = "none";
+      dlDiv.style.display = "none";
+      timeDiv.style.display = "none";
+      lenDiv.style.display = "none";
+      trvDiv.style.display = "none";
+      document.getElementById("convResult").style.display = 'none';
+
+      if (type === "time_era") {
+        timeDiv.style.display = "block";
+      } else if (type === "length_metric") {
+        lenDiv.style.display = "block";
+      } else if (type === "travel") {
+        trvDiv.style.display = "block";
+      } else if (type === "download") {
+        dlDiv.style.display = "block";
+      } else {
+        stdDiv.style.display = "block";
+        const from = document.getElementById("convFrom");
+        const to = document.getElementById("convTo");
+        from.innerHTML = "";
+        to.innerHTML = "";
+        unitOptions[type].forEach(u => {
+          from.innerHTML += `<option value="${u.val}">${u.label}</option>`;
+          to.innerHTML += `<option value="${u.val}">${u.label}</option>`;
+        });
+        to.selectedIndex = 1;
+      }
+    }
+
+    function prosesKonversi() {
+      const type = document.getElementById("convType").value;
+      const box = document.getElementById("convResult");
+
+      if (type === "time_era") {
+        const val = parseFloat(document.getElementById("timeEraVal").value);
+        const from = document.getElementById("timeEraFrom").value;
+        const to = document.getElementById("timeEraTo").value;
+
+        if (isNaN(val)) return alert("Masukkan nilai waktu yang valid!");
+
+        const inSeconds = val * timeEraRatios[from];
+
+        if (timeEraSubMode === 'single') {
+          const res = inSeconds / timeEraRatios[to];
+          const formatted = formatNumberDisplay(res);
+          box.style.display = "block";
+          box.innerHTML = `
+            Hasil Konversi Waktu:<br>
+            <b style="font-size:1.35rem; color:#38bdf8;">${val.toLocaleString('id-ID')} ${from.toUpperCase()} = ${formatted} ${to.toUpperCase()}</b>
+          `;
+          addHistoryItem('conv', `${val} ${from} ➔ <b>${formatted} ${to}</b>`);
+        } else {
+          box.style.display = "block";
+          let html = `<b>📜 Rincian Lengkap untuk ${val.toLocaleString('id-ID')} ${from.toUpperCase()}:</b><div class="breakdown-grid">`;
+          const order = [
+            { key: 'abad', icon: '🏛️' }, { key: 'dekade', icon: '🏛️' }, { key: 'windu', icon: '🎋' },
+            { key: 'tahun', icon: '📅' }, { key: 'bulan', icon: '🗓️' }, { key: 'minggu', icon: '📆' },
+            { key: 'hari', icon: '☀️' }, { key: 'jam', icon: '⏰' }, { key: 'menit', icon: '⏱️' }, { key: 'detik', icon: '⏲️' }
+          ];
+          order.forEach(item => {
+            const converted = inSeconds / timeEraRatios[item.key];
+            html += `
+              <div class="breakdown-item">
+                <div class="unit-name">${item.icon} ${item.key}</div>
+                <div class="unit-val">${formatNumberDisplay(converted)}</div>
+              </div>
+            `;
+          });
+          html += `</div>`;
+          box.innerHTML = html;
+          addHistoryItem('conv', `Bedah ${val} ${from} ke Rincian Lengkap Waktu`);
+        }
+        return;
+      }
+
+      if (type === "length_metric") {
+        const val = parseFloat(document.getElementById("lenMetricVal").value);
+        const from = document.getElementById("lenMetricFrom").value;
+        const to = document.getElementById("lenMetricTo").value;
+
+        if (isNaN(val)) return alert("Masukkan nilai panjang yang valid!");
+
+        const inMeters = val * lengthMetricRatios[from];
+
+        if (lengthMetricSubMode === 'single') {
+          const res = inMeters / lengthMetricRatios[to];
+          const formatted = formatNumberDisplay(res);
+          box.style.display = "block";
+          box.innerHTML = `
+            Hasil Konversi Panjang / Jarak:<br>
+            <b style="font-size:1.35rem; color:#38bdf8;">${val.toLocaleString('id-ID')} ${from} = ${formatted} ${to}</b>
+          `;
+          addHistoryItem('conv', `${val} ${from} ➔ <b>${formatted} ${to}</b>`);
+        } else {
+          box.style.display = "block";
+          let html = `<b>🪜 Tangga Satuan Metrik untuk ${val.toLocaleString('id-ID')} ${from}:</b><div class="breakdown-grid">`;
+          const metrics = [
+            { key: 'km', icon: '🛤️' }, { key: 'hm', icon: '🛣️' }, { key: 'dam', icon: '🚩' },
+            { key: 'm', icon: '📏' }, { key: 'dm', icon: '📐' }, { key: 'cm', icon: '📍' }, { key: 'mm', icon: '🔍' }
+          ];
+          metrics.forEach(item => {
+            const converted = inMeters / lengthMetricRatios[item.key];
+            html += `
+              <div class="breakdown-item">
+                <div class="unit-name">${item.icon} ${item.key.toUpperCase()}</div>
+                <div class="unit-val">${formatNumberDisplay(converted)} ${item.key}</div>
+              </div>
+            `;
+          });
+          html += `</div>`;
+          box.innerHTML = html;
+          addHistoryItem('conv', `Tangga Metrik ${val} ${from}`);
+        }
+        return;
+      }
+
+      if (type === "travel") {
+        const bDist = parseFloat(document.getElementById("trvBaseDist").value);
+        const bDistUnit = document.getElementById("trvBaseDistUnit").value;
+        const bTime = parseFloat(document.getElementById("trvBaseTime").value);
+        const bTimeUnit = document.getElementById("trvBaseTimeUnit").value;
+
+        if (isNaN(bDist) || isNaN(bTime) || bTime <= 0) {
+          return alert("Masukkan jarak dan waktu dasar perjalanan yang valid!");
+        }
+
+        const distInKm = bDistUnit === 'm' ? bDist / 1000 : bDist;
+        let timeInHours = bTime;
+        if (bTimeUnit === 'menit') timeInHours = bTime / 60;
+        if (bTimeUnit === 'detik') timeInHours = bTime / 3600;
+
+        const speedKmH = distInKm / timeInHours;
+        const speedMS = speedKmH / 3.6;
+
+        if (travelTargetSubMode === 'distance') {
+          const nTime = parseFloat(document.getElementById("trvNewTimeVal").value);
+          const nTimeUnit = document.getElementById("trvNewTimeUnit").value;
+          if (isNaN(nTime) || nTime < 0) return alert("Masukkan durasi perjalanan yang valid!");
+
+          let nTimeInHours = nTime;
+          if (nTimeUnit === 'menit') nTimeInHours = nTime / 60;
+          if (nTimeUnit === 'detik') nTimeInHours = nTime / 3600;
+
+          const resDistKm = speedKmH * nTimeInHours;
+          const resDistM = resDistKm * 1000;
+
+          box.style.display = "block";
+          box.innerHTML = `
+            Kecepatan Dasar: <b>${formatNumberDisplay(speedKmH)} km/jam</b> (${formatNumberDisplay(speedMS)} m/s)<br>
+            <hr style="border:0; border-top:1px solid #334155; margin:8px 0;">
+            Dalam waktu <b>${nTime} ${nTimeUnit}</b>, estimasi jarak tempuh:<br>
+            <b style="font-size:1.35rem; color:#38bdf8;">${formatNumberDisplay(resDistKm)} km</b>
+            <span style="font-size:0.85rem; color:#94a3b8;"> (${formatNumberDisplay(resDistM)} meter)</span>
+          `;
+          addHistoryItem('conv', `Jarak (${speedKmH.toFixed(1)} km/j × ${nTime} ${nTimeUnit}) ➔ <b>${formatNumberDisplay(resDistKm)} km</b>`);
+        } else {
+          const nDist = parseFloat(document.getElementById("trvNewDistVal").value);
+          const nDistUnit = document.getElementById("trvNewDistUnit").value;
+          if (isNaN(nDist) || nDist < 0) return alert("Masukkan target jarak perjalanan yang valid!");
+
+          const nDistInKm = nDistUnit === 'm' ? nDist / 1000 : nDist;
+          const neededHours = nDistInKm / speedKmH;
+
+          const h = Math.floor(neededHours);
+          const m = Math.floor((neededHours - h) * 60);
+          const s = Math.round(((neededHours - h) * 60 - m) * 60);
+
+          let timeStr = "";
+          if (h > 0) timeStr += `${h} Jam `;
+          if (m > 0 || h > 0) timeStr += `${m} Menit `;
+          timeStr += `${s} Detik`;
+
+          box.style.display = "block";
+          box.innerHTML = `
+            Kecepatan Dasar: <b>${formatNumberDisplay(speedKmH)} km/jam</b> (${formatNumberDisplay(speedMS)} m/s)<br>
+            <hr style="border:0; border-top:1px solid #334155; margin:8px 0;">
+            Waktu untuk menempuh <b>${nDist} ${nDistUnit}</b>:<br>
+            <b style="font-size:1.35rem; color:#34d399;">${timeStr || '0 Detik'}</b>
+          `;
+          addHistoryItem('conv', `Waktu tempuh ${nDist} ${nDistUnit} ➔ <b>${timeStr}</b>`);
+        }
+        return;
+      }
+
+      if (type === "download") {
+        const sizeGB = parseFloat(document.getElementById("dlFileSize").value);
+        const speedMbps = parseFloat(document.getElementById("dlNetSpeed").value);
+
+        if (isNaN(sizeGB) || isNaN(speedMbps) || speedMbps <= 0) {
+          return alert("Masukkan ukuran file dan kecepatan download yang valid!");
+        }
+
+        const sizeMB = sizeGB * 1024;
+        const speedMBps = speedMbps / 8;
+        const totalSec = sizeMB / speedMBps;
+
+        const h = Math.floor(totalSec / 3600);
+        const m = Math.floor((totalSec % 3600) / 60);
+        const s = Math.round(totalSec % 60);
+
+        box.style.display = "block";
+        box.innerHTML = `
+          Kecepatan Download Nyata: <b>${speedMBps.toFixed(2)} MB/s</b><br>
+          Estimasi Selesai: <b>${h} Jam ${m} Menit ${s} Detik</b>
+        `;
+        addHistoryItem('conv', `DL ${sizeGB}GB @ ${speedMbps}Mbps ➔ <b>${h}j ${m}m ${s}d</b>`);
+        return;
+      }
+
+      const val = parseFloat(document.getElementById("convVal").value);
+      const from = document.getElementById("convFrom").value;
+      const to = document.getElementById("convTo").value;
+      if (isNaN(val)) return alert("Masukkan nilai angka yang valid!");
+
+      let hasil = 0;
+      if (type === "speed") {
+        const f = { "Kbps": 1000, "Mbps": 1000000, "Gbps": 1000000000, "KB/s": 8000, "MB/s": 8000000 };
+        hasil = (val * f[from]) / f[to];
+      } else if (type === "temp") {
+        let c = from === "Celsius" ? val : from === "Fahrenheit" ? (val - 32) * 5/9 : val - 273.15;
+        hasil = to === "Celsius" ? c : to === "Fahrenheit" ? (c * 9/5) + 32 : c + 273.15;
+      } else if (type === "data") {
+        const f = { "Byte": 1, "KB": 1024, "MB": 1024**2, "GB": 1024**3 };
+        hasil = (val * f[from]) / f[to];
+      } else if (type === "weight") {
+        const f = { "g": 1, "kg": 1000, "ton": 1000000, "lbs": 453.592 };
+        hasil = (val * f[from]) / f[to];
+      }
+
+      const formatted = hasil.toFixed(4).replace(/\.?0+$/, "");
+      box.style.display = "block";
+      box.innerHTML = `Hasil Konversi: <b>${formatted} ${to}</b>`;
+      addHistoryItem('conv', `${val} ${from} ➔ <b>${formatted} ${to}</b>`);
+    }
+
+    // --- 13. MODUL PROGRAMMER & IP ---
+    function convertBase() {
+      const val = parseInt(document.getElementById("baseInput").value);
+      const out = document.getElementById("baseOutput");
+      if (isNaN(val)) {
+        out.innerHTML = `<b>HEX:</b> -<br><b>BIN:</b> -<br><b>OCT:</b> -`;
+        return;
+      }
+      out.innerHTML = `
+        <b>HEX:</b> 0x${val.toString(16).toUpperCase()}<br>
+        <b>BIN:</b> ${val.toString(2)}<br>
+        <b>OCT:</b> ${val.toString(8)}
+      `;
+    }
+
+    function calcSubnet() {
+      const ip = document.getElementById("ipInput").value.trim();
+      const cidr = parseInt(document.getElementById("cidrInput").value);
+      const parts = ip.split(".").map(Number);
+      if (parts.length !== 4 || parts.some(p => isNaN(p) || p < 0 || p > 255) || isNaN(cidr)) {
+        return alert("Format IP tidak valid!");
+      }
+
+      const totalHosts = Math.pow(2, 32 - cidr);
+      const usableHosts = cidr >= 31 ? 0 : totalHosts - 2;
+      const mask = (~0 << (32 - cidr)) >>> 0;
+      const maskStr = [(mask >>> 24) & 255, (mask >>> 16) & 255, (mask >>> 8) & 255, mask & 255].join(".");
+
+      const ipNum = ((parts[0] << 24) | (parts[1] << 16) | (parts[2] << 8) | parts[3]) >>> 0;
+      const netNum = (ipNum & mask) >>> 0;
+      const broadNum = (netNum | (~mask >>> 0)) >>> 0;
+
+      const toIP = (num) => [(num >>> 24) & 255, (num >>> 16) & 255, (num >>> 8) & 255, num & 255].join(".");
+
+      const box = document.getElementById("subnetOutput");
+      box.style.display = "block";
+      box.innerHTML = `
+        <b>Netmask:</b> ${maskStr}<br>
+        <b>Network ID:</b> ${toIP(netNum)}<br>
+        <b>Broadcast:</b> ${toIP(broadNum)}<br>
+        <b>Host Valid:</b> ${usableHosts.toLocaleString()} Host
+      `;
+
+      addHistoryItem('subnet', `${ip}/${cidr} ➔ Net: <b>${toIP(netNum)}</b> | Host: <b>${usableHosts.toLocaleString()}</b>`);
+    }
+
+    // --- 14. MODUL GRAFIK INTERAKTIF ---
+    function setGraphPreset(formula) {
+      document.getElementById("graphCustomInput").value = formula;
+      drawGraph();
+    }
+
+    function updateScaleLabel() {
+      const scale = document.getElementById("graphScale").value;
+      document.getElementById("zoomValLabel").innerText = `${scale}px`;
+    }
+
+    function drawGraph() {
+      const canvas = document.getElementById("graphCanvas");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      const rawExpr = document.getElementById("graphCustomInput").value.trim();
+      const scale = parseInt(document.getElementById("graphScale").value) || 30;
+      const w = canvas.width;
+      const h = canvas.height;
+      const cx = w / 2;
+      const cy = h / 2;
+
+      ctx.clearRect(0, 0, w, h);
+
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
+      ctx.lineWidth = 1;
+
+      for (let x = cx; x < w; x += scale) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+      }
+      for (let x = cx; x > 0; x -= scale) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+      }
+      for (let y = cy; y < h; y += scale) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+      }
+      for (let y = cy; y > 0; y -= scale) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+      }
+
+      ctx.strokeStyle = "rgba(148, 163, 184, 0.4)";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(0, cy); ctx.lineTo(w, cy);
+      ctx.moveTo(cx, 0); ctx.lineTo(cx, h);
+      ctx.stroke();
+
+      ctx.fillStyle = "#64748b";
+      ctx.font = "10px sans-serif";
+      ctx.fillText("0", cx + 4, cy + 12);
+
+      if (!rawExpr) return;
+
+      const sanitized = rawExpr.replace(/\^/g, '**');
+      let evalFn;
+      try {
+        evalFn = new Function('x', `return ${sanitized};`);
+        evalFn(1);
+      } catch (err) {
+        return;
+      }
+
+      ctx.strokeStyle = "#38bdf8";
+      ctx.lineWidth = 2.2;
+      ctx.beginPath();
+
+      let isDrawing = false;
+
+      for (let px = 0; px < w; px++) {
+        const x = (px - cx) / scale;
+        try {
+          const y = evalFn(x);
+          const py = cy - (y * scale);
+
+          if (!isFinite(y) || isNaN(y) || py < -1000 || py > h + 1000) {
+            isDrawing = false;
+            continue;
+          }
+
+          if (!isDrawing) {
+            ctx.moveTo(px, py);
+            isDrawing = true;
+          } else {
+            ctx.lineTo(px, py);
+          }
+        } catch (e) {
+          isDrawing = false;
+        }
+      }
+      ctx.stroke();
+    }
+
+    // --- 15. MODUL KASIR + SHARE WA ---
+    let lastCashierShareText = "";
+
+    function prosesKasir() {
+      const awal = parseFloat(document.getElementById("belanjaAwal").value) || 0;
+      const diskon = parseFloat(document.getElementById("diskonPersen").value) || 0;
+      const bayar = parseFloat(document.getElementById("uangBayar").value) || 0;
+
+      const pot = awal * (diskon / 100);
+      const total = awal - pot;
+      const kembalian = bayar - total;
+
+      lastCashierShareText = `*STRUK PEMBAYARAN KASIR*\n- Total Belanja: Rp ${awal.toLocaleString()}\n- Diskon (${diskon}%): -Rp ${pot.toLocaleString()}\n- Total Harus Bayar: Rp ${total.toLocaleString()}\n- Uang Tunai: Rp ${bayar.toLocaleString()}\n👉 *${kembalian >= 0 ? 'Kembalian: Rp ' + kembalian.toLocaleString() : 'Kurang: Rp ' + Math.abs(kembalian).toLocaleString()}*\n\nTerima kasih telah berbelanja!`;
+
+      const box = document.getElementById("kasirResult");
+      box.style.display = "block";
+      box.innerHTML = `
+        Total Bayar: Rp ${total.toLocaleString()}<br>
+        <b style="color:${kembalian >= 0 ? '#34d399' : '#f87171'}">
+          ${kembalian >= 0 ? 'Kembalian: Rp ' + kembalian.toLocaleString() : 'Uang Kurang: Rp ' + Math.abs(kembalian).toLocaleString()}
+        </b>
+        <button class="share-wa-btn" onclick="shareToWhatsApp(lastCashierShareText)">
+          📲 Kirim Struk Kasir ke WhatsApp
+        </button>
+      `;
+
+      addHistoryItem('cashier', `Belanja Rp ${total.toLocaleString()} (Disc ${diskon}%) | Bayar Rp ${bayar.toLocaleString()}`);
+    }
+
+    function shareToWhatsApp(text) {
+      if (!text) return;
+      const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+      window.open(url, '_blank');
+    }
+
+    // --- 16. BILLING TIMER ---
+    let timerSec = 0;
+    let timerInterval = null;
+
+    function formatTime(s) {
+      const h = String(Math.floor(s / 3600)).padStart(2, '0');
+      const m = String(Math.floor((s % 3600) / 60)).padStart(2, '0');
+      const sec = String(s % 60).padStart(2, '0');
+      return `${h}:${m}:${sec}`;
+    }
+
+    function startTimer() {
+      if (timerInterval) return;
+      timerInterval = setInterval(() => {
+        timerSec++;
+        document.getElementById("timerDisplay").innerText = formatTime(timerSec);
+        const rate = parseFloat(document.getElementById("hourlyRate").value) || 0;
+        const cost = (timerSec / 3600) * rate;
+        document.getElementById("timerCostResult").innerHTML = `Biaya Berjalan: <b>Rp ${Math.round(cost).toLocaleString()}</b>`;
+      }, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+
+    function resetTimer() {
+      stopTimer();
+      timerSec = 0;
+      document.getElementById("timerDisplay").innerText = "00:00:00";
+      document.getElementById("timerCostResult").innerHTML = `Biaya Berjalan: <b>Rp 0</b>`;
+    }
+  </script>
+</body>
+</html>
