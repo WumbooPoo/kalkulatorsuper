@@ -228,7 +228,7 @@
     }
     button.equal:hover { background: #059669; }
 
-    /* Form Styles & Anti-Overflow */
+    /* Form Styles */
     .form-group {
       display: flex;
       flex-direction: column;
@@ -259,7 +259,7 @@
       text-overflow: ellipsis;
     }
 
-    .form-group input, .form-group select {
+    .form-group input, .form-group select, .form-group textarea {
       background: #0f172a;
       border: 1px solid #334155;
       border-radius: 14px;
@@ -270,17 +270,16 @@
       transition: border-color 0.2s;
       width: 100%;
       max-width: 100%;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
     }
 
-    .form-group select option, .form-group select optgroup {
-      background: #0f172a;
-      color: white;
+    .form-group textarea {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.85rem;
+      resize: vertical;
+      line-height: 1.4;
     }
 
-    .form-group input:focus, .form-group select:focus {
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
       border-color: #38bdf8;
     }
 
@@ -530,7 +529,7 @@
       word-break: break-all;
     }
 
-    /* Mode Pill & Sub-Control Konverter */
+    /* Mode Pill */
     .mode-pill {
       display: flex;
       background: rgba(15, 23, 42, 0.8);
@@ -609,6 +608,105 @@
       font-weight: bold;
       color: #38bdf8;
       word-break: break-all;
+    }
+
+    /* Modul Chat AI */
+    .ai-chat-container {
+      display: flex;
+      flex-direction: column;
+      height: 360px;
+      background: #0b1120;
+      border: 1px solid #334155;
+      border-radius: 18px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .ai-chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .ai-bubble {
+      max-width: 85%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 0.86rem;
+      line-height: 1.55;
+      word-break: break-word;
+    }
+
+    .ai-bubble.user {
+      align-self: flex-end;
+      background: #0284c7;
+      color: #ffffff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .ai-bubble.bot {
+      align-self: flex-start;
+      background: #1e293b;
+      color: #f8fafc;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom-left-radius: 4px;
+    }
+
+    .ai-bubble.bot pre {
+      background: #0f172a;
+      padding: 8px 10px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: 'Consolas', monospace;
+      font-size: 0.8rem;
+      margin: 6px 0;
+      border: 1px solid #334155;
+    }
+
+    .ai-bubble.bot code {
+      font-family: 'Consolas', monospace;
+      color: #38bdf8;
+    }
+
+    .ai-chat-input-bar {
+      display: flex;
+      gap: 8px;
+      padding: 10px;
+      background: rgba(15, 23, 42, 0.95);
+      border-top: 1px solid #334155;
+    }
+
+    .ai-chat-input-bar input {
+      flex: 1;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 10px 14px;
+      color: white;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .ai-chat-input-bar input:focus {
+      border-color: #38bdf8;
+    }
+
+    .ai-chat-input-bar button {
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 0 16px;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .ai-chat-input-bar button:hover {
+      background: #059669;
     }
 
     /* History Box */
@@ -782,7 +880,7 @@
 <body>
 
   <div class="calc-container">
-    <!-- Header Tab Navigasi (13 Modul Lengkap dengan Divider Putih Terang) -->
+    <!-- Header Tab Navigasi (15 Modul Lengkap) -->
     <div class="tabs-header">
       <div class="tabs">
         <button class="tab-btn active" onclick="switchMode('calc')">🔢 Scientific</button>
@@ -805,6 +903,10 @@
         <div class="tab-divider"></div>
         <button class="tab-btn" onclick="switchMode('dev')">💻 Programmer/IP</button>
         <div class="tab-divider"></div>
+        <button class="tab-btn" onclick="switchMode('codeconv')">🔄 Code Converter</button>
+        <div class="tab-divider"></div>
+        <button class="tab-btn" onclick="switchMode('ai')">💬 Tanya AI</button>
+        <div class="tab-divider"></div>
         <button class="tab-btn" onclick="switchMode('graph')">📈 Grafik</button>
         <div class="tab-divider"></div>
         <button class="tab-btn" onclick="switchMode('cashier')">🧾 Kasir</button>
@@ -815,7 +917,7 @@
 
     <div class="section-divider"></div>
 
-    <!-- 1. Modul Scientific Pro (Layout Klasik Lengkap dengan Angka 0) -->
+    <!-- 1. Modul Scientific Pro -->
     <div id="mode-calc" class="module-content active">
       <div class="tutorial-box">
         💡 <b>Panduan Scientific:</b> Tekan tombol angka & operator. Gunakan <b>sin/cos/tan</b> untuk trigonometri, <b>xʸ</b> untuk pangkat, <b>√</b> untuk akar kuadrat, dan <b>Copy</b> untuk menyalin hasil.
@@ -829,47 +931,40 @@
       </div>
 
       <div class="buttons-grid">
-        <!-- Baris 1: Trigonometri & AC -->
         <button class="calc-key sci" onclick="appendFunc('Math.sin')">sin</button>
         <button class="calc-key sci" onclick="appendFunc('Math.cos')">cos</button>
         <button class="calc-key sci" onclick="appendFunc('Math.tan')">tan</button>
         <button class="calc-key sci" onclick="appendFunc('Math.log10')">log</button>
         <button class="calc-key danger" onclick="clearAll()">AC</button>
 
-        <!-- Baris 2: Konstanta & Hapus -->
         <button class="calc-key sci" onclick="appendValue('Math.PI')">π</button>
         <button class="calc-key sci" onclick="appendValue('Math.E')">e</button>
         <button class="calc-key sci" onclick="calcFactorial()">n!</button>
         <button class="calc-key sci" onclick="appendValue('**')">xʸ</button>
         <button class="calc-key op" onclick="deleteLast()">⌫</button>
 
-        <!-- Baris 3: Aljabar & Pembagian -->
         <button class="calc-key sci" onclick="calcSquareRoot()">√</button>
         <button class="calc-key sci" onclick="appendValue('(')">(</button>
         <button class="calc-key sci" onclick="appendValue(')')">)</button>
         <button class="calc-key sci" onclick="calcPercent()">%</button>
         <button class="calc-key op" onclick="appendValue('/')">÷</button>
 
-        <!-- Baris 4: Angka 7-9 & Perkalian/Pengurangan -->
         <button class="calc-key" onclick="appendValue('7')">7</button>
         <button class="calc-key" onclick="appendValue('8')">8</button>
         <button class="calc-key" onclick="appendValue('9')">9</button>
         <button class="calc-key op" onclick="appendValue('*')">×</button>
         <button class="calc-key op" onclick="appendValue('-')">-</button>
 
-        <!-- Baris 5: Angka 4-6 & Penambahan (Lebar) -->
         <button class="calc-key" onclick="appendValue('4')">4</button>
         <button class="calc-key" onclick="appendValue('5')">5</button>
         <button class="calc-key" onclick="appendValue('6')">6</button>
         <button class="calc-key op" style="grid-column: span 2;" onclick="appendValue('+')">+</button>
 
-        <!-- Baris 6: Angka 1-3 & Sama Dengan (Besar 2 Kolom x 2 Baris) -->
         <button class="calc-key" onclick="appendValue('1')">1</button>
         <button class="calc-key" onclick="appendValue('2')">2</button>
         <button class="calc-key" onclick="appendValue('3')">3</button>
         <button class="calc-key equal" style="grid-column: span 2; grid-row: span 2;" onclick="calculate()">=</button>
 
-        <!-- Baris 7: Angka 0 (Lebar Klasik) & Titik Desimal -->
         <button class="calc-key" style="grid-column: span 2;" onclick="appendValue('0')">0</button>
         <button class="calc-key" onclick="appendValue('.')">.</button>
       </div>
@@ -930,7 +1025,7 @@
       </div>
     </div>
 
-    <!-- 3. Modul Currency Converter (Searchable Modal Picker & Swap Tanpa Auto-Hitung) -->
+    <!-- 3. Modul Currency Converter -->
     <div id="mode-currency" class="module-content">
       <div class="tutorial-box">
         💡 <b>Panduan Currency Converter:</b> Klik kolom mata uang untuk membuka jendela pencarian independen. Gunakan tombol tukar (⇄) untuk membalik posisi, lalu klik tombol hijau untuk mengonversi kurs.
@@ -984,16 +1079,14 @@
         <div class="currency-search-wrap">
           <input type="text" id="modalCurrencySearch" placeholder="🔍 Cari negara, kode (USD, JPY), atau nama mata uang..." oninput="filterModalCurrencies()">
         </div>
-        <div class="currency-list" id="modalCurrencyList">
-          <!-- Item mata uang dimasukkan secara dinamis -->
-        </div>
+        <div class="currency-list" id="modalCurrencyList"></div>
       </div>
     </div>
 
     <!-- 4. Modul Simulasi Kredit / Cicilan -->
     <div id="mode-loan" class="module-content">
       <div class="tutorial-box">
-        💡 <b>Panduan Simulasi Kredit:</b> Hitung cicilan gadget, motor, mobil, atau pinjaman bank. Pilih metode <b>Bunga Flat</b> (leasing biasa) atau <b>Bunga Efektif/Anuitas</b> (bank/KPR) untuk mengetahui total bunga riil yang dibayar.
+        💡 <b>Panduan Simulasi Kredit:</b> Hitung cicilan gadget, motor, mobil, atau pinjaman bank. Pilih metode <b>Bunga Flat</b> atau <b>Bunga Efektif/Anuitas</b> untuk mengetahui total bunga riil.
       </div>
       <div class="form-group">
         <label>Nama Barang / Pinjaman</label>
@@ -1041,7 +1134,7 @@
     <!-- 5. Modul Seller Fee & Jualan Online -->
     <div id="mode-seller" class="module-content">
       <div class="tutorial-box">
-        💡 <b>Panduan Seller Fee:</b> Masukkan modal dasar per produk, target profit bersih yang diinginkan, dan persentase potongan marketplace. Kalkulator menghitung harga jual tepat agar keuntunganmu tidak terpotong fee admin.
+        💡 <b>Panduan Seller Fee:</b> Masukkan modal dasar per produk, target profit bersih, dan persentase potongan admin marketplace.
       </div>
       <div class="form-group">
         <label>Modal Barang (Rp)</label>
@@ -1070,7 +1163,7 @@
     <!-- 6. Modul Target Menabung -->
     <div id="mode-savings" class="module-content">
       <div class="tutorial-box">
-        💡 <b>Panduan Menabung:</b> Tuliskan nama barang impian, target harga barang, dan berapa bulan target tercapai. Sistem akan memecah target menjadi nominal tabungan bulanan dan harian.
+        💡 <b>Panduan Menabung:</b> Tuliskan target barang impian, target nominal harga, dan berapa bulan target tercapai.
       </div>
       <div class="form-group">
         <label>Nama Barang / Target Impian</label>
@@ -1099,7 +1192,7 @@
     <!-- 7. Modul Patungan + Share WA -->
     <div id="mode-split" class="module-content">
       <div class="tutorial-box">
-        💡 <b>Panduan Patungan:</b> Masukkan total bon/struk, jumlah orang yang ikut patungan, serta pajak resto/tip bila ada. Kalkulator akan membagi rata tagihan dan menyediakan tombol kirim rincian ke WhatsApp!
+        💡 <b>Panduan Patungan:</b> Masukkan total bon belanja/makan, jumlah orang yang ikut patungan, serta pajak resto/tip bila ada.
       </div>
       <div class="form-group">
         <label>Total Tagihan Belanja / Makan (Rp)</label>
@@ -1132,7 +1225,7 @@
     <!-- 8. Modul Usia Realtime -->
     <div id="mode-age" class="module-content">
       <div class="tutorial-box">
-        💡 <b>Panduan Usia Realtime:</b> Pilih tanggal & jam kelahiranmu, lalu klik tombol pelacakan. Angka detik, menit, jam, hingga hari hidupmu akan terus bertambah secara dinamis setiap detik!
+        💡 <b>Panduan Usia Realtime:</b> Pilih tanggal & jam kelahiranmu, lalu klik tombol pelacakan.
       </div>
       <div class="form-group">
         <label>Pilih Tanggal & Waktu Kelahiran</label>
@@ -1153,7 +1246,7 @@
     <!-- 9. Modul Konverter Satuan -->
     <div id="mode-conv" class="module-content">
       <div class="tutorial-box">
-        💡 <b>Panduan Konverter Lengkap:</b> Pilih kategori, masukkan angka, lalu klik tombol <b>Hitung Sekarang</b> untuk melihat hasil konversi serta menyimpan riwayat perhitungannya.
+        💡 <b>Panduan Konverter Lengkap:</b> Pilih kategori, masukkan angka, lalu klik tombol <b>Hitung Sekarang</b>.
       </div>
       <div class="form-group">
         <label>Kategori Konversi</label>
@@ -1382,7 +1475,7 @@
     <!-- 10. Modul Programmer & Subnetting IP -->
     <div id="mode-dev" class="module-content">
       <div class="tutorial-box">
-        💡 <b>Panduan Programmer & IP:</b> Ketik angka desimal untuk konversi instan ke HEX, BIN, dan OCT. Masukkan alamat IP dan CIDR (contoh: /24) untuk menghitung Netmask, Network ID, Broadcast, dan jumlah Host valid.
+        💡 <b>Panduan Programmer & IP:</b> Ketik angka desimal untuk konversi instan ke HEX, BIN, dan OCT. Masukkan alamat IP dan CIDR untuk menghitung Netmask dan Host valid.
       </div>
       <div class="form-group">
         <label>Konversi Angka Desimal</label>
@@ -1414,7 +1507,88 @@
       </div>
     </div>
 
-    <!-- 11. Modul Visualizer Grafik Interaktif -->
+    <!-- 11. Modul Code Converter Dua Arah -->
+    <div id="mode-codeconv" class="module-content">
+      <div class="tutorial-box">
+        💡 <b>Panduan Code Converter:</b> Konversi kode bot WhatsApp bolak-balik antara format <b>Case</b> dan <b>Plugin</b> (ESM/CommonJS).
+      </div>
+
+      <div class="mode-pill">
+        <button id="btnDirCaseToPlugin" class="active" onclick="setCodeConvDirection('case2plugin')">⚡ Case ➔ Plugin</button>
+        <button id="btnDirPluginToCase" onclick="setCodeConvDirection('plugin2case')">📦 Plugin ➔ Case</button>
+      </div>
+
+      <div id="caseToPluginOptions">
+        <div class="mode-pill" style="margin-bottom: 12px;">
+          <button id="btnBotTypeEsm" class="active" onclick="setBotPluginType('esm')">Format ESM (export default)</button>
+          <button id="btnBotTypeCjs" onclick="setBotPluginType('cjs')">Format CommonJS (module.exports)</button>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Kategori Menu (Tag)</label>
+            <input type="text" id="botPluginTag" value="main" placeholder="Contoh: main, tools, ai">
+          </div>
+          <div class="form-group">
+            <label>Deskripsi Bantuan (Help)</label>
+            <input type="text" id="botPluginHelp" placeholder="Kosongkan jika auto-detect">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label id="codeConvInputLabel">Tempelkan Kode Case Bot WA di Sini</label>
+        <textarea id="codeConvInput" rows="7" placeholder="Contoh:
+case 'ping':
+case 'p': {
+    m.reply('Pong!');
+    break;
+}"></textarea>
+      </div>
+
+      <button class="action-btn" onclick="processCodeConversion()">🔄 Konversi Kode Sekarang</button>
+
+      <div class="result-box" id="codeConvResultBox" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <b style="color: #38bdf8;" id="codeConvOutputLabel">Hasil Kode Siap Pakai:</b>
+          <button class="pill-btn" onclick="copyCodeConvOutput()">📋 Copy Kode</button>
+        </div>
+        <textarea id="codeConvOutput" rows="11" readonly style="width: 100%;"></textarea>
+      </div>
+
+      <div class="history-card">
+        <div class="history-header">
+          <span><b>📜 Riwayat Konversi Kode:</b></span>
+          <span class="clear-btn" onclick="clearModuleHistory('codeconv')">[Hapus]</span>
+        </div>
+        <div class="history-items" id="history-codeconv">Belum ada riwayat.</div>
+      </div>
+    </div>
+
+    <!-- 12. Modul Tanya AI Assistant (Terintegrasi Netlify Serverless Function) -->
+    <div id="mode-ai" class="module-content">
+      <div class="tutorial-box">
+        💡 <b>Panduan AI Assistant:</b> Tanyakan soal matematika rumit, logika rumus, bantuan coding Python/JS, atau diskusikan algoritma pemrograman[cite: 8].
+      </div>
+
+      <div class="ai-chat-container">
+        <div class="ai-chat-messages" id="aiChatMessages">
+          <div class="ai-bubble bot">
+            Halo! 👋 Aku asisten pintar Super Calculator. Ada soal matematika, rumus, atau kodingan yang ingin kamu tanyakan atau cek bersama?
+          </div>
+        </div>
+        <div class="ai-chat-input-bar">
+          <input type="text" id="aiChatInput" placeholder="Ketik pertanyaan matematika / coding di sini..." onkeypress="if(event.key==='Enter') sendAiMessage()">
+          <button onclick="sendAiMessage()">Kirim 🚀</button>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end;">
+        <button class="pill-btn" onclick="clearAiChatHistory()" style="background:#ef4444; color:#fff;">🗑️ Bersihkan Obrolan</button>
+      </div>
+    </div>
+
+    <!-- 13. Modul Visualizer Grafik Interaktif -->
     <div id="mode-graph" class="module-content">
       <div class="tutorial-box">
         💡 <b>Panduan Grafik:</b> Ketik rumus fungsi kurva matematika apa saja atau klik tombol preset cepat (sin, cos, x²). Gunakan slider <b>Zoom / Skala</b> untuk memperbesar kurva secara realtime.
@@ -1447,10 +1621,10 @@
       <canvas id="graphCanvas" width="600" height="300"></canvas>
     </div>
 
-    <!-- 12. Modul Kasir & Diskon + Share WA -->
+    <!-- 14. Modul Kasir & Diskon + Share WA -->
     <div id="mode-cashier" class="module-content">
       <div class="tutorial-box">
-        💡 <b>Panduan Kasir:</b> Masukkan total belanja awal, persentase diskon promo, dan nominal uang yang dibayarkan pelanggan untuk mengetahui potongan harga serta uang kembalian.
+        💡 <b>Panduan Kasir:</b> Masukkan total belanja awal, persentase diskon promo, dan nominal uang yang dibayarkan pelanggan.
       </div>
       <div class="form-group">
         <label>Total Belanja Awal (Rp)</label>
@@ -1476,10 +1650,10 @@
       </div>
     </div>
 
-    <!-- 13. Modul Billing Timer -->
+    <!-- 15. Modul Billing Timer -->
     <div id="mode-timer" class="module-content">
       <div class="tutorial-box">
-        💡 <b>Panduan Billing Timer:</b> Masukkan tarif sewa per jam (misal: sewa PS, warnet, atau konsultasi). Klik <b>Start</b> untuk memulai argo waktu dan biaya berjalan secara otomatis.
+        💡 <b>Panduan Billing Timer:</b> Masukkan tarif sewa per jam. Klik <b>Start</b> untuk memulai argo waktu dan biaya berjalan secara otomatis.
       </div>
       <div style="text-align: center; margin: 12px 0;">
         <h2 id="timerDisplay" style="font-size: 2.8rem; color: #38bdf8;">00:00:00</h2>
@@ -1516,7 +1690,7 @@
     }
 
     // --- 1. LOCALSTORAGE LOGIC (PERSISTEN) ---
-    const modulesWithHistory = ['calc', 'calculus', 'currency', 'loan', 'seller', 'savings', 'split', 'age', 'conv', 'subnet', 'cashier'];
+    const modulesWithHistory = ['calc', 'calculus', 'currency', 'loan', 'seller', 'savings', 'split', 'age', 'conv', 'subnet', 'codeconv', 'cashier'];
 
     function loadAllHistories() {
       modulesWithHistory.forEach(mod => {
@@ -1530,6 +1704,7 @@
           console.warn(`Gagal memuat riwayat ${mod}:`, e);
         }
       });
+      loadAiChatHistory();
     }
 
     function addHistoryItem(mod, content) {
@@ -1539,7 +1714,7 @@
         el.innerHTML = "";
       }
       const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const newEntry = `<div><span style="color:#64748b;">[${time}]</span> ${content}</div>`;
+      const newEntry = `<div><span style="color:#64748b;">[${time}]</span>${content}</div>`;
       el.innerHTML = newEntry + el.innerHTML;
       try {
         localStorage.setItem(`calc_hist_${mod}`, el.innerHTML);
@@ -1722,11 +1897,11 @@
           box.style.display = "block";
           box.innerHTML = `
             Fungsi: <b>f(x) = ${funcStr}</b><br>
-            Interval integrasi: <b>[${a}, ${b}]</b><br>
+            Interval integrasi: <b>[${a},${b}]</b><br>
             <hr style="border:0; border-top:1px solid #334155; margin:8px 0;">
             Hasil Integral Tentu: <b style="font-size:1.15rem; color:#34d399;">${formatted}</b>
           `;
-          addHistoryItem('calculus', `∫[${a} ke ${b}] (${funcStr}) dx ➔ <b>${formatted}</b>`);
+          addHistoryItem('calculus', `∫[${a} ke${b}] (${funcStr}) dx ➔ <b>${formatted}</b>`);
         }
       } catch (err) {
         alert("Format fungsi matematika tidak valid. Periksa kembali tanda perkalian (*) atau kurung.");
@@ -1810,9 +1985,9 @@
     function getCurrencyFullName(code) {
       const flag = getCurrencyFlag(code);
       if (masterCurrencyNames[code]) {
-        return `${flag} ${code} - ${masterCurrencyNames[code]}`;
+        return `${flag} ${code} -${masterCurrencyNames[code]}`;
       }
-      return `${flag} ${code}`;
+      return `${flag}${code}`;
     }
 
     async function initCurrencyData() {
@@ -1972,12 +2147,12 @@
         const toName = getCurrencyFullName(to);
 
         box.innerHTML = `
-          <b>${amount.toLocaleString()} ${fromName}</b> =<br>
-          <span style="font-size: 1.35rem; font-weight: bold; color: #38bdf8;">${formattedResult} ${toName}</span><br>
-          <span style="font-size: 0.78rem; color: #94a3b8;">Kurs Live: 1 ${from} = ${rateFormatted} ${to} (Realtime Global API)</span>
+          <b>${amount.toLocaleString()}${fromName}</b> =<br>
+          <span style="font-size: 1.35rem; font-weight: bold; color: #38bdf8;">${formattedResult}${toName}</span><br>
+          <span style="font-size: 0.78rem; color: #94a3b8;">Kurs Live: 1 ${from} = ${rateFormatted}${to} (Realtime Global API)</span>
         `;
 
-        addHistoryItem('currency', `${amount.toLocaleString()} ${from} ➔ <b>${formattedResult} ${to}</b>`);
+        addHistoryItem('currency', `${amount.toLocaleString()}${from} ➔ <b>${formattedResult}${to}</b>`);
       } catch (err) {
         box.innerHTML = `<span style="color:#ef4444;">Gagal memperbarui kurs. Periksa koneksi internet Anda.</span>`;
       }
@@ -2024,12 +2199,12 @@
       const totalSpentWithDP = totalPayment + dp;
       const schemeName = scheme === 'flat' ? 'Bunga Flat' : 'Bunga Efektif / Anuitas';
 
-      lastLoanShareText = `*SIMULASI CICILAN / KREDIT*\n- Barang: ${itemName}\n- Harga Total: Rp ${price.toLocaleString()}\n- Uang Muka (DP): Rp ${dp.toLocaleString()}\n- Pokok Pinjaman: Rp ${principal.toLocaleString()}\n- Tenor: ${tenorMonths} Bulan (${annualRate}%/thn - ${schemeName})\n👉 *Cicilan per Bulan: Rp ${monthlyInstallment.toLocaleString()}*\n- Total Bunga: Rp ${Math.round(totalInterest).toLocaleString()}\n- Total Bayar Lunas: Rp ${totalSpentWithDP.toLocaleString()}\n\n(Dihitung via Super Calculator)`;
+      lastLoanShareText = `*SIMULASI CICILAN / KREDIT*\n- Barang: ${itemName}\n- Harga Total: Rp ${price.toLocaleString()}\n- Uang Muka (DP): Rp${dp.toLocaleString()}\n- Pokok Pinjaman: Rp ${principal.toLocaleString()}\n- Tenor:${tenorMonths} Bulan (${annualRate}\%/thn -${schemeName})\n👉 *Cicilan per Bulan: Rp ${monthlyInstallment.toLocaleString()}*\n- Total Bunga: Rp ${Math.round(totalInterest).toLocaleString()}\n- Total Bayar Lunas: Rp${totalSpentWithDP.toLocaleString()}\n\n(Dihitung via Super Calculator)`;
 
       box.style.display = "block";
       box.innerHTML = `
         Barang: <b>${itemName}</b> (${schemeName})<br>
-        Pokok Hutang: Rp ${principal.toLocaleString()} (DP: Rp ${dp.toLocaleString()})<br>
+        Pokok Hutang: Rp ${principal.toLocaleString()} (DP: Rp${dp.toLocaleString()})<br>
         <hr style="border:0; border-top:1px solid #334155; margin:8px 0;">
         <span style="font-size:0.85rem; color:#94a3b8;">Estimasi Cicilan per Bulan (${tenorMonths}x):</span><br>
         <b style="font-size: 1.3rem; color: #38bdf8;">Rp ${monthlyInstallment.toLocaleString()}/bulan</b><br>
@@ -2040,7 +2215,7 @@
         </button>
       `;
 
-      addHistoryItem('loan', `${itemName}: Rp ${price.toLocaleString()} (${tenorMonths} bln) ➔ <b>Rp ${monthlyInstallment.toLocaleString()}/bln</b>`);
+      addHistoryItem('loan', `${itemName}: Rp${price.toLocaleString()} (${tenorMonths} bln) ➔ <b>Rp${monthlyInstallment.toLocaleString()}/bln</b>`);
     }
 
     // --- 8. MODUL SELLER FEE ---
@@ -2049,7 +2224,7 @@
       const profit = parseFloat(document.getElementById("sellerProfit").value) || 0;
       const feePercent = parseFloat(document.getElementById("sellerAdminFee").value) || 0;
 
-      if (modal <= 0 || feePercent >= 100) return alert("Masukkan nilai modal yang valid dan fee di bawah 100%!");
+      if (modal <= 0 || feePercent >= 100) return alert("Masukkan modal yang valid dan fee di bawah 100%!");
 
       const targetNet = modal + profit;
       const sellingPrice = Math.ceil(targetNet / (1 - (feePercent / 100)));
@@ -2060,12 +2235,12 @@
       box.style.display = "block";
       box.innerHTML = `
         Rekomendasi Harga Jual: <b style="font-size:1.1rem; color:#38bdf8;">Rp ${sellingPrice.toLocaleString()}</b><br>
-        Potongan Admin (${feePercent}%): -Rp ${adminFeeAmount.toLocaleString()}<br>
+        Potongan Admin (${feePercent}\%): -Rp${adminFeeAmount.toLocaleString()}<br>
         Uang Diterima Bersih: Rp ${(sellingPrice - adminFeeAmount).toLocaleString()}<br>
         <b>Keuntungan Bersih: Rp ${actualProfit.toLocaleString()}</b>
       `;
 
-      addHistoryItem('seller', `Modal Rp ${modal.toLocaleString()} ➔ Jual: <b>Rp ${sellingPrice.toLocaleString()}</b> (Fee: ${feePercent}%)`);
+      addHistoryItem('seller', `Modal Rp ${modal.toLocaleString()} ➔ Jual: <b>Rp ${sellingPrice.toLocaleString()}</b> (Fee:${feePercent}%)`);
     }
 
     // --- 9. MODUL TARGET MENABUNG ---
@@ -2074,7 +2249,7 @@
       const target = parseFloat(document.getElementById("savingsTarget").value) || 0;
       const months = parseInt(document.getElementById("savingsMonths").value) || 1;
 
-      if (target <= 0 || months <= 0) return alert("Masukkan target nominal dan jumlah bulan yang valid!");
+      if (target <= 0 || months <= 0) return alert("Masukkan target nominal dan bulan yang valid!");
 
       const perMonth = Math.ceil(target / months);
       const perDay = Math.ceil(target / (months * 30));
@@ -2082,12 +2257,12 @@
       const box = document.getElementById("savingsResult");
       box.style.display = "block";
       box.innerHTML = `
-        Target: <b>${goalName}</b> (Rp ${target.toLocaleString()})<br>
+        Target: <b>${goalName}</b> (Rp${target.toLocaleString()})<br>
         Wajib Nabung Bulanan: <b style="color:#38bdf8;">Rp ${perMonth.toLocaleString()}/bulan</b><br>
         Atau Sisihkan Harian: <b style="color:#34d399;">Rp ${perDay.toLocaleString()}/hari</b> (${months * 30} hari)
       `;
 
-      addHistoryItem('savings', `${goalName}: Rp ${target.toLocaleString()} (${months} bln) ➔ <b>Rp ${perDay.toLocaleString()}/hari</b>`);
+      addHistoryItem('savings', `${goalName}: Rp${target.toLocaleString()} (${months} bln) ➔ <b>Rp${perDay.toLocaleString()}/hari</b>`);
     }
 
     // --- 10. MODUL PATUNGAN + SHARE WA ---
@@ -2105,23 +2280,23 @@
       const totalAmount = bill + taxAmount + tip;
       const perPerson = Math.ceil(totalAmount / people);
 
-      lastSplitShareText = `Halo kawan-kawan! Rincian patungan kita:\n- Total Tagihan: Rp ${bill.toLocaleString()}\n- Pajak/Service (${taxPercent}%): Rp ${taxAmount.toLocaleString()}\n- Tip: Rp ${tip.toLocaleString()}\n- Total Bayar: Rp ${totalAmount.toLocaleString()}\n👉 *Iuran per orang (${people} orang): Rp ${perPerson.toLocaleString()}*\n\n(Dihitung via Super Calculator)`;
+      lastSplitShareText = `Halo kawan-kawan! Rincian patungan kita:\n- Total Tagihan: Rp ${bill.toLocaleString()}\n- Pajak/Service (${taxPercent}\%): Rp${taxAmount.toLocaleString()}\n- Tip: Rp ${tip.toLocaleString()}\n- Total Bayar: Rp${totalAmount.toLocaleString()}\n👉 *Iuran per orang (${people} orang): Rp${perPerson.toLocaleString()}*\n\n(Dihitung via Super Calculator)`;
 
       const box = document.getElementById("splitResult");
       box.style.display = "block";
       box.innerHTML = `
         Total Tagihan Bersih: Rp ${bill.toLocaleString()}<br>
-        Pajak/Service (${taxPercent}%): +Rp ${taxAmount.toLocaleString()}<br>
+        Pajak/Service (${taxPercent}\%): +Rp${taxAmount.toLocaleString()}<br>
         Tip: +Rp ${tip.toLocaleString()}<br>
         <b>Total Semua: Rp ${totalAmount.toLocaleString()}</b><br>
         <hr style="border:0; border-top:1px solid #334155; margin:8px 0;">
-        <b style="font-size: 1.05rem; color: #38bdf8;">Bayar per orang (${people} org): Rp ${perPerson.toLocaleString()}</b>
+        <b style="font-size: 1.05rem; color: #38bdf8;">Bayar per orang (${people} org): Rp${perPerson.toLocaleString()}</b>
         <button class="share-wa-btn" onclick="shareToWhatsApp(lastSplitShareText)">
           📲 Kirim Rincian Tagihan ke WhatsApp
         </button>
       `;
 
-      addHistoryItem('split', `Rp ${totalAmount.toLocaleString()} ÷ ${people} org = <b>Rp ${perPerson.toLocaleString()}/org</b>`);
+      addHistoryItem('split', `Rp ${totalAmount.toLocaleString()} ÷ ${people} org = <b>Rp${perPerson.toLocaleString()}/org</b>`);
     }
 
     // --- 11. MODUL USIA REALTIME TRACKER ---
@@ -2178,9 +2353,9 @@
       box.style.display = "block";
       box.innerHTML = `
         <div style="font-size:0.8rem; color:#94a3b8; margin-bottom:4px;">Usia Realtime yang Sedang Berjalan:</div>
-        <b style="font-size: 1.2rem; color: #38bdf8;">${years} Tahun, ${months} Bulan, ${days} Hari</b><br>
+        <b style="font-size: 1.2rem; color: #38bdf8;">${years} Tahun, ${months} Bulan,${days} Hari</b><br>
         <div style="font-size: 1rem; color: #34d399; font-weight:600; margin: 4px 0;">
-          ${String(hours).padStart(2, '0')} Jam ${String(minutes).padStart(2, '0')} Menit ${String(seconds).padStart(2, '0')} Detik
+          ${String(hours).padStart(2, '0')} Jam ${String(minutes).padStart(2, '0')} Menit${String(seconds).padStart(2, '0')} Detik
         </div>
         <hr style="border:0; border-top:1px solid #334155; margin:8px 0;">
         Total Waktu Hidup: <b>${totalDays.toLocaleString()} hari</b> (${totalSeconds.toLocaleString()} detik)<br>
@@ -2355,12 +2530,12 @@
           box.style.display = "block";
           box.innerHTML = `
             Hasil Konversi Waktu:<br>
-            <b style="font-size:1.35rem; color:#38bdf8;">${val.toLocaleString('id-ID')} ${from.toUpperCase()} = ${formatted} ${to.toUpperCase()}</b>
+            <b style="font-size:1.35rem; color:#38bdf8;">${val.toLocaleString('id-ID')}${from.toUpperCase()} = ${formatted}${to.toUpperCase()}</b>
           `;
-          addHistoryItem('conv', `${val} ${from} ➔ <b>${formatted} ${to}</b>`);
+          addHistoryItem('conv', `${val}${from} ➔ <b>${formatted}${to}</b>`);
         } else {
           box.style.display = "block";
-          let html = `<b>📜 Rincian Lengkap untuk ${val.toLocaleString('id-ID')} ${from.toUpperCase()}:</b><div class="breakdown-grid">`;
+          let html = `<b>📜 Rincian Lengkap untuk ${val.toLocaleString('id-ID')}${from.toUpperCase()}:</b><div class="breakdown-grid">`;
           const order = [
             { key: 'abad', icon: '🏛️' }, { key: 'dekade', icon: '🏛️' }, { key: 'windu', icon: '🎋' },
             { key: 'tahun', icon: '📅' }, { key: 'bulan', icon: '🗓️' }, { key: 'minggu', icon: '📆' },
@@ -2370,14 +2545,14 @@
             const converted = inSeconds / timeEraRatios[item.key];
             html += `
               <div class="breakdown-item">
-                <div class="unit-name">${item.icon} ${item.key}</div>
+                <div class="unit-name">${item.icon}${item.key}</div>
                 <div class="unit-val">${formatNumberDisplay(converted)}</div>
               </div>
             `;
           });
           html += `</div>`;
           box.innerHTML = html;
-          addHistoryItem('conv', `Bedah ${val} ${from} ke Rincian Lengkap Waktu`);
+          addHistoryItem('conv', `Bedah ${val}${from} ke Rincian Lengkap Waktu`);
         }
         return;
       }
@@ -2397,12 +2572,12 @@
           box.style.display = "block";
           box.innerHTML = `
             Hasil Konversi Panjang / Jarak:<br>
-            <b style="font-size:1.35rem; color:#38bdf8;">${val.toLocaleString('id-ID')} ${from} = ${formatted} ${to}</b>
+            <b style="font-size:1.35rem; color:#38bdf8;">${val.toLocaleString('id-ID')}${from} = ${formatted}${to}</b>
           `;
-          addHistoryItem('conv', `${val} ${from} ➔ <b>${formatted} ${to}</b>`);
+          addHistoryItem('conv', `${val}${from} ➔ <b>${formatted}${to}</b>`);
         } else {
           box.style.display = "block";
-          let html = `<b>🪜 Tangga Satuan Metrik untuk ${val.toLocaleString('id-ID')} ${from}:</b><div class="breakdown-grid">`;
+          let html = `<b>🪜 Tangga Satuan Metrik untuk ${val.toLocaleString('id-ID')}${from}:</b><div class="breakdown-grid">`;
           const metrics = [
             { key: 'km', icon: '🛤️' }, { key: 'hm', icon: '🛣️' }, { key: 'dam', icon: '🚩' },
             { key: 'm', icon: '📏' }, { key: 'dm', icon: '📐' }, { key: 'cm', icon: '📍' }, { key: 'mm', icon: '🔍' }
@@ -2411,14 +2586,14 @@
             const converted = inMeters / lengthMetricRatios[item.key];
             html += `
               <div class="breakdown-item">
-                <div class="unit-name">${item.icon} ${item.key.toUpperCase()}</div>
-                <div class="unit-val">${formatNumberDisplay(converted)} ${item.key}</div>
+                <div class="unit-name">${item.icon}${item.key.toUpperCase()}</div>
+                <div class="unit-val">${formatNumberDisplay(converted)}${item.key}</div>
               </div>
             `;
           });
           html += `</div>`;
           box.innerHTML = html;
-          addHistoryItem('conv', `Tangga Metrik ${val} ${from}`);
+          addHistoryItem('conv', `Tangga Metrik ${val}${from}`);
         }
         return;
       }
@@ -2457,7 +2632,7 @@
           box.innerHTML = `
             Kecepatan Dasar: <b>${formatNumberDisplay(speedKmH)} km/jam</b> (${formatNumberDisplay(speedMS)} m/s)<br>
             <hr style="border:0; border-top:1px solid #334155; margin:8px 0;">
-            Dalam waktu <b>${nTime} ${nTimeUnit}</b>, estimasi jarak tempuh:<br>
+            Dalam waktu <b>${nTime}${nTimeUnit}</b>, estimasi jarak tempuh:<br>
             <b style="font-size:1.35rem; color:#38bdf8;">${formatNumberDisplay(resDistKm)} km</b>
             <span style="font-size:0.85rem; color:#94a3b8;"> (${formatNumberDisplay(resDistM)} meter)</span>
           `;
@@ -2483,7 +2658,7 @@
           box.innerHTML = `
             Kecepatan Dasar: <b>${formatNumberDisplay(speedKmH)} km/jam</b> (${formatNumberDisplay(speedMS)} m/s)<br>
             <hr style="border:0; border-top:1px solid #334155; margin:8px 0;">
-            Waktu untuk menempuh <b>${nDist} ${nDistUnit}</b>:<br>
+            Waktu untuk menempuh <b>${nDist}${nDistUnit}</b>:<br>
             <b style="font-size:1.35rem; color:#34d399;">${timeStr || '0 Detik'}</b>
           `;
           addHistoryItem('conv', `Waktu tempuh ${nDist} ${nDistUnit} ➔ <b>${timeStr}</b>`);
@@ -2510,9 +2685,9 @@
         box.style.display = "block";
         box.innerHTML = `
           Kecepatan Download Nyata: <b>${speedMBps.toFixed(2)} MB/s</b><br>
-          Estimasi Selesai: <b>${h} Jam ${m} Menit ${s} Detik</b>
+          Estimasi Selesai: <b>${h} Jam ${m} Menit${s} Detik</b>
         `;
-        addHistoryItem('conv', `DL ${sizeGB}GB @ ${speedMbps}Mbps ➔ <b>${h}j ${m}m ${s}d</b>`);
+        addHistoryItem('conv', `DL ${sizeGB}GB @ ${speedMbps}Mbps ➔ <b>${h}j ${m}m${s}d</b>`);
         return;
       }
 
@@ -2538,8 +2713,8 @@
 
       const formatted = hasil.toFixed(4).replace(/\.?0+$/, "");
       box.style.display = "block";
-      box.innerHTML = `Hasil Konversi: <b>${formatted} ${to}</b>`;
-      addHistoryItem('conv', `${val} ${from} ➔ <b>${formatted} ${to}</b>`);
+      box.innerHTML = `Hasil Konversi: <b>${formatted}${to}</b>`;
+      addHistoryItem('conv', `${val}${from} ➔ <b>${formatted}${to}</b>`);
     }
 
     // --- 13. MODUL PROGRAMMER & IP ---
@@ -2585,10 +2760,261 @@
         <b>Host Valid:</b> ${usableHosts.toLocaleString()} Host
       `;
 
-      addHistoryItem('subnet', `${ip}/${cidr} ➔ Net: <b>${toIP(netNum)}</b> | Host: <b>${usableHosts.toLocaleString()}</b>`);
+      addHistoryItem('subnet', `${ip}/${cidr} ➔ Net: <b>${toIP(netNum)}</b> \vert{} Host: <b>${usableHosts.toLocaleString()}</b>`);
     }
 
-    // --- 14. MODUL GRAFIK INTERAKTIF ---
+    // --- 14. MODUL CODE CONVERTER ---
+    let codeConvDirection = 'case2plugin';
+    let botPluginType = 'esm';
+
+    function setCodeConvDirection(dir) {
+      codeConvDirection = dir;
+      document.getElementById("btnDirCaseToPlugin").classList.toggle("active", dir === 'case2plugin');
+      document.getElementById("btnDirPluginToCase").classList.toggle("active", dir === 'plugin2case');
+
+      const optionsBox = document.getElementById("caseToPluginOptions");
+      const inputLabel = document.getElementById("codeConvInputLabel");
+      const textareaInput = document.getElementById("codeConvInput");
+      const outputLabel = document.getElementById("codeConvOutputLabel");
+
+      if (dir === 'case2plugin') {
+        optionsBox.style.display = "block";
+        inputLabel.innerText = "Tempelkan Kode Case Bot WA di Sini";
+        textareaInput.placeholder = `Contoh:\ncase 'ping':\ncase 'p': {\n    m.reply('Pong!');\n    break;\n}`;
+        outputLabel.innerText = "Hasil File Plugin Siap Pakai:";
+      } else {
+        optionsBox.style.display = "none";
+        inputLabel.innerText = "Tempelkan Kode Plugin Bot WA di Sini (ESM / CommonJS)";
+        textareaInput.placeholder = `Contoh:\nlet handler = async (m, { conn }) => {\n    m.reply('Pong!');\n}\nhandler.command = ['ping', 'p']\nexport default handler;`;
+        outputLabel.innerText = "Hasil Kode Case Siap Tempel di Switch:";
+      }
+
+      document.getElementById("codeConvResultBox").style.display = 'none';
+    }
+
+    function setBotPluginType(type) {
+      botPluginType = type;
+      document.getElementById("btnBotTypeEsm").classList.toggle("active", type === 'esm');
+      document.getElementById("btnBotTypeCjs").classList.toggle("active", type === 'cjs');
+      const box = document.getElementById("codeConvResultBox");
+      if (box.style.display === 'block') {
+        processCodeConversion();
+      }
+    }
+
+    function processCodeConversion() {
+      const raw = document.getElementById("codeConvInput").value.trim();
+      if (!raw) return alert("Masukkan kode yang ingin dikonversi terlebih dahulu!");
+
+      if (codeConvDirection === 'case2plugin') {
+        convertCaseToPlugin(raw);
+      } else {
+        convertPluginToCase(raw);
+      }
+    }
+
+    function convertCaseToPlugin(raw) {
+      const tag = document.getElementById("botPluginTag").value.trim() || 'tools';
+      const customHelp = document.getElementById("botPluginHelp").value.trim();
+
+      const caseMatches = [...raw.matchAll(/case\s+['"`]([^'"`]+)['"`]\s*:/g)];
+      let commands = caseMatches.map(m => m[1]);
+      if (commands.length === 0) commands = ['command'];
+
+      let body = raw.replace(/case\s+['"`][^'"`]+['"`]\s*:\s*/g, '').trim();
+
+      if (body.startsWith('{') && body.endsWith('}')) {
+        body = body.substring(1, body.length - 1).trim();
+      }
+
+      body = body.replace(/\s*break\s*;?\s*$/g, '');
+      const indentedBody = body.split('\n').map(line => '    ' + line).join('\n');
+      const cmdRegex = commands.join('|');
+      const helpList = customHelp ? customHelp.split(',').map(s => `'${s.trim()}'`).join(', ') : commands.map(c => `'${c}'`).join(', ');
+
+      let resultPlugin = '';
+
+      if (botPluginType === 'esm') {
+        resultPlugin = `/*
+ * Plugin WhatsApp Bot (ESM)
+ * Converted by Super Calculator Workstation
+ */
+
+let handler = async (m, { conn, text, usedPrefix, command }) => {
+${indentedBody}
+}
+
+handler.help = [${helpList}]
+handler.tags = ['${tag}']
+handler.command = /^(${cmdRegex})$/i
+
+export default handler;
+`;
+      } else {
+        resultPlugin = `/*
+ * Plugin WhatsApp Bot (CommonJS)
+ * Converted by Super Calculator Workstation
+ */
+
+let handler = async (m, { conn, text, usedPrefix, command }) => {
+${indentedBody}
+}
+
+handler.help = [${helpList}]
+handler.tags = ['${tag}']
+handler.command = new RegExp('^(' + '${cmdRegex}' + ')$', 'i')
+
+module.exports = handler;
+`;
+      }
+
+      document.getElementById("codeConvOutput").value = resultPlugin;
+      document.getElementById("codeConvResultBox").style.display = 'block';
+      addHistoryItem('codeconv', `Case ➔ <b>${botPluginType.toUpperCase()} Plugin [${commands.join(', ')}]</b>`);
+    }
+
+    function convertPluginToCase(raw) {
+      let commands = [];
+
+      const arrayMatch = raw.match(/handler\.command\s*=\s*\[([^\]]+)\]/i);
+      const regexMatch = raw.match(/handler\.command\s*=\s*\/\^?\s*\(?([^$\)\/]+)\)?\$?\s*\/([a-z]*)/i) ||
+                         raw.match(/handler\.command\s*=\s*new\s+RegExp\(\s*['"`]\^?\\?\(?([^'"\$\)\\]+)\\?\)?\$?['"`]/i);
+
+      if (arrayMatch) {
+        commands = arrayMatch[1].split(',').map(s => s.replace(/['"`\s]/g, '')).filter(Boolean);
+      } else if (regexMatch) {
+        commands = regexMatch[1].split('|').map(s => s.trim()).filter(Boolean);
+      }
+
+      if (commands.length === 0) commands = ['command'];
+
+      let body = raw;
+      body = body.replace(/handler\.[a-zA-Z0-9_]+\s*=\s*[^;\n]+;?/g, '');
+      body = body.replace(/export\s+default\s+[^;\n]+;?/g, '');
+      body = body.replace(/module\.exports\s*=\s*[^;\n]+;?/g, '');
+
+      const fnMatch = body.match(/handler\s*=\s*(?:async\s*)?(?:\([^)]*\)|[a-zA-Z0-9_]+)\s*=>\s*\{([\s\S]*)\}/i) ||
+                      body.match(/function\s*(?:handler)?\s*\([^)]*\)\s*\{([\s\S]*)\}/i);
+
+      if (fnMatch) {
+        body = fnMatch[1].trim();
+      } else {
+        body = body.trim();
+      }
+
+      const caseHeaders = commands.map(c => `case '${c}':`).join('\n');
+      const indentedBody = body.split('\n').map(l => '    ' + l).join('\n');
+      const finalCase = `${caseHeaders} {\n${indentedBody}\n    break;\n}`;
+
+      document.getElementById("codeConvOutput").value = finalCase;
+      document.getElementById("codeConvResultBox").style.display = 'block';
+      addHistoryItem('codeconv', `Plugin ➔ <b>Case [${commands.join(', ')}]</b>`);
+    }
+
+    function copyCodeConvOutput() {
+      const output = document.getElementById("codeConvOutput");
+      output.select();
+      navigator.clipboard.writeText(output.value);
+      alert("Kode berhasil disalin ke clipboard!");
+    }
+
+    // --- 15. MODUL TANYA AI (NETLIFY SERVERLESS FUNCTION) ---
+    let aiConversationHistory = [];
+
+    function loadAiChatHistory() {
+      const saved = localStorage.getItem("supercalc_ai_chat");
+      if (saved) {
+        try {
+          aiConversationHistory = JSON.parse(saved);
+          renderAiChatHistory();
+        } catch (e) {
+          aiConversationHistory = [];
+        }
+      }
+    }
+
+    function renderAiChatHistory() {
+      const container = document.getElementById("aiChatMessages");
+      container.innerHTML = `
+        <div class="ai-bubble bot">
+          Halo! 👋 Aku asisten pintar Super Calculator. Ada soal matematika, rumus, atau kodingan yang ingin kamu tanyakan atau cek bersama?
+        </div>
+      `;
+      aiConversationHistory.forEach(item => {
+        appendAiBubble(item.text, item.role, false);
+      });
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function appendAiBubble(text, role, save = true) {
+      const container = document.getElementById("aiChatMessages");
+      const bubble = document.createElement("div");
+      bubble.className = `ai-bubble ${role}`;
+
+      if (role === 'bot') {
+        let formatted = text
+          .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+          .replace(/`([^`]+)`/g, '<code>$1</code>')
+          .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
+          .replace(/\n/g, '<br>');
+        bubble.innerHTML = formatted;
+      } else {
+        bubble.innerText = text;
+      }
+
+      container.appendChild(bubble);
+      container.scrollTop = container.scrollHeight;
+
+      if (save) {
+        aiConversationHistory.push({ role, text });
+        localStorage.setItem("supercalc_ai_chat", JSON.stringify(aiConversationHistory));
+      }
+    }
+
+    async function sendAiMessage() {
+      const inputEl = document.getElementById("aiChatInput");
+      const text = inputEl.value.trim();
+      if (!text) return;
+
+      appendAiBubble(text, 'user', true);
+      inputEl.value = "";
+
+      const typingBubble = document.createElement("div");
+      typingBubble.className = "ai-bubble bot";
+      typingBubble.id = "aiTypingBubble";
+      typingBubble.innerHTML = "<i>Sedang berpikir & menghitung...</i>";
+      document.getElementById("aiChatMessages").appendChild(typingBubble);
+      document.getElementById("aiChatMessages").scrollTop = document.getElementById("aiChatMessages").scrollHeight;
+
+      try {
+        const response = await fetch('/.netlify/functions/chat', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ message: text })
+        });
+
+        const data = await response.json();
+        typingBubble.remove();
+
+        const aiReply = data.reply || data.error || "⚠️ Terjadi kesalahan pada server AI.";
+        appendAiBubble(aiReply, 'bot', !aiReply.startsWith('⚠️'));
+      } catch (err) {
+        typingBubble.remove();
+        appendAiBubble("⚠️ Gagal menghubungi server Netlify Function.", 'bot', false);
+      }
+    }
+
+    function clearAiChatHistory() {
+      if (confirm("Apakah kamu yakin ingin menghapus seluruh riwayat obrolan AI?")) {
+        localStorage.removeItem("supercalc_ai_chat");
+        aiConversationHistory = [];
+        renderAiChatHistory();
+      }
+    }
+
+    // --- 16. MODUL GRAFIK INTERAKTIF ---
     function setGraphPreset(formula) {
       document.getElementById("graphCustomInput").value = formula;
       drawGraph();
@@ -2680,7 +3106,7 @@
       ctx.stroke();
     }
 
-    // --- 15. MODUL KASIR + SHARE WA ---
+    // --- 17. MODUL KASIR + SHARE WA ---
     let lastCashierShareText = "";
 
     function prosesKasir() {
@@ -2715,7 +3141,7 @@
       window.open(url, '_blank');
     }
 
-    // --- 16. BILLING TIMER ---
+    // --- 18. BILLING TIMER ---
     let timerSec = 0;
     let timerInterval = null;
 

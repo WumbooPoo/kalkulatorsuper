@@ -1,4 +1,4 @@
-const CACHE_NAME = 'supercalc-v-live-v14';
+const CACHE_NAME = 'supercalc-v-live-v19';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -28,7 +28,11 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  if (event.request.url.includes('er-api.com')) {
+  if (
+    event.request.url.includes('er-api.com') ||
+    event.request.url.includes('atria') ||
+    event.request.url.includes('chat/completions')
+  ) {
     return;
   }
 
