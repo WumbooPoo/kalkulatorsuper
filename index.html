@@ -2987,7 +2987,7 @@ module.exports = handler;
       document.getElementById("aiChatMessages").scrollTop = document.getElementById("aiChatMessages").scrollHeight;
 
       try {
-        const response = await fetch('/.netlify/functions/chat', {
+        const response = await fetch('/api/chat', {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
