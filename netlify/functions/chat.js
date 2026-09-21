@@ -7,7 +7,7 @@ exports.handler = async function(event, context) {
     const { message } = JSON.parse(event.body);
     
     // Menggunakan API Key Atria milikmu secara aman di server
-    const apiKey = "atr_LXJz-RWyY0L_Dmczub0PixlqZ0AIZNZT";
+    const apiKey = "atr_r5GSG8S179UUgsOEXleIBLQVd_pcIpzB";
     
     const response = await fetch("https://api.atria-asi.ai/v1/responses", {
       method: "POST",
