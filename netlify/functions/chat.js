@@ -16,7 +16,7 @@ exports.handler = async function(event, context) {
         "Authorization": `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: "Atria Dawn-Preview",
+        model: "Atria-Dawn-Preview",
         input: message
       })
     });
