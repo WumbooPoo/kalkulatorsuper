@@ -1,4 +1,4 @@
-const CACHE_NAME = 'supercalc-v-live-v19';
+const CACHE_NAME = 'supercalc-v-live-v20'; // Dinaikkan versinya agar cache ter-refresh
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -28,7 +28,10 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  // PENTING: Jangan cegat request POST atau panggilan API /api/
   if (
+    event.request.method !== 'GET' ||
+    event.request.url.includes('/api/') ||
     event.request.url.includes('er-api.com') ||
     event.request.url.includes('atria') ||
     event.request.url.includes('chat/completions')
