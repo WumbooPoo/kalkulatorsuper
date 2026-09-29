@@ -11,15 +11,20 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: 'Pesan tidak boleh kosong' });
     }
 
-    const apiKey = "bariska_Rgjwcw7Ly0uvWr4sWHLxIV3mS05ZHj2hxBo9W2Tj";
+    // Ambil API Key dari Environment Variable Vercel
+    const apiKey = process.env.AI_API_KEY;
+    if (!apiKey) {
+      return res.status(500).json({ 
+        error: 'Variabel AI_API_KEY belum dikonfigurasi di dashboard Vercel.' 
+      });
+    }
 
-    // Gunakan timeout abort 9 detik agar fungsi tidak dibunuh paksa oleh Vercel (limit 10s)
+    // Gunakan timeout abort agar aman dari batas execution limit Vercel
     const controller = new AbortController();
     const timeoutTimer = setTimeout(() => controller.abort(), 9000);
 
     let response;
     try {
-      // Gunakan model glm-5.3-flash yang cepat dan tidak ada jeda 'reasoning' panjang
       response = await fetch("https://api.bariska.cloud/v1", {
         method: "POST",
         signal: controller.signal,
@@ -33,7 +38,7 @@ module.exports = async (req, res) => {
           messages: [
             {
               role: "system",
-              content: "Kamu adalah asisten kalkulator super cerdas. Jawab soal matematika, rumus, atau kodingan secara singkat, jelas, dan akurat."
+              content: "Kamu adalah asisten matematika dan koding pada kalkulator cerdas. Berikan jawaban yang tepat, ringkas, dan jelas dalam bahasa Indonesia."
             },
             {
               role: "user",
@@ -47,43 +52,30 @@ module.exports = async (req, res) => {
     } catch (err) {
       clearTimeout(timeoutTimer);
       if (err.name === 'AbortError') {
-        return res.status(504).json({
-          error: "⚠️ Waktu tunggu habis (>9 detik). Server AI merespons terlalu lama untuk limit hosting gratis."
-        });
+        return res.status(504).json({ error: 'Waktu tunggu habis (>9 detik).' });
       }
       throw err;
     }
     clearTimeout(timeoutTimer);
 
-    // Baca respon sebagai teks mentah terlebih dahulu untuk mencegah crash JSON parse
     const rawText = await response.text();
     let data;
     try {
       data = JSON.parse(rawText);
     } catch (e) {
       return res.status(502).json({
-        error: `Server AI mengembalikan HTML (kemungkinan server sedang sibuk/down): ${rawText.slice(0, 120)}`
+        error: `Server AI mengembalikan HTML (kemungkinan diblokir Cloudflare): ${rawText.slice(0, 100)}`
       });
     }
 
     if (!response.ok) {
       const errMsg = data?.error?.message || data?.message || rawText;
-      return res.status(response.status).json({ error: `⚠️ Error API (\({response.status}):\){errMsg}` });
+      return res.status(response.status).json({ error: `Error API (\({response.status}):\){errMsg}` });
     }
 
-    // Ambil teks balasan
-    let reply = "";
-    if (data?.choices?.[0]?.message?.content) {
-      reply = data.choices[0].message.content;
-    } else if (typeof data?.output === 'string') {
-      reply = data.output;
-    }
-
-    if (!reply) {
-      reply = "⚠️ Tidak ada teks balasan yang diterima dari model AI.";
-    }
-
+    let reply = data?.choices?.[0]?.message?.content || data?.output || "⚠️ Tidak ada teks balasan.";
     return res.status(200).json({ reply: reply.trim() });
+
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
