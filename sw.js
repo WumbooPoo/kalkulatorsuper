@@ -1,4 +1,4 @@
-const CACHE_NAME = 'supercalc-v-live-v20'; // Dinaikkan versinya agar cache ter-refresh
+const CACHE_NAME = 'supercalc-v-live-v21';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -18,9 +18,7 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((keys) => {
       return Promise.all(
         keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
+          if (key !== CACHE_NAME) return caches.delete(key);
         })
       );
     }).then(() => self.clients.claim())
@@ -28,12 +26,12 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // PENTING: Jangan cegat request POST atau panggilan API /api/
+  // Abaikan request POST, API Vercel, dan domain luar seperti Bariska
   if (
     event.request.method !== 'GET' ||
     event.request.url.includes('/api/') ||
+    event.request.url.includes('bariska.cloud') ||
     event.request.url.includes('er-api.com') ||
-    event.request.url.includes('atria') ||
     event.request.url.includes('chat/completions')
   ) {
     return;
@@ -48,9 +46,7 @@ self.addEventListener('fetch', (event) => {
             return networkResponse;
           });
         })
-        .catch(() => {
-          return caches.match(event.request);
-        })
+        .catch(() => caches.match(event.request))
     );
     return;
   }
