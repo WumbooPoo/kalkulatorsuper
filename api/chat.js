@@ -12,16 +12,16 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: 'Pesan tidak boleh kosong' });
     }
 
-    const apiKey = "atr_r5GSG8S179UUgsOEXleIBLQVd_pcIpzB";
+    const apiKey = "bariska_Rgjwcw7Ly0uvWr4sWHLxIV3mS05ZHj2hxBo9W2Tj";
 
-    const response = await fetch("https://api.atria-asi.ai/v1/responses", {
+    const response = await fetch("https://api.bariska.cloud/v1", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: "Atria-Dawn-Preview",
+        model: "deepseek-v4.1-flash",
         input: message
       })
     });
