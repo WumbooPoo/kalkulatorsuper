@@ -5,7 +5,6 @@ module.exports = async (req, res) => {
   }
 
   try {
-    // Vercel otomatis mem-parse body JSON (tidak perlu JSON.parse manual)
     const { message } = req.body || {};
 
     if (!message) {
@@ -14,97 +13,77 @@ module.exports = async (req, res) => {
 
     const apiKey = "bariska_Rgjwcw7Ly0uvWr4sWHLxIV3mS05ZHj2hxBo9W2Tj";
 
-    const response = await fetch("https://api.bariska.cloud/v1", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        model: "deepseek-v4.1-flash",
-        input: message
-      })
-    });
+    // Gunakan timeout abort 9 detik agar fungsi tidak dibunuh paksa oleh Vercel (limit 10s)
+    const controller = new AbortController();
+    const timeoutTimer = setTimeout(() => controller.abort(), 9000);
 
-    const data = await response.json();
-
-    // Fungsi pembersih respon AI agar tidak muncul JSON mentah / reasoning
-    function extractReply(payload) {
-      if (!payload) return "⚠️ Tidak ada respon dari AI.";
-      if (typeof payload === 'string') return payload;
-
-      if (payload.error) {
-        return `⚠️ Error API: ${payload.error.message || JSON.stringify(payload.error)}`;
-      }
-
-      // 1. Ekstraksi format Responses API (data.output berupa array)
-      const list = Array.isArray(payload.output)
-        ? payload.output
-        : (Array.isArray(payload) ? payload : null);
-
-      if (list) {
-        const messageItems = list.filter(item => item && (item.type === 'message' || item.role === 'assistant'));
-        const targetItems = messageItems.length > 0 ? messageItems : list;
-
-        let textBlocks = [];
-        for (const item of targetItems) {
-          // Lewati proses berpikir internal (reasoning)
-          if (item.type === 'reasoning' && messageItems.length > 0) continue;
-
-          if (typeof item === 'string') {
-            textBlocks.push(item);
-          } else if (Array.isArray(item.content)) {
-            for (const block of item.content) {
-              if (typeof block === 'string') {
-                textBlocks.push(block);
-              } else if (block && block.text) {
-                if (block.type === 'reasoning_text' && messageItems.length > 0) continue;
-                textBlocks.push(block.text);
-              }
+    let response;
+    try {
+      // Gunakan model glm-5.3-flash yang cepat dan tidak ada jeda 'reasoning' panjang
+      response = await fetch("https://api.bariska.cloud/v1", {
+        method: "POST",
+        signal: controller.signal,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${apiKey}`,
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+        },
+        body: JSON.stringify({
+          model: "glm-5.3-flash",
+          messages: [
+            {
+              role: "system",
+              content: "Kamu adalah asisten kalkulator super cerdas. Jawab soal matematika, rumus, atau kodingan secara singkat, jelas, dan akurat."
+            },
+            {
+              role: "user",
+              content: message
             }
-          } else if (typeof item.content === 'string') {
-            textBlocks.push(item.content);
-          } else if (item.text) {
-            textBlocks.push(item.text);
-          }
-        }
-
-        if (textBlocks.length > 0) {
-          return textBlocks.join('\n').trim();
-        }
+          ],
+          max_tokens: 800,
+          temperature: 0.5
+        })
+      });
+    } catch (err) {
+      clearTimeout(timeoutTimer);
+      if (err.name === 'AbortError') {
+        return res.status(504).json({
+          error: "⚠️ Waktu tunggu habis (>9 detik). Server AI merespons terlalu lama untuk limit hosting gratis."
+        });
       }
+      throw err;
+    }
+    clearTimeout(timeoutTimer);
 
-      // 2. Format jika data.output berupa objek tunggal
-      if (payload.output && typeof payload.output === 'object') {
-        if (typeof payload.output.text === 'string') return payload.output.text;
-        if (Array.isArray(payload.output.content)) {
-          const texts = payload.output.content
-            .map(c => (typeof c === 'string' ? c : (c && c.text ? c.text : '')))
-            .filter(Boolean);
-          if (texts.length > 0) return texts.join('\n').trim();
-        }
-      }
-
-      // 3. Cadangan jika menggunakan format standar Chat Completions
-      if (Array.isArray(payload.choices) && payload.choices[0]) {
-        const choice = payload.choices[0];
-        if (choice.message && choice.message.content) {
-          return typeof choice.message.content === 'string'
-            ? choice.message.content
-            : JSON.stringify(choice.message.content);
-        }
-        if (choice.text) return choice.text;
-      }
-
-      if (typeof payload.output === 'string') return payload.output;
-      if (typeof payload.response === 'string') return payload.response;
-
-      return typeof payload === 'object' ? JSON.stringify(payload) : String(payload);
+    // Baca respon sebagai teks mentah terlebih dahulu untuk mencegah crash JSON parse
+    const rawText = await response.text();
+    let data;
+    try {
+      data = JSON.parse(rawText);
+    } catch (e) {
+      return res.status(502).json({
+        error: `Server AI mengembalikan HTML (kemungkinan server sedang sibuk/down): ${rawText.slice(0, 120)}`
+      });
     }
 
-    const reply = extractReply(data);
+    if (!response.ok) {
+      const errMsg = data?.error?.message || data?.message || rawText;
+      return res.status(response.status).json({ error: `⚠️ Error API (\({response.status}):\){errMsg}` });
+    }
 
-    return res.status(200).json({ reply });
+    // Ambil teks balasan
+    let reply = "";
+    if (data?.choices?.[0]?.message?.content) {
+      reply = data.choices[0].message.content;
+    } else if (typeof data?.output === 'string') {
+      reply = data.output;
+    }
+
+    if (!reply) {
+      reply = "⚠️ Tidak ada teks balasan yang diterima dari model AI.";
+    }
+
+    return res.status(200).json({ reply: reply.trim() });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
