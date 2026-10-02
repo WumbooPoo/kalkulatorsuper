@@ -1436,6 +1436,7 @@
           <option value="temp">🌡️ Suhu (Celsius, Fahrenheit, Kelvin)</option>
           <option value="data">💾 Kapasitas Data (Byte, KB, MB, GB)</option>
           <option value="weight">⚖️ Berat & Massa (g, kg, ton, lbs)</option>
+          <option value="base">🔢 Basis Bilangan (Biner, Desimal, Heksadesimal)</option>
         </select>
       </div>
 
@@ -1634,6 +1635,35 @@
         <div class="form-group">
           <label>Kecepatan Internet (Mbps)</label>
           <input type="number" id="dlNetSpeed" placeholder="Contoh: 20" value="20">
+        </div>
+      </div>
+
+      <!-- F. INPUT KONVERTER BASIS BILANGAN -->
+      <div id="baseConvInputs" style="display: none;">
+        <div class="form-group">
+          <label>Nilai</label>
+          <input type="text" id="baseConvVal" placeholder="Contoh: 1010, 255, atau FF" value="1010">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Dari Basis</label>
+            <select id="baseConvFrom">
+              <option value="2" selected>🔢 Biner (basis 2)</option>
+              <option value="10">🔟 Desimal (basis 10)</option>
+              <option value="16">🔣 Heksadesimal (basis 16)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Ke Basis</label>
+            <select id="baseConvTo">
+              <option value="2">🔢 Biner (basis 2)</option>
+              <option value="10">🔟 Desimal (basis 10)</option>
+              <option value="16" selected>🔣 Heksadesimal (basis 16)</option>
+            </select>
+          </div>
+        </div>
+        <div style="text-align: center;">
+          <button class="swap-btn-icon" onclick="swapBaseConvUnits()">⇅ Tukar Basis</button>
         </div>
       </div>
 
@@ -3049,6 +3079,14 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
       document.getElementById("convResult").style.display = 'none';
     }
 
+    function swapBaseConvUnits() {
+      const from = document.getElementById("baseConvFrom");
+      const to = document.getElementById("baseConvTo");
+      const tmp = from.value;
+      from.value = to.value;
+      to.value = tmp;
+    }
+
     function swapLengthMetricUnits() {
       const from = document.getElementById("lenMetricFrom");
       const to = document.getElementById("lenMetricTo");
@@ -3081,12 +3119,14 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
       const timeDiv = document.getElementById("timeEraInputs");
       const lenDiv = document.getElementById("lengthMetricInputs");
       const trvDiv = document.getElementById("travelInputs");
+      const baseDiv = document.getElementById("baseConvInputs");
 
       stdDiv.style.display = "none";
       dlDiv.style.display = "none";
       timeDiv.style.display = "none";
       lenDiv.style.display = "none";
       trvDiv.style.display = "none";
+      baseDiv.style.display = "none";
       document.getElementById("convResult").style.display = 'none';
 
       if (type === "time_era") {
@@ -3097,6 +3137,8 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
         trvDiv.style.display = "block";
       } else if (type === "download") {
         dlDiv.style.display = "block";
+      } else if (type === "base") {
+        baseDiv.style.display = "block";
       } else {
         stdDiv.style.display = "block";
         const from = document.getElementById("convFrom");
@@ -3288,6 +3330,29 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
           Estimasi Selesai: <b>${h} Jam ${m} Menit${s} Detik</b>
         `;
         addHistoryItem('conv', `DL ${sizeGB}GB @ ${speedMbps}Mbps ➔ <b>${h}j ${m}m${s}d</b>`);
+        return;
+      }
+
+      if (type === "base") {
+        const raw = document.getElementById("baseConvVal").value.trim();
+        const fromBase = parseInt(document.getElementById("baseConvFrom").value);
+        const toBase = parseInt(document.getElementById("baseConvTo").value);
+        const baseNames = { 2: "Biner", 10: "Desimal", 16: "Heksadesimal" };
+        const validPatterns = { 2: /^[01]+$/, 10: /^\d+$/, 16: /^[0-9a-fA-F]+$/ };
+
+        if (!raw || !validPatterns[fromBase].test(raw)) {
+          return alert(`Masukkan nilai ${baseNames[fromBase]} yang valid!`);
+        }
+
+        const decimal = parseInt(raw, fromBase);
+        const result = decimal.toString(toBase).toUpperCase();
+
+        box.style.display = "block";
+        box.innerHTML = `
+          Hasil Konversi Basis:<br>
+          <b style="font-size:1.35rem; color:#38bdf8;">${raw} (${baseNames[fromBase]}) = ${result} (${baseNames[toBase]})</b>
+        `;
+        addHistoryItem('conv', `${raw} (${baseNames[fromBase]}) ➔ <b>${result} (${baseNames[toBase]})</b>`);
         return;
       }
 
@@ -3587,46 +3652,23 @@ module.exports = handler;
       document.getElementById("aiChatMessages").scrollTop = document.getElementById("aiChatMessages").scrollHeight;
 
       try {
-        const apiKey = "bariska_Rgjwcw7Ly0uvWr4sWHLxIV3mS05ZHj2hxBo9W2Tj";
-
-        const response = await fetch("https://api.bariska.cloud/v1/chat/completions", {
+        const response = await fetch("/api/chat", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${apiKey}`
+            "Content-Type": "application/json"
           },
-          body: JSON.stringify({
-            model: "deepseek-v4.1-flash",
-            messages: [
-              {
-                role: "system",
-                content: "Kamu adalah asisten matematika dan koding pada kalkulator cerdas. Berikan jawaban yang tepat, ringkas, dan jelas dalam bahasa Indonesia."
-              },
-              {
-                role: "user",
-                content: text
-              }
-            ],
-            temperature: 0.6
-          })
+          body: JSON.stringify({ message: text })
         });
 
-        const rawText = await response.text();
-        let data;
-        try {
-          data = JSON.parse(rawText);
-        } catch (e) {
-          throw new Error("Server mengembalikan respon non-JSON: " + rawText.slice(0, 100));
-        }
+        const data = await response.json();
 
         typingBubble.remove();
 
         if (!response.ok) {
-          const errMsg = data?.error?.message || data?.message || `Status ${response.status}`;
-          throw new Error(errMsg);
+          throw new Error(data?.error || `Status ${response.status}`);
         }
 
-        const reply = data?.choices?.[0]?.message?.content || data?.choices?.[0]?.message?.reasoning_content || "⚠️ Tidak ada teks balasan.";
+        const reply = data?.reply || "⚠️ Tidak ada teks balasan.";
         appendAiBubble(reply, 'bot', true);
 
       } catch (err) {
