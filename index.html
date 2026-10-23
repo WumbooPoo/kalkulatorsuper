@@ -11,7 +11,7 @@
 
   <!-- PWA Metadata -->
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0284c7">
+  <meta name="theme-color" content="#f43f5e">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2344/2344132.png">
@@ -26,7 +26,7 @@
     }
 
     body {
-      background: radial-gradient(circle at top, #1e293b, #090d16);
+      background: radial-gradient(720px 340px at 85% -80px, rgba(244, 63, 94, 0.13), transparent 60%), radial-gradient(640px 320px at -120px -60px, rgba(91, 157, 255, 0.10), transparent 60%), #0a0c11;
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -37,7 +37,7 @@
     }
 
     .calc-container {
-      background: rgba(30, 41, 59, 0.8);
+      background: rgba(23, 27, 39, 0.8);
       backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 32px;
@@ -50,7 +50,7 @@
 
     /* Navigasi Tab Header & Divider Putih */
     .tabs-header {
-      background: rgba(15, 23, 42, 0.7);
+      background: rgba(18, 21, 30, 0.7);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 20px;
       padding: 8px 6px;
@@ -70,7 +70,7 @@
       padding: 8px 12px;
       font-size: 0.78rem;
       font-weight: 600;
-      color: #94a3b8;
+      color: #9aa3b5;
       background: transparent;
       border: none;
       border-radius: 12px;
@@ -85,9 +85,9 @@
     }
 
     .tab-btn.active {
-      background: #0284c7;
+      background: #e11d48;
       color: #ffffff;
-      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.45);
+      box-shadow: 0 4px 14px rgba(244, 63, 94, 0.45);
     }
 
     .tab-divider {
@@ -104,14 +104,14 @@
 
     .section-divider {
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.25), transparent);
+      background: linear-gradient(90deg, transparent, rgba(251, 113, 133, 0.25), transparent);
       margin-bottom: 20px;
     }
 
     /* Panduan / Tutorial Box */
     .tutorial-box {
-      background: rgba(15, 23, 42, 0.6);
-      border-left: 3px solid #38bdf8;
+      background: rgba(18, 21, 30, 0.6);
+      border-left: 3px solid #fb7185;
       border-radius: 10px;
       padding: 10px 14px;
       font-size: 0.8rem;
@@ -121,12 +121,12 @@
     }
 
     .tutorial-box b {
-      color: #38bdf8;
+      color: #fb7185;
     }
 
     .tutorial-box code {
-      background: rgba(2, 132, 199, 0.2);
-      color: #38bdf8;
+      background: rgba(244, 63, 94, 0.2);
+      color: #fb7185;
       padding: 2px 6px;
       border-radius: 5px;
       font-family: 'Consolas', monospace;
@@ -134,7 +134,7 @@
 
     /* Layar Display Scientific */
     .display-screen {
-      background: rgba(15, 23, 42, 0.88);
+      background: rgba(18, 21, 30, 0.88);
       border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 22px;
       padding: 18px 22px;
@@ -157,7 +157,7 @@
     }
 
     .pill-btn {
-      background: #334155;
+      background: #2d3348;
       color: #cbd5e1;
       border: none;
       font-size: 0.72rem;
@@ -168,17 +168,17 @@
     }
 
     .pill-btn:hover {
-      background: #475569;
+      background: #3a415c;
     }
 
     .history {
-      color: #64748b;
+      color: #6e7688;
       font-size: 0.95rem;
       min-height: 1.3rem;
     }
 
     .current-val {
-      color: #38bdf8;
+      color: #fb7185;
       font-size: 2.3rem;
       font-weight: bold;
     }
@@ -206,14 +206,14 @@
       font-weight: 600;
       border-radius: 14px;
       cursor: pointer;
-      background: #334155;
+      background: #2d3348;
       color: #f8fafc;
       transition: all 0.15s ease;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     }
 
     button.calc-key:hover {
-      background: #475569;
+      background: #3a415c;
       transform: translateY(-2px);
     }
 
@@ -221,10 +221,10 @@
       transform: translateY(1px);
     }
 
-    button.op { background: #0284c7; color: white; }
-    button.op:hover { background: #0369a1; }
-    button.sci { background: #1e293b; color: #a5f3fc; font-size: 0.9rem; }
-    button.sci:hover { background: #28364d; }
+    button.op { background: #e11d48; color: white; }
+    button.op:hover { background: #be123c; }
+    button.sci { background: #171b27; color: #a5f3fc; font-size: 0.9rem; }
+    button.sci:hover { background: #232939; }
     button.danger { background: #ef4444; color: white; }
     button.danger:hover { background: #dc2626; }
     button.equal { 
@@ -260,7 +260,7 @@
 
     .form-group label {
       font-size: 0.85rem;
-      color: #94a3b8;
+      color: #9aa3b5;
       font-weight: 500;
       white-space: nowrap;
       overflow: hidden;
@@ -268,8 +268,8 @@
     }
 
     .form-group input, .form-group select, .form-group textarea {
-      background: #0f172a;
-      border: 1px solid #334155;
+      background: #12151e;
+      border: 1px solid #2d3348;
       border-radius: 14px;
       padding: 12px 14px;
       color: white;
@@ -288,13 +288,13 @@
     }
 
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-      border-color: #38bdf8;
+      border-color: #fb7185;
     }
 
     /* Custom Currency Trigger Selector */
     .currency-picker-trigger {
-      background: #0f172a;
-      border: 1px solid #334155;
+      background: #12151e;
+      border: 1px solid #2d3348;
       border-radius: 14px;
       padding: 12px 14px;
       color: white;
@@ -310,7 +310,7 @@
     }
 
     .currency-picker-trigger:hover {
-      border-color: #38bdf8;
+      border-color: #fb7185;
     }
 
     .currency-picker-trigger span:first-child {
@@ -321,9 +321,9 @@
     }
 
     .swap-currency-btn {
-      background: #334155;
-      color: #38bdf8;
-      border: 1px solid #475569;
+      background: #2d3348;
+      color: #fb7185;
+      border: 1px solid #3a415c;
       border-radius: 14px;
       width: 48px;
       height: 48px;
@@ -338,9 +338,9 @@
     }
 
     .swap-currency-btn:hover {
-      background: #0284c7;
+      background: #e11d48;
       color: #ffffff;
-      border-color: #0284c7;
+      border-color: #e11d48;
     }
 
     /* Modal Pencarian Mata Uang Internal */
@@ -361,8 +361,8 @@
     }
 
     .currency-modal-content {
-      background: #0f172a;
-      border: 1px solid #334155;
+      background: #12151e;
+      border: 1px solid #2d3348;
       border-radius: 24px;
       width: 100%;
       max-width: 460px;
@@ -384,7 +384,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #1e293b;
+      border-bottom: 1px solid #171b27;
     }
 
     .currency-modal-header h3 {
@@ -396,7 +396,7 @@
     .currency-modal-close {
       background: transparent;
       border: none;
-      color: #94a3b8;
+      color: #9aa3b5;
       font-size: 1.3rem;
       cursor: pointer;
       padding: 4px;
@@ -408,13 +408,13 @@
 
     .currency-search-wrap {
       padding: 12px 16px;
-      border-bottom: 1px solid #1e293b;
+      border-bottom: 1px solid #171b27;
     }
 
     .currency-search-wrap input {
       width: 100%;
-      background: #1e293b;
-      border: 1px solid #334155;
+      background: #171b27;
+      border: 1px solid #2d3348;
       border-radius: 12px;
       padding: 10px 14px;
       color: #fff;
@@ -423,7 +423,7 @@
     }
 
     .currency-search-wrap input:focus {
-      border-color: #38bdf8;
+      border-color: #fb7185;
     }
 
     .currency-list {
@@ -451,12 +451,12 @@
     }
 
     .currency-item:hover {
-      background: #1e293b;
+      background: #171b27;
     }
 
     .currency-item.selected {
-      background: rgba(2, 132, 199, 0.25);
-      border: 1px solid #0284c7;
+      background: rgba(244, 63, 94, 0.25);
+      border: 1px solid #e11d48;
     }
 
     .currency-item-flag {
@@ -473,12 +473,12 @@
     .currency-item-code {
       font-weight: 700;
       font-size: 0.92rem;
-      color: #38bdf8;
+      color: #fb7185;
     }
 
     .currency-item-name {
       font-size: 0.78rem;
-      color: #94a3b8;
+      color: #9aa3b5;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -529,19 +529,19 @@
     .result-box {
       margin-top: 16px;
       padding: 16px;
-      background: #0f172a;
+      background: #12151e;
       border-radius: 16px;
       font-size: 0.9rem;
       line-height: 1.7;
-      border-left: 4px solid #38bdf8;
+      border-left: 4px solid #fb7185;
       word-break: break-word;
     }
 
     /* Mode Pill */
     .mode-pill {
       display: flex;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid #334155;
+      background: rgba(18, 21, 30, 0.8);
+      border: 1px solid #2d3348;
       border-radius: 12px;
       padding: 4px;
       margin-bottom: 14px;
@@ -554,7 +554,7 @@
       background: transparent;
       border: none;
       border-radius: 9px;
-      color: #94a3b8;
+      color: #9aa3b5;
       font-size: 0.78rem;
       font-weight: 600;
       cursor: pointer;
@@ -562,15 +562,15 @@
     }
 
     .mode-pill button.active {
-      background: #0284c7;
+      background: #e11d48;
       color: #ffffff;
-      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);
+      box-shadow: 0 2px 8px rgba(244, 63, 94, 0.4);
     }
 
     .swap-btn-icon {
-      background: #334155;
-      color: #38bdf8;
-      border: 1px solid #475569;
+      background: #2d3348;
+      color: #fb7185;
+      border: 1px solid #3a415c;
       border-radius: 10px;
       padding: 6px 14px;
       font-size: 0.85rem;
@@ -584,7 +584,7 @@
     }
 
     .swap-btn-icon:hover {
-      background: #475569;
+      background: #3a415c;
       color: #ffffff;
     }
 
@@ -596,8 +596,8 @@
     }
 
     .breakdown-item {
-      background: #0b1120;
-      border: 1px solid #334155;
+      background: #0d1017;
+      border: 1px solid #2d3348;
       border-radius: 12px;
       padding: 10px 12px;
       text-align: left;
@@ -605,7 +605,7 @@
 
     .breakdown-item .unit-name {
       font-size: 0.72rem;
-      color: #94a3b8;
+      color: #9aa3b5;
       text-transform: uppercase;
       font-weight: 600;
       margin-bottom: 2px;
@@ -614,7 +614,7 @@
     .breakdown-item .unit-val {
       font-size: 0.95rem;
       font-weight: bold;
-      color: #38bdf8;
+      color: #fb7185;
       word-break: break-all;
     }
 
@@ -623,8 +623,8 @@
       display: flex;
       flex-direction: column;
       height: 360px;
-      background: #0b1120;
-      border: 1px solid #334155;
+      background: #0d1017;
+      border: 1px solid #2d3348;
       border-radius: 18px;
       overflow: hidden;
       margin-bottom: 12px;
@@ -650,47 +650,47 @@
 
     .ai-bubble.user {
       align-self: flex-end;
-      background: #0284c7;
+      background: #e11d48;
       color: #ffffff;
       border-bottom-right-radius: 4px;
     }
 
     .ai-bubble.bot {
       align-self: flex-start;
-      background: #1e293b;
+      background: #171b27;
       color: #f8fafc;
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-bottom-left-radius: 4px;
     }
 
     .ai-bubble.bot pre {
-      background: #0f172a;
+      background: #12151e;
       padding: 8px 10px;
       border-radius: 8px;
       overflow-x: auto;
       font-family: 'Consolas', monospace;
       font-size: 0.8rem;
       margin: 6px 0;
-      border: 1px solid #334155;
+      border: 1px solid #2d3348;
     }
 
     .ai-bubble.bot code {
       font-family: 'Consolas', monospace;
-      color: #38bdf8;
+      color: #fb7185;
     }
 
     .ai-chat-input-bar {
       display: flex;
       gap: 8px;
       padding: 10px;
-      background: rgba(15, 23, 42, 0.95);
-      border-top: 1px solid #334155;
+      background: rgba(18, 21, 30, 0.95);
+      border-top: 1px solid #2d3348;
     }
 
     .ai-chat-input-bar input {
       flex: 1;
-      background: #1e293b;
-      border: 1px solid #334155;
+      background: #171b27;
+      border: 1px solid #2d3348;
       border-radius: 12px;
       padding: 10px 14px;
       color: white;
@@ -699,7 +699,7 @@
     }
 
     .ai-chat-input-bar input:focus {
-      border-color: #38bdf8;
+      border-color: #fb7185;
     }
 
     .ai-chat-input-bar button {
@@ -720,7 +720,7 @@
     /* History Box */
     .history-card {
       margin-top: 20px;
-      background: rgba(15, 23, 42, 0.65);
+      background: rgba(18, 21, 30, 0.65);
       border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 16px;
       padding: 14px 16px;
@@ -732,7 +732,7 @@
       align-items: center;
       margin-bottom: 8px;
       font-size: 0.82rem;
-      color: #94a3b8;
+      color: #9aa3b5;
     }
 
     .clear-btn {
@@ -757,8 +757,8 @@
     }
 
     canvas {
-      background: #0f172a;
-      border: 1px solid #334155;
+      background: #12151e;
+      border: 1px solid #2d3348;
       border-radius: 16px;
       margin-top: 12px;
       width: 100%;
@@ -883,6 +883,27 @@
         margin-top: 12px;
       }
     }
+    /* ===== Polish v2 — tema Panel who-knows (ink + rose) ===== */
+    body { -webkit-font-smoothing: antialiased; }
+    ::selection { background: rgba(244, 63, 94, 0.4); color: #fff; }
+    html { scrollbar-color: #2d3348 #0a0c11; }
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-thumb { background: #2d3348; border-radius: 99px; border: 2px solid #0a0c11; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    .module-content.active { animation: modIn 0.38s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    @keyframes modIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .calc-key { transition: transform 0.08s ease, background-color 0.15s ease, box-shadow 0.15s ease; }
+    .calc-key:active { transform: scale(0.93); }
+    .tab-btn, .action-btn, .pill-btn, .clear-btn, .swap-currency-btn { transition: transform 0.1s ease, background-color 0.15s ease, color 0.15s ease; }
+    .tab-btn:active, .action-btn:active, .pill-btn:active, .clear-btn:active { transform: scale(0.96); }
+    .calc-key, .tab-btn, .action-btn, .pill-btn { position: relative; overflow: hidden; }
+    .ripple { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.35); transform: scale(0); animation: rip 0.55s ease-out forwards; pointer-events: none; z-index: 2; }
+    @keyframes rip { to { transform: scale(2.8); opacity: 0; } }
+    button:focus-visible, a:focus-visible { outline: 2px solid #fb7185; outline-offset: 2px; }
+    input:focus, select:focus, textarea:focus { border-color: #f43f5e !important; box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.22) !important; outline: none !important; }
+    [id$="Display"], [id$="Output"], [id$="Result"] { font-variant-numeric: tabular-nums; }
+    @media (prefers-reduced-motion: reduce) { .module-content.active { animation: none; } .ripple { display: none; } .calc-key:active { transform: none; } }
+
   </style>
 </head>
 <body>
@@ -1166,8 +1187,8 @@
       </div>
 
       <div style="display: flex; gap: 8px; margin-bottom: 12px;">
-        <button class="tab-btn active" id="btnModeDiff" style="background:#0284c7; color:#fff;" onclick="setCalculusSubMode('diff')">📉 Turunan f'(x)</button>
-        <button class="tab-btn" id="btnModeInt" style="background:#334155; color:#94a3b8;" onclick="setCalculusSubMode('int')">📐 Integral ∫ f(x) dx</button>
+        <button class="tab-btn active" id="btnModeDiff" style="background:#e11d48; color:#fff;" onclick="setCalculusSubMode('diff')">📉 Turunan f'(x)</button>
+        <button class="tab-btn" id="btnModeInt" style="background:#2d3348; color:#9aa3b5;" onclick="setCalculusSubMode('int')">📐 Integral ∫ f(x) dx</button>
       </div>
 
       <div id="diffInputs">
@@ -1217,7 +1238,7 @@
           <label>Dari Mata Uang</label>
           <div class="currency-picker-trigger" id="currFromBtn" onclick="openCurrencyModal('from')">
             <span id="currFromDisplay">🇺🇸 USD - Dolar Amerika Serikat</span>
-            <span style="color:#64748b; font-size:0.75rem;">▼</span>
+            <span style="color:#6e7688; font-size:0.75rem;">▼</span>
           </div>
           <input type="hidden" id="currFrom" value="USD">
         </div>
@@ -1228,7 +1249,7 @@
           <label>Ke Mata Uang</label>
           <div class="currency-picker-trigger" id="currToBtn" onclick="openCurrencyModal('to')">
             <span id="currToDisplay">🇮🇩 IDR - Rupiah Indonesia</span>
-            <span style="color:#64748b; font-size:0.75rem;">▼</span>
+            <span style="color:#6e7688; font-size:0.75rem;">▼</span>
           </div>
           <input type="hidden" id="currTo" value="IDR">
         </div>
@@ -1757,7 +1778,7 @@ case 'p': {
 
       <div class="result-box" id="codeConvResultBox" style="display: none;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <b style="color: #38bdf8;" id="codeConvOutputLabel">Hasil Kode Siap Pakai:</b>
+          <b style="color: #fb7185;" id="codeConvOutputLabel">Hasil Kode Siap Pakai:</b>
           <button class="pill-btn" onclick="copyCodeConvOutput()">📋 Copy Kode</button>
         </div>
         <textarea id="codeConvOutput" rows="11" readonly style="width: 100%;"></textarea>
@@ -1818,11 +1839,11 @@ case 'p': {
       </div>
 
       <div class="form-group" style="margin-bottom: 8px;">
-        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #94a3b8;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #9aa3b5;">
           <span>🔍 Zoom / Skala Grid</span>
           <span id="zoomValLabel">30px</span>
         </div>
-        <input type="range" id="graphScale" min="10" max="80" value="30" oninput="updateScaleLabel(); drawGraph();" style="accent-color: #38bdf8; cursor: pointer;">
+        <input type="range" id="graphScale" min="10" max="80" value="30" oninput="updateScaleLabel(); drawGraph();" style="accent-color: #fb7185; cursor: pointer;">
       </div>
 
       <canvas id="graphCanvas" width="600" height="300"></canvas>
@@ -1863,7 +1884,7 @@ case 'p': {
         💡 <b>Panduan Billing Timer:</b> Masukkan tarif sewa per jam. Klik <b>Start</b> untuk memulai argo waktu dan biaya berjalan secara otomatis.
       </div>
       <div style="text-align: center; margin: 12px 0;">
-        <h2 id="timerDisplay" style="font-size: 2.8rem; color: #38bdf8;">00:00:00</h2>
+        <h2 id="timerDisplay" style="font-size: 2.8rem; color: #fb7185;">00:00:00</h2>
       </div>
       <div class="form-group">
         <label>Tarif Sewa per Jam (Rp)</label>
@@ -1872,7 +1893,7 @@ case 'p': {
       <div style="display: flex; gap: 10px;">
         <button class="action-btn" onclick="startTimer()">▶️ Start</button>
         <button class="action-btn" style="background:#ef4444;" onclick="stopTimer()">⏹️ Stop</button>
-        <button class="action-btn" style="background:#64748b;" onclick="resetTimer()">🔄 Reset</button>
+        <button class="action-btn" style="background:#6e7688;" onclick="resetTimer()">🔄 Reset</button>
       </div>
       <div class="result-box" id="timerCostResult">Biaya Berjalan: <b>Rp 0</b></div>
     </div>
@@ -1921,7 +1942,7 @@ case 'p': {
         el.innerHTML = "";
       }
       const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const newEntry = `<div><span style="color:#64748b;">[${time}]</span> ${content}</div>`;
+      const newEntry = `<div><span style="color:#6e7688;">[${time}]</span> ${content}</div>`;
       el.innerHTML = newEntry + el.innerHTML;
       try {
         localStorage.setItem(`calc_hist_${mod}`, el.innerHTML);
@@ -2149,11 +2170,11 @@ case 'p': {
         const dashes = '-'.repeat(Math.min(dashLength, 34));
 
         box.innerHTML = `
-          <b style="color:#38bdf8; font-size:1.02rem;">Langkah Penyelesaian Eliminasi Aljabar:</b><br><br>
+          <b style="color:#fb7185; font-size:1.02rem;">Langkah Penyelesaian Eliminasi Aljabar:</b><br><br>
           <b>1. Misalkan variabel x:</b><br>
           &nbsp;&nbsp;&nbsp;&nbsp;x = ${originalNumStr}<br><br>
           <b>2. Kalikan persamaan dengan 10<sup>${k}</sup> = ${multiplier} (sesuai panjang ${k} digit berulang):</b><br>
-          <pre style="font-family:'Consolas','Courier New',monospace; font-size:0.95rem; line-height:1.7; background:#0b1120; padding:12px 14px; border-radius:12px; border:1px solid #334155; color:#f8fafc; overflow-x:auto; margin:8px 0;">${padMultLabel} = ${padShiftedInt},${shiftedDecDisplay}
+          <pre style="font-family:'Consolas','Courier New',monospace; font-size:0.95rem; line-height:1.7; background:#0d1017; padding:12px 14px; border-radius:12px; border:1px solid #2d3348; color:#f8fafc; overflow-x:auto; margin:8px 0;">${padMultLabel} = ${padShiftedInt},${shiftedDecDisplay}
 ${padXLabel} = ${padInt},${xDecDisplay}
 ${dashes} -
 ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
@@ -2207,9 +2228,9 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
         box.innerHTML = `
           Hierarki Sistem Bilangan untuk <b>${raw}</b>:<br>
           <div style="margin:10px 0; display:flex; flex-wrap:wrap; gap:6px;">
-            ${categories.map(c => `<span style="background:#0284c7; color:#fff; padding:4px 10px; border-radius:8px; font-size:0.8rem; font-weight:600;">${c}</span>`).join('')}
+            ${categories.map(c => `<span style="background:#e11d48; color:#fff; padding:4px 10px; border-radius:8px; font-size:0.8rem; font-weight:600;">${c}</span>`).join('')}
           </div>
-          <hr style="border:0; border-top:1px solid #334155; margin:8px 0;">
+          <hr style="border:0; border-top:1px solid #2d3348; margin:8px 0;">
           💡 <b>Karakteristik:</b> ${note}
         `;
         addHistoryItem('math', `Klasifikasi ${raw} ➔ <b>${categories[categories.length - 1]}</b>`);
@@ -2226,11 +2247,11 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
         const kpk = hitungKPK(a, b);
 
         box.innerHTML = `
-          <b style="color:#38bdf8;">Penyelesaian FPB & KPK (${a} dan${b}):</b><br><br>
+          <b style="color:#fb7185;">Penyelesaian FPB & KPK (${a} dan${b}):</b><br><br>
           1. <b>FPB (Faktor Persekutuan Terbesar):</b><br>
           &nbsp;&nbsp;&nbsp;&nbsp;FPB(${a},${b}) = <b style="font-size:1.2rem; color:#34d399;">${fpb}</b><br><br>
           2. <b>KPK (Kelipatan Persekutuan Terkecil):</b><br>
-          &nbsp;&nbsp;&nbsp;&nbsp;KPK = (${a} &times; ${b}) &divide; FPB = ${a * b} &divide; ${fpb} = <b style="font-size:1.2rem; color:#38bdf8;">${kpk}</b>
+          &nbsp;&nbsp;&nbsp;&nbsp;KPK = (${a} &times; ${b}) &divide; FPB = ${a * b} &divide; ${fpb} = <b style="font-size:1.2rem; color:#fb7185;">${kpk}</b>
         `;
         addHistoryItem('math', `FPB & KPK (${a},${b}) ➔ FPB: ${fpb}, KPK:${kpk}`);
         return;
@@ -2254,7 +2275,7 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
         const isMersenne = Math.pow(2, potP) - 1 === n;
 
         box.innerHTML = `
-          <b style="color:#38bdf8;">Analisis Keprimaan Angka ${n}:</b><br><br>
+          <b style="color:#fb7185;">Analisis Keprimaan Angka ${n}:</b><br><br>
           Status: <b style="color:${isPrime ? '#34d399' : '#f87171'}; font-size:1.15rem;">${isPrime ? 'BILANGAN PRIMA' : 'BUKAN PRIMA (Komposit)'}</b><br>
           ${!isPrime && n > 1 ? `Faktor pembagi ditemukan: <b>${divisor} &times; ${n / divisor} = ${n}</b><br>` : ''}
           ${isPrime ? `Hanya memiliki tepat 2 faktor positif: 1 dan ${n}.<br>` : ''}
@@ -2281,7 +2302,7 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
           rootsHtml = `Dua akar real berbeda:<br><b style="color:#34d399; font-size:1.15rem;">x₁ = ${x1.toFixed(4).replace(/\.?0+$/, "")}</b> dan <b style="color:#34d399; font-size:1.15rem;">x₂ = ${x2.toFixed(4).replace(/\.?0+$/, "")}</b>`;
         } else if (D === 0) {
           const x = -b / (2 * a);
-          rootsHtml = `Satu akar kembar (akar tunggal):<br><b style="color:#38bdf8; font-size:1.15rem;">x = ${x.toFixed(4).replace(/\.?0+$/, "")}</b>`;
+          rootsHtml = `Satu akar kembar (akar tunggal):<br><b style="color:#fb7185; font-size:1.15rem;">x = ${x.toFixed(4).replace(/\.?0+$/, "")}</b>`;
         } else {
           const realPart = (-b / (2 * a)).toFixed(2).replace(/\.?0+$/, "");
           const imagPart = (Math.sqrt(-D) / (2 * Math.abs(a))).toFixed(2).replace(/\.?0+$/, "");
@@ -2290,7 +2311,7 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
         }
 
         box.innerHTML = `
-          <b style="color:#38bdf8;">Penyelesaian Persamaan Kuadrat:</b> ${a}x² + ${b}x +${c} = 0<br><br>
+          <b style="color:#fb7185;">Penyelesaian Persamaan Kuadrat:</b> ${a}x² + ${b}x +${c} = 0<br><br>
           1. <b>Nilai Diskriminan (D = b² - 4ac):</b><br>
           &nbsp;&nbsp;&nbsp;&nbsp;D = (${b})² - 4(${a})(${c}) = <b>${D}</b><br><br>
           2. <b>Akar-akar Penyelesaian:</b><br>
@@ -2312,7 +2333,7 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
           const c2 = val1 * val1 + val2 * val2;
           const c = Math.sqrt(c2);
           box.innerHTML = `
-            <b style="color:#38bdf8;">Perhitungan Hipotenusa (Sisi Miring c):</b><br><br>
+            <b style="color:#fb7185;">Perhitungan Hipotenusa (Sisi Miring c):</b><br><br>
             Rumus: c = &radic;(a² + b²)<br>
             c = &radic;(${val1}² + ${val2}²) = &radic;(${val1 * val1} + ${val2 * val2}) = &radic;${c2}<br>
             Hasil: <b style="font-size:1.3rem; color:#34d399;">c = ${c.toFixed(4).replace(/\.?0+$/, "")}</b>
@@ -2323,7 +2344,7 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
           const a2 = val1 * val1 - val2 * val2;
           const a = Math.sqrt(a2);
           box.innerHTML = `
-            <b style="color:#38bdf8;">Perhitungan Sisi Tegak (a):</b><br><br>
+            <b style="color:#fb7185;">Perhitungan Sisi Tegak (a):</b><br><br>
             Rumus: a = &radic;(c² - b²)<br>
             a = &radic;(${val1}² - ${val2}²) = &radic;(${val1 * val1} - ${val2 * val2}) = &radic;${a2}<br>
             Hasil: <b style="font-size:1.3rem; color:#34d399;">a = ${a.toFixed(4).replace(/\.?0+$/, "")}</b>
@@ -2346,11 +2367,11 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
           const un = a + (n - 1) * d;
           const sn = (n / 2) * (2 * a + (n - 1) * d);
           box.innerHTML = `
-            <b style="color:#38bdf8;">Barisan & Deret Aritmatika (a = ${a}, b = ${d}, n =${n}):</b><br><br>
+            <b style="color:#fb7185;">Barisan & Deret Aritmatika (a = ${a}, b = ${d}, n =${n}):</b><br><br>
             1. <b>Suku ke-${n} (U<sub>${n}</sub>):</b><br>
             &nbsp;&nbsp;&nbsp;&nbsp;U<sub>${n}</sub> = a + (n - 1)b =${a} + (${n - 1})(${d}) = <b style="font-size:1.15rem; color:#34d399;">${un}</b><br><br>
             2. <b>Jumlah ${n} Suku Pertama (S<sub>${n}</sub>):</b><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;S<sub>${n}</sub> = n/2 &times; (a + U<sub>${n}</sub>) =${n}/2 &times; (${a} +${un}) = <b style="font-size:1.15rem; color:#38bdf8;">${sn}</b>
+            &nbsp;&nbsp;&nbsp;&nbsp;S<sub>${n}</sub> = n/2 &times; (a + U<sub>${n}</sub>) =${n}/2 &times; (${a} +${un}) = <b style="font-size:1.15rem; color:#fb7185;">${sn}</b>
           `;
           addHistoryItem('math', `Aritmatika U${n}=${un}, S${n}=${sn}`);
         } else {
@@ -2360,11 +2381,11 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
           else sn = (a * (Math.pow(d, n) - 1)) / (d - 1);
 
           box.innerHTML = `
-            <b style="color:#38bdf8;">Barisan & Deret Geometri (a = ${a}, r = ${d}, n =${n}):</b><br><br>
+            <b style="color:#fb7185;">Barisan & Deret Geometri (a = ${a}, r = ${d}, n =${n}):</b><br><br>
             1. <b>Suku ke-${n} (U<sub>${n}</sub>):</b><br>
             &nbsp;&nbsp;&nbsp;&nbsp;U<sub>${n}</sub> = a &times; r<sup>(n-1)</sup> =${a} &times; ${d}<sup>${n - 1}</sup> = <b style="font-size:1.15rem; color:#34d399;">${un.toLocaleString()}</b><br><br>
             2. <b>Jumlah ${n} Suku Pertama (S<sub>${n}</sub>):</b><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;S<sub>${n}</sub> = <b style="font-size:1.15rem; color:#38bdf8;">${sn.toLocaleString()}</b>
+            &nbsp;&nbsp;&nbsp;&nbsp;S<sub>${n}</sub> = <b style="font-size:1.15rem; color:#fb7185;">${sn.toLocaleString()}</b>
           `;
           addHistoryItem('math', `Geometri U${n}=${un}, S${n}=${sn}`);
         }
@@ -2398,9 +2419,9 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
         }
 
         box.innerHTML = `
-          <b style="color:#38bdf8;">Operasi Matriks 2x2:</b><br><br>
+          <b style="color:#fb7185;">Operasi Matriks 2x2:</b><br><br>
           1. <b>Determinan (ad - bc):</b><br>
-          &nbsp;&nbsp;&nbsp;&nbsp;det(A) = (${a} &times; ${d}) - (${b} &times; ${c}) = <b style="font-size:1.2rem; color:#38bdf8;">${det}</b><br><br>           2.${inversHtml}
+          &nbsp;&nbsp;&nbsp;&nbsp;det(A) = (${a} &times; ${d}) - (${b} &times; ${c}) = <b style="font-size:1.2rem; color:#fb7185;">${det}</b><br><br>           2.${inversHtml}
         `;
         addHistoryItem('math', `Matriks det=${det}`);
         return;
@@ -2437,11 +2458,11 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
         const range = nums[count - 1] - nums[0];
 
         box.innerHTML = `
-          <b style="color:#38bdf8;">Hasil Analisis Statistika Deskriptif:</b><br><br>
+          <b style="color:#fb7185;">Hasil Analisis Statistika Deskriptif:</b><br><br>
           Data Terurut: [ ${nums.join(", ")} ] (n = ${count})<br>
-          <hr style="border:0; border-top:1px solid #334155; margin:8px 0;">
+          <hr style="border:0; border-top:1px solid #2d3348; margin:8px 0;">
           • Rata-rata (Mean): <b style="color:#34d399;">${mean.toFixed(2).replace(/\.?0+$/, "")}</b><br>
-          • Nilai Tengah (Median): <b style="color:#38bdf8;">${median}</b><br>
+          • Nilai Tengah (Median): <b style="color:#fb7185;">${median}</b><br>
           • Nilai Sering Muncul (Modus): <b style="color:#fcd34d;">${modeStr}</b><br>
           • Nilai Terkecil / Terbesar: <b>${nums[0]}</b> / <b>${nums[count - 1]}</b><br>
           • Rentang Jangkauan (Range): <b>${range}</b>
@@ -2461,17 +2482,17 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
       const intDiv = document.getElementById("intInputs");
 
       if (mode === 'diff') {
-        btnDiff.style.background = "#0284c7";
+        btnDiff.style.background = "#e11d48";
         btnDiff.style.color = "#fff";
-        btnInt.style.background = "#334155";
-        btnInt.style.color = "#94a3b8";
+        btnInt.style.background = "#2d3348";
+        btnInt.style.color = "#9aa3b5";
         diffDiv.style.display = "block";
         intDiv.style.display = "none";
       } else {
-        btnInt.style.background = "#0284c7";
+        btnInt.style.background = "#e11d48";
         btnInt.style.color = "#fff";
-        btnDiff.style.background = "#334155";
-        btnDiff.style.color = "#94a3b8";
+        btnDiff.style.background = "#2d3348";
+        btnDiff.style.color = "#9aa3b5";
         diffDiv.style.display = "none";
         intDiv.style.display = "block";
       }
@@ -2504,8 +2525,8 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
           box.innerHTML = `
             Fungsi: <b>f(x) = ${funcStr}</b><br>
             Titik evaluasi: <b>x = ${x}</b><br>
-            <hr style="border:0; border-top:1px solid #334155; margin:8px 0;">
-            Turunan Pertama f'(${x}): <b style="font-size:1.15rem; color:#38bdf8;">${formatted}</b>
+            <hr style="border:0; border-top:1px solid #2d3348; margin:8px 0;">
+            Turunan Pertama f'(${x}): <b style="font-size:1.15rem; color:#fb7185;">${formatted}</b>
           `;
           addHistoryItem('calculus', `d/dx [${funcStr}] di x=${x} ➔ <b>${formatted}</b>`);
 
@@ -2528,7 +2549,7 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
           box.innerHTML = `
             Fungsi: <b>f(x) = ${funcStr}</b><br>
             Interval integrasi: <b>[${a},${b}]</b><br>
-            <hr style="border:0; border-top:1px solid #334155; margin:8px 0;">
+            <hr style="border:0; border-top:1px solid #2d3348; margin:8px 0;">
             Hasil Integral Tentu: <b style="font-size:1.15rem; color:#34d399;">${formatted}</b>
           `;
           addHistoryItem('calculus', `∫[${a} ke${b}] (${funcStr}) dx ➔ <b>${formatted}</b>`);
@@ -2671,7 +2692,7 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
       });
 
       if (filtered.length === 0) {
-        listEl.innerHTML = `<div style="text-align:center; padding:20px; color:#64748b; font-size:0.85rem;">Mata uang tidak ditemukan</div>`;
+        listEl.innerHTML = `<div style="text-align:center; padding:20px; color:#6e7688; font-size:0.85rem;">Mata uang tidak ditemukan</div>`;
         return;
       }
 
@@ -2778,8 +2799,8 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
 
         box.innerHTML = `
           <b>${amount.toLocaleString()}${fromName}</b> =<br>
-          <span style="font-size: 1.35rem; font-weight: bold; color: #38bdf8;">${formattedResult}${toName}</span><br>
-          <span style="font-size: 0.78rem; color: #94a3b8;">Kurs Live: 1 ${from} = ${rateFormatted}${to} (Realtime Global API)</span>
+          <span style="font-size: 1.35rem; font-weight: bold; color: #fb7185;">${formattedResult}${toName}</span><br>
+          <span style="font-size: 0.78rem; color: #9aa3b5;">Kurs Live: 1 ${from} = ${rateFormatted}${to} (Realtime Global API)</span>
         `;
 
         addHistoryItem('currency', `${amount.toLocaleString()}${from} ➔ <b>${formattedResult}${to}</b>`);
@@ -2835,9 +2856,9 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
       box.innerHTML = `
         Barang: <b>${itemName}</b> (${schemeName})<br>
         Pokok Hutang: Rp ${principal.toLocaleString()} (DP: Rp${dp.toLocaleString()})<br>
-        <hr style="border:0; border-top:1px solid #334155; margin:8px 0;">
-        <span style="font-size:0.85rem; color:#94a3b8;">Estimasi Cicilan per Bulan (${tenorMonths}x):</span><br>
-        <b style="font-size: 1.3rem; color: #38bdf8;">Rp ${monthlyInstallment.toLocaleString()}/bulan</b><br>
+        <hr style="border:0; border-top:1px solid #2d3348; margin:8px 0;">
+        <span style="font-size:0.85rem; color:#9aa3b5;">Estimasi Cicilan per Bulan (${tenorMonths}x):</span><br>
+        <b style="font-size: 1.3rem; color: #fb7185;">Rp ${monthlyInstallment.toLocaleString()}/bulan</b><br>
         <span style="font-size:0.82rem; color:#f87171;">Bunga Pinjaman: +Rp ${Math.round(totalInterest).toLocaleString()}</span><br>
         <b>Total Uang Dikeluarkan: Rp ${totalSpentWithDP.toLocaleString()}</b>
         <button class="share-wa-btn" onclick="shareToWhatsApp(lastLoanShareText)">
@@ -2864,7 +2885,7 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
       const box = document.getElementById("sellerResult");
       box.style.display = "block";
       box.innerHTML = `
-        Rekomendasi Harga Jual: <b style="font-size:1.1rem; color:#38bdf8;">Rp ${sellingPrice.toLocaleString()}</b><br>
+        Rekomendasi Harga Jual: <b style="font-size:1.1rem; color:#fb7185;">Rp ${sellingPrice.toLocaleString()}</b><br>
         Potongan Admin (${feePercent}\%): -Rp${adminFeeAmount.toLocaleString()}<br>
         Uang Diterima Bersih: Rp ${(sellingPrice - adminFeeAmount).toLocaleString()}<br>
         <b>Keuntungan Bersih: Rp ${actualProfit.toLocaleString()}</b>
@@ -2888,7 +2909,7 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
       box.style.display = "block";
       box.innerHTML = `
         Target: <b>${goalName}</b> (Rp${target.toLocaleString()})<br>
-        Wajib Nabung Bulanan: <b style="color:#38bdf8;">Rp ${perMonth.toLocaleString()}/bulan</b><br>
+        Wajib Nabung Bulanan: <b style="color:#fb7185;">Rp ${perMonth.toLocaleString()}/bulan</b><br>
         Atau Sisihkan Harian: <b style="color:#34d399;">Rp ${perDay.toLocaleString()}/hari</b> (${months * 30} hari)
       `;
 
@@ -2919,8 +2940,8 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
         Pajak/Service (${taxPercent}\%): +Rp${taxAmount.toLocaleString()}<br>
         Tip: +Rp ${tip.toLocaleString()}<br>
         <b>Total Semua: Rp ${totalAmount.toLocaleString()}</b><br>
-        <hr style="border:0; border-top:1px solid #334155; margin:8px 0;">
-        <b style="font-size: 1.05rem; color: #38bdf8;">Bayar per orang (${people} org): Rp${perPerson.toLocaleString()}</b>
+        <hr style="border:0; border-top:1px solid #2d3348; margin:8px 0;">
+        <b style="font-size: 1.05rem; color: #fb7185;">Bayar per orang (${people} org): Rp${perPerson.toLocaleString()}</b>
         <button class="share-wa-btn" onclick="shareToWhatsApp(lastSplitShareText)">
           📲 Kirim Rincian Tagihan ke WhatsApp
         </button>
@@ -2982,12 +3003,12 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
       const box = document.getElementById("ageResult");
       box.style.display = "block";
       box.innerHTML = `
-        <div style="font-size:0.8rem; color:#94a3b8; margin-bottom:4px;">Usia Realtime yang Sedang Berjalan:</div>
-        <b style="font-size: 1.2rem; color: #38bdf8;">${years} Tahun, ${months} Bulan,${days} Hari</b><br>
+        <div style="font-size:0.8rem; color:#9aa3b5; margin-bottom:4px;">Usia Realtime yang Sedang Berjalan:</div>
+        <b style="font-size: 1.2rem; color: #fb7185;">${years} Tahun, ${months} Bulan,${days} Hari</b><br>
         <div style="font-size: 1rem; color: #34d399; font-weight:600; margin: 4px 0;">
           ${String(hours).padStart(2, '0')} Jam ${String(minutes).padStart(2, '0')} Menit${String(seconds).padStart(2, '0')} Detik
         </div>
-        <hr style="border:0; border-top:1px solid #334155; margin:8px 0;">
+        <hr style="border:0; border-top:1px solid #2d3348; margin:8px 0;">
         Total Waktu Hidup: <b>${totalDays.toLocaleString()} hari</b> (${totalSeconds.toLocaleString()} detik)<br>
         Ulang Tahun Berikutnya: <b>${daysToNext} hari lagi 🎂</b>
       `;
@@ -3172,7 +3193,7 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
           box.style.display = "block";
           box.innerHTML = `
             Hasil Konversi Waktu:<br>
-            <b style="font-size:1.35rem; color:#38bdf8;">${val.toLocaleString('id-ID')}${from.toUpperCase()} = ${formatted}${to.toUpperCase()}</b>
+            <b style="font-size:1.35rem; color:#fb7185;">${val.toLocaleString('id-ID')}${from.toUpperCase()} = ${formatted}${to.toUpperCase()}</b>
           `;
           addHistoryItem('conv', `${val}${from} ➔ <b>${formatted}${to}</b>`);
         } else {
@@ -3214,7 +3235,7 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
           box.style.display = "block";
           box.innerHTML = `
             Hasil Konversi Panjang / Jarak:<br>
-            <b style="font-size:1.35rem; color:#38bdf8;">${val.toLocaleString('id-ID')}${from} = ${formatted}${to}</b>
+            <b style="font-size:1.35rem; color:#fb7185;">${val.toLocaleString('id-ID')}${from} = ${formatted}${to}</b>
           `;
           addHistoryItem('conv', `${val}${from} ➔ <b>${formatted}${to}</b>`);
         } else {
@@ -3273,10 +3294,10 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
           box.style.display = "block";
           box.innerHTML = `
             Kecepatan Dasar: <b>${formatNumberDisplay(speedKmH)} km/jam</b> (${formatNumberDisplay(speedMS)} m/s)<br>
-            <hr style="border:0; border-top:1px solid #334155; margin:8px 0;">
+            <hr style="border:0; border-top:1px solid #2d3348; margin:8px 0;">
             Dalam waktu <b>${nTime}${nTimeUnit}</b>, estimasi jarak tempuh:<br>
-            <b style="font-size:1.35rem; color:#38bdf8;">${formatNumberDisplay(resDistKm)} km</b>
-            <span style="font-size:0.85rem; color:#94a3b8;"> (${formatNumberDisplay(resDistM)} meter)</span>
+            <b style="font-size:1.35rem; color:#fb7185;">${formatNumberDisplay(resDistKm)} km</b>
+            <span style="font-size:0.85rem; color:#9aa3b5;"> (${formatNumberDisplay(resDistM)} meter)</span>
           `;
           addHistoryItem('conv', `Jarak (${speedKmH.toFixed(1)} km/j × ${nTime} ${nTimeUnit}) ➔ <b>${formatNumberDisplay(resDistKm)} km</b>`);
         } else {
@@ -3299,7 +3320,7 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
           box.style.display = "block";
           box.innerHTML = `
             Kecepatan Dasar: <b>${formatNumberDisplay(speedKmH)} km/jam</b> (${formatNumberDisplay(speedMS)} m/s)<br>
-            <hr style="border:0; border-top:1px solid #334155; margin:8px 0;">
+            <hr style="border:0; border-top:1px solid #2d3348; margin:8px 0;">
             Waktu untuk menempuh <b>${nDist}${nDistUnit}</b>:<br>
             <b style="font-size:1.35rem; color:#34d399;">${timeStr || '0 Detik'}</b>
           `;
@@ -3350,7 +3371,7 @@ ${factorLabel} = ${padDiffInt}${diffDecPart}</pre>
         box.style.display = "block";
         box.innerHTML = `
           Hasil Konversi Basis:<br>
-          <b style="font-size:1.35rem; color:#38bdf8;">${raw} (${baseNames[fromBase]}) = ${result} (${baseNames[toBase]})</b>
+          <b style="font-size:1.35rem; color:#fb7185;">${raw} (${baseNames[fromBase]}) = ${result} (${baseNames[toBase]})</b>
         `;
         addHistoryItem('conv', `${raw} (${baseNames[fromBase]}) ➔ <b>${result} (${baseNames[toBase]})</b>`);
         return;
@@ -3732,7 +3753,7 @@ module.exports = handler;
       ctx.moveTo(cx, 0); ctx.lineTo(cx, h);
       ctx.stroke();
 
-      ctx.fillStyle = "#64748b";
+      ctx.fillStyle = "#6e7688";
       ctx.font = "10px sans-serif";
       ctx.fillText("0", cx + 4, cy + 12);
 
@@ -3747,7 +3768,7 @@ module.exports = handler;
         return;
       }
 
-      ctx.strokeStyle = "#38bdf8";
+      ctx.strokeStyle = "#fb7185";
       ctx.lineWidth = 2.2;
       ctx.beginPath();
 
@@ -3845,6 +3866,24 @@ module.exports = handler;
       document.getElementById("timerDisplay").innerText = "00:00:00";
       document.getElementById("timerCostResult").innerHTML = `Biaya Berjalan: <b>Rp 0</b>`;
     }
+  </script>
+
+  <script>
+    // Ripple klik (polish v2) — delegasi pointer, tidak mengubah logika kalkulator
+    document.addEventListener('pointerdown', function (e) {
+      var b = e.target.closest ? e.target.closest('.calc-key,.tab-btn,.action-btn,.pill-btn') : null;
+      if (!b) return;
+      var r = b.getBoundingClientRect();
+      if (!r.width) return;
+      var d = Math.max(r.width, r.height);
+      var sp = document.createElement('span');
+      sp.className = 'ripple';
+      sp.style.width = sp.style.height = d + 'px';
+      sp.style.left = (e.clientX - r.left - d / 2) + 'px';
+      sp.style.top = (e.clientY - r.top - d / 2) + 'px';
+      b.appendChild(sp);
+      setTimeout(function () { sp.remove(); }, 620);
+    });
   </script>
 </body>
 </html>

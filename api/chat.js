@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
 
     let response;
     try {
-      response = await fetch("https://api.bariska.cloud/v1", {
+      response = await fetch("https://api.bariska.cloud/v1/chat/completions", {
         method: "POST",
         signal: controller.signal,
         headers: {
@@ -34,7 +34,7 @@ module.exports = async (req, res) => {
           "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
         },
         body: JSON.stringify({
-          model: "glm-5.3-flash",
+          model: "deepseek-v4.1-flash",
           messages: [
             {
               role: "system",
