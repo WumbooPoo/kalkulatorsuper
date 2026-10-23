@@ -9,7 +9,7 @@ const fs = require('fs');
 
 const PORT = 8892;
 const HOST = '127.0.0.1';
-const KEY_FILE = '/root/.config/bot-bell/.bariska_key';
+const KEY_FILE = process.env.KALK_KEY_FILE || '/root/.config/bot-bell/.bariska_key';
 const MODEL = 'deepseek-v4.1-flash';
 const UPSTREAM = 'https://api.bariska.cloud/v1/chat/completions';
 const SYSTEM_PROMPT =
@@ -19,6 +19,8 @@ const MAX_BODY = 16 * 1024;
 const MAX_MESSAGE = 4000;
 const RATE_LIMIT = 15; // req per jendela per IP
 const RATE_WINDOW_MS = 60 * 1000;
+const DAILY_CAP = Number(process.env.KALK_DAILY_CAP || 1000); // plafon total panggilan per hari (WIB)
+const USAGE_FILE = process.env.KALK_USAGE_FILE || '/root/kalkulator-api/usage.json'; // persisten: restart tidak mereset hitungan
 
 function loadKey() {
   try {
@@ -35,6 +37,31 @@ function rateLimited(ip) {
   arr.push(now);
   hits.set(ip, arr);
   return arr.length > RATE_LIMIT;
+}
+
+function todayWib() {
+  return new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Jakarta' }); // YYYY-MM-DD
+}
+
+function loadUsage() {
+  const today = todayWib();
+  try {
+    const u = JSON.parse(fs.readFileSync(USAGE_FILE, 'utf8'));
+    if (u && u.date === today && Number.isFinite(u.count)) return u;
+  } catch {}
+  return { date: today, count: 0 };
+}
+
+function consumeDailyQuota() {
+  const u = loadUsage();
+  if (u.count >= DAILY_CAP) return false;
+  u.count += 1;
+  try {
+    fs.writeFileSync(USAGE_FILE, JSON.stringify(u));
+  } catch (e) {
+    console.error('[kalkulator-api] gagal simpan usage:', e.message);
+  }
+  return true;
 }
 
 function clientIp(req) {
@@ -88,6 +115,10 @@ const server = http.createServer(async (req, res) => {
     if (!message) return sendJson(res, 400, { error: 'Pesan tidak boleh kosong' });
     if (message.length > MAX_MESSAGE) return sendJson(res, 400, { error: 'Pesan terlalu panjang.' });
 
+    if (!consumeDailyQuota()) {
+      return sendJson(res, 429, { error: 'Kuota harian Tanya AI sudah habis. Silakan coba lagi besok.' });
+    }
+
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS);
     let response;
@@ -127,7 +158,7 @@ const server = http.createServer(async (req, res) => {
     if (!response.ok) {
       const errMsg = (data && data.error && data.error.message) || (data && data.message) || 'tidak diketahui';
       console.log(`[kalkulator-api] upstream ${response.status} dari ${ip}: ${String(errMsg).slice(0, 120)}`);
-      return sendJson(res, response.status, { error: `Error API (${response.status}): ${String(errMsg).slice(0, 200)}` });
+      return sendJson(res, response.status, { error: `Error API (${response.status}). Coba lagi sebentar lagi.` });
     }
     const reply = (data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || '';
     if (!reply.trim()) return sendJson(res, 502, { error: 'AI tidak memberikan balasan.' });
